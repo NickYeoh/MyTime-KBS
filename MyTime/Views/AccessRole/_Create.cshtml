@@ -1,0 +1,71 @@
+﻿@model MyTime.Models.AccessRoleModel
+
+@{
+    ViewBag.Title = MyTime.Resource.AccessRole + " :: " + MyTime.Resource.Create;
+    Layout = null;
+}
+
+<div class="modal-content">
+
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title </h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "onSuccessProcess",
+                    UpdateTargetId = "divCRUD",
+                    LoadingElementId = "divSpinner",
+
+                },
+             new { @id = "formCreate" }
+             ))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group row pt-3">
+                            @Html.LabelFor(model => model.AccessRoleName, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.AccessRoleName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.AccessRoleName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.IsActivated, htmlAttributes: new { @class = "control-label" })
+                                @Html.CheckBoxFor(model => model.IsActivated, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12 text-center">
+                                <input type="submit" value="@MyTime.Resource.Save" class="btn btn-primary" />
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" data-dismiss="modal" />
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+

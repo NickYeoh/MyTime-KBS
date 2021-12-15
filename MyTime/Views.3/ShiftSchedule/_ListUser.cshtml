@@ -1,0 +1,95 @@
+﻿@model MyTime.ViewModels.ShiftScheduleViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.ShiftSchedule + " :: " + MyTime.Resource.ChangeShift;
+    Layout = null;
+}
+
+@*<div class="modal" tabindex="-1" role="dialog" id="modalUser">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">@ViewBag.Title</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">*@
+<div class="modal-content">
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow">
+            <div class="card-header bg-transparent text-black">
+                <h6> @ViewBag.Title</h6>
+            </div>
+            <div class="card-body" >
+
+                <div class="form-horizontal">
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.ShiftScheduleModel.EffectiveOn, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.ShiftScheduleModel.EffectiveOn, new { htmlAttributes = new { @class = "form-control datepicker", autocomplete = "off", data_val = "false", @id = "dtpEffectiveOn" } })
+                            @Html.ValidationMessageFor(model => model.ShiftScheduleModel.EffectiveOn, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.ShiftScheduleModel.ShiftName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.ShiftScheduleModel.ShiftName, Model.SelectListShift as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @class = "form-control", @id = "ddlShift" })
+                            @Html.ValidationMessageFor(model => model.ShiftScheduleModel.ShiftName, "", new { @class = "text-danger", @id = "valShiftName" })
+                        </div>
+
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+
+
+                    <hr />
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+
+                            <table id="listUserDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="text-white header-bg-color">
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>@MyTime.Resource.UserName</th>
+                                        <th>@MyTime.Resource.NRIC</th>
+                                        <th>@MyTime.Resource.DepartmentName</th>
+                                        <th>@MyTime.Resource.UnitName</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12 text-right">
+                            <button type="button" id="btnUpdate" class="btn btn-primary">@MyTime.Resource.Update</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">@MyTime.Resource.Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*<div class="modal-footer">
+                        <button type="button" id="btnUpdate" class="btn btn-primary">@MyTime.Resource.Update</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">@MyTime.Resource.Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

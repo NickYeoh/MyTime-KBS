@@ -1,0 +1,471 @@
+﻿@model MyTime.ViewModels.DepartmentAttendanceHistoryReportViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.DepartmentAttendanceHistoryReport;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" aria-current="page">@MyTime.Resource.Report</li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div id="divList" class="col-md-12">
+
+            <div class="card shadow">
+                <div class="card-header bg-transparent text-center">
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group row text-center">
+                            <div class="col-md-12">
+                                <h5> @ViewBag.Title</h5>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group row text-left">
+
+                            <div class="col-md-auto">
+                                <div>
+                                    @Html.Label(MyTime.Resource.Month, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.DropDownList("MonthYear", Model.SelectListMonthYear as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @style = "width:100px;", @class = "form-control", @id = "ddlMonthYear" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-auto">
+                                <div>
+                                    @Html.Label(MyTime.Resource.DepartmentName, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="row D-flex align-items-start pl-3">
+                                    <div class="pb-2">
+                                        @Html.DropDownList("Department", Model.SelectListDepartment as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @style = "width:300px;", @class = "form-control", @id = "ddlDepartment" })
+                                    </div>
+                                    <div>
+                                        <span class="pl-2"></span>
+                                        <input id="btnGenerate" type="button" value="@MyTime.Resource.Generate" class="btn btn-primary text-center" style="min-width:80px;" />
+                                        <span class="pl-1"></span>
+                                        <input id="btnReset" type="button" value="@MyTime.Resource.Reset" class="btn btn-warning text-center" style="min-width: 80px;" />
+                                        <span class="pl-1"></span>
+                                        <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="min-width: 80px;" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="card-body pt-0">
+
+                        <table id="listDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                            <thead>
+
+                                <tr class="text-white header-bg-color">
+                                    <th><input type="checkbox" id="selectAll"></th>
+                                    <th>@MyTime.Resource.DepartmentName</th>
+                                    <th>@MyTime.Resource.UserName</th>
+                                    <th>@MyTime.Resource.NRIC</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="divCRUD" class="col-md-6 hide">
+        </div>
+
+        <div class="modal fade" id="modalCRUD" role="dialog" data-backdrop="static" keyboard="false">
+            <div class="modal-dialog">
+                <div id="divCRUD">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <input type=hidden id="pid" value="" />
+</div>
+
+@section styles
+                                    {
+    @Styles.Render("~/Content/dataTables")
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @Scripts.Render("~/bundles/dataTables")
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@Scripts.Render("~/bundles/custom-js")*@
+
+    <script type="text/javascript">
+
+        var customDatatable;
+        var dataList;
+      
+        function convertToDate(data) {
+
+                var dte = new Date(parseInt(data.substr(6)));
+                var dteWrapper = moment(dte);
+                return dteWrapper.format("DD/MM/YYYY");
+        };
+
+    $(document).ready(function () {
+
+            //toggleSidebar();
+            unloadSpinner();
+            showDivBody();
+
+       
+            document.getElementById("selectAll").checked = false;
+            document.getElementById("selectAll").disabled = true;
+
+            $('#btnGenerate').prop('disabled', true);
+            $('#btnReset').prop('disabled', true);
+            $('#btnPrint').prop('disabled', true);
+
+            $('#ddlMonthYear').change(function () {
+                ValidateCriterion();
+            });
+
+            $('#ddlDepartment').change(function () {
+              ValidateCriterion();
+            });
+
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+
+        if (culture != 'ms-MY') {
+            //locale_norecord = '- No record -';
+            locale_norecord = '-';
+            locale_lengthmenu = 'Display _MENU_';
+            //locale_info = 'Showing page _PAGE_ of _PAGES_';
+            locale_info = 'Record# _START_~_END_  of _TOTAL_';
+            locale_search = '';
+
+            locale_infofiltered = '';
+
+            locale_first = 'First';
+            locale_previous = 'Previous';
+            locale_next = 'Next';
+            locale_last = 'Last';
+
+            locale_rowselected = ' ( Selected %d records ) ';
+        }
+        else {
+            //locale_norecord = '- Tidak ada rekod -';
+            locale_norecord = '-';
+            locale_lengthmenu = 'Paparan _MENU_ ';
+            //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+            locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+            //locale_search = '';
+
+            locale_infofiltered = '';
+
+            locale_first = 'Pertama';
+            locale_previous = 'Sebelumnya';
+            locale_next = 'Seterusnya';
+            locale_last = 'Terakhir';
+
+            locale_rowselected = ' ( Telah Pilih %d rekod ) ';
+
+        };
+
+        
+            customDatatable = $('#listDatatable').DataTable(
+                {
+                    //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-12 text-right"p>><"row pt-2"<"col-md-12 text-right"l>>>>',
+                    dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
+                    buttons:
+                        [
+
+                        ],
+                    autoWidth: false,
+                    scrollX: true,
+                    scrollY: true,
+                    pageLength: 10,
+                    //responsive: true,
+                language: {
+                    "lengthMenu": locale_lengthmenu,
+                    "zeroRecords": locale_norecord,
+                    "info": locale_info,
+                    "infoEmpty": locale_norecord,
+                    "infoFiltered": locale_infofiltered,
+                    "search": locale_search,
+                    "paginate": {
+                        "first": locale_first,
+                        "previous": locale_previous,
+                        "next": locale_next,
+                        "last": locale_last
+                    },
+                    select: {
+                        "rows": locale_rowselected
+                    }
+                },
+                data: '',
+                rowId: 'NRIC',
+                    columns: [
+                    {
+                        "data": 'selectAll',
+                        "render": function (data, type, row) {
+                            return '<input type="checkbox">';
+                        }
+                    },
+                    { "data": "DepartmentName" },
+                    { "data": "UserName" },
+                    { "data": "NRIC" }
+                ],
+                    columnDefs: [
+                    { targets: 0, className: 'text-center select-checkbox', width: '15px', orderable: false, defaultContent: '' },
+                    { targets: 1, className: 'text-left', width: '250px', orderable: true},
+                    { targets: 2, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 3, className: 'text-center', width: '150px', orderable: true }
+                    ],
+                select: {
+                        style: 'multi',
+                        selector: 'td:first-child'
+                },
+                    order: [[1, 'asc'], [2, 'asc']]
+                });
+
+
+            $("#selectAll").on("click", function (e) {
+
+                 var rows = customDatatable.rows({ 'search': 'applied' }).nodes();
+
+                if ($(this).is(":checked")) {
+                    customDatatable.rows().select();
+                } else {
+                    customDatatable.rows().deselect();
+                }
+
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
+
+
+            $('#btnGenerate').click(function () {
+
+                GetDepartmentUser();
+
+            });
+
+            $('#btnReset').click(function () {
+
+                customDatatable.clear().draw();
+
+                document.getElementById("selectAll").checked = false;
+                document.getElementById("selectAll").disabled = true;
+
+                $('#ddlMonthYear').prop('disabled', false);
+                $('#ddlDepartment').prop('disabled', false);
+
+                $('#btnGenerate').prop('disabled', false);
+                $('#btnReset').prop('disabled', true);
+                $('#btnPrint').prop('disabled', true);
+            });
+
+        $('#btnPrint').click(function () {
+
+                loadSpinner();
+
+                var selectedAttendanceDate = $("#ddlMonthYear option:selected").val();
+
+                var data = customDatatable.rows({ selected: true }).data();
+
+                var selectedNRIC = '';
+
+                if (data.length > 0) {
+
+                    for (var i = 0; i < data.length; i++) {
+
+                        if (selectedNRIC != '') {
+                            selectedNRIC += '#';
+                        };
+
+                        selectedNRIC += data[i].NRIC;
+
+                    };
+
+                    $.ajax({
+                        datatype: 'text/plain',
+                        type: 'POST',
+                        url: 'DepartmentAttendanceHistoryReport/GenerateAttendanceList',
+                        data: { selectedAttendanceDate: selectedAttendanceDate, selectedNRIC: selectedNRIC },
+                        cache: false,
+                        dataType: "json",
+                        success: function (result) {
+
+                            // Print Report
+                            if (result == true) {
+                                window.location = '/DepartmentAttendanceHistoryReport/PrintAttendanceMonthlyReport';
+                            }
+
+                          
+                        }
+                    });
+                }    
+
+                unloadSpinner();
+            });
+
+    });
+
+        function ValidateCriterion() {
+
+            var ddlMonthYear;
+            var selectedMonthYear;
+
+            var ddlDepartment;
+            var selectedDepartment;
+
+                  
+            ddlMonthYear = document.getElementById('ddlMonthYear');
+            selectedMonthYear = ddlMonthYear.value;
+
+            ddlDepartment = document.getElementById('ddlDepartment');
+            selectedDepartment = ddlDepartment.value;
+
+            if (selectedMonthYear != '' && selectedDepartment != '') {
+              
+              
+                $('#btnGenerate').prop('disabled', false);
+                $('#btnReset').prop('disabled', true);
+                $('#btnPrint').prop('disabled', true);
+
+            }
+            else {
+
+                $('#btnGenerate').prop('disabled', true);
+                $('#btnReset').prop('disabled', true);
+                $('#btnPrint').prop('disabled', true);
+            }
+
+        };
+
+
+        function GetDepartmentUser(selectedMonthYear, selectedDepartmentID) {
+
+            var ddlMonthYear;
+            var selectedMonthYear;
+
+            var ddlDepartment;
+            var selectedDepartment;
+
+            ddlMonthYear = document.getElementById('ddlMonthYear');
+            selectedMonthYear = ddlMonthYear.value;
+
+            ddlDepartment = document.getElementById('ddlDepartment');
+            selectedDepartment = ddlDepartment.value;
+
+            $.ajax({
+                    datatype: 'text/plain',
+                    type: 'POST',
+                    url: 'DepartmentAttendanceHistoryReport/GetDepartmentUser',
+                    data: {selectedMonthYear : selectedMonthYear, selectedDepartment: selectedDepartment},
+                    cache: false,
+                success: function (data) {
+
+                    if (data != '') {
+                        
+                        customDatatable.clear().rows.add(data).draw(false);
+
+                    }
+                    else {
+                        customDatatable.clear().draw(false);
+                    }
+
+                    $('#ddlMonthYear').prop('disabled', true);
+                    $('#ddlDepartment').prop('disabled', true);
+
+                    document.getElementById("selectAll").disabled = false;
+                
+                    $('#btnGenerate').prop('disabled', true);
+                    $('#btnReset').prop('disabled', false);
+                    $('#btnPrint').prop('disabled', false);
+
+                }
+            });
+        };
+
+        function GenerateAttendanceList() {
+
+            //loadSpinner();
+
+            //var startDate = $("#ddlMonthYear option:selected").val();
+            //var NRIC = $("#ddlUser option:selected").val();
+
+            //$.ajax({
+            //    datatype: 'text/plain',
+            //    type: 'GET',
+            //    url: 'DepartmentAttendanceHistoryReport/GenerateAttendanceList',
+            //    data: { startDate: startDate, NRIC : NRIC },
+            //    cache: false,
+            //    dataType: "json",
+            //    success: function (data) {
+
+            //        unloadSpinner();
+
+            //        if (data != null) {
+            //            customDatatable.clear().rows.add(data).draw(false);
+            //        }
+            //        else {
+            //            customDatatable.clear().draw(false);
+            //        }
+
+            //        $('#ddlMonthYear').prop('disabled', true);
+            //        $('#ddlDepartment').prop('disabled', true);
+
+            //        $('#btnGenerate').prop('disabled', true);
+            //        $('#btnReset').prop('disabled', false);
+            //        $('#btnPrint').prop('disabled', false);
+
+            //    }
+            //});
+    };
+
+
+    </script>
+}
+
+
+
+
+
+

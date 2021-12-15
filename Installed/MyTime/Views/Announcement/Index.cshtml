@@ -1,0 +1,330 @@
+﻿@{
+    ViewBag.Title = MyTime.Resource.Announcement;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" aria-current="page">@MyTime.Resource.SystemSetting</li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div id="divList" class="col-md-12">
+
+            <div class="card shadow">
+                <div class="card-header bg-transparent text-center">
+                    <h5>@MyTime.Resource.AnnouncementList</h5>
+                </div>
+                <div class="card-body">
+
+                    <table id="listDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                        <thead>
+                            <tr class="text-white header-bg-color">
+                                <th></th>
+                                <th></th>
+                                <th>@MyTime.Resource.AnnouncementID</th>
+                                <th>@MyTime.Resource.AnnouncementMessage</th>
+                                <th>@MyTime.Resource.AnnouncedOn</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalCRUD" role="dialog" data-backdrop="static" keyboard="false">
+            <div class="modal-dialog">
+                <div id="divCRUD">
+                </div>
+            </div>
+        </div>
+
+        @*<div id="divCRUD" class="col-md-6 hide">
+        </div>*@
+
+    </div>
+</div>
+
+<input type=hidden id="pid" value="" />
+
+@section styles {
+    @Styles.Render("~/Content/dataTables")
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @Scripts.Render("~/bundles/dataTables")
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@Scripts.Render("~/bundles/custom-js")*@
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+
+           //toggleSidebar();
+           unloadSpinner();
+           showDivBody();
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+
+            if (culture != 'ms-MY') {
+                locale_norecord = '- No record -';
+                locale_lengthmenu = 'Display _MENU_';
+                //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'First';
+                locale_previous = 'Previous';
+                locale_next = 'Next';
+                locale_last = 'Last';
+            }
+            else {
+                locale_norecord = '- Tidak ada rekod -';
+                locale_lengthmenu = 'Paparan _MENU_ ';
+                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                //locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'Pertama';
+                locale_previous = 'Sebelumnya';
+                locale_next = 'Seterusnya';
+                locale_last = 'Terakhir';
+
+            };
+
+            function convertToDate(data) {
+
+                var dte = new Date(parseInt(data.substr(6)));
+                var dteWrapper = moment(dte);
+                return dteWrapper.format("DD/MM/YYYY");
+            };
+
+            var customDatatable = $('#listDatatable').DataTable({
+                //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
+                dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
+                buttons:
+                    [
+                        {
+                            text: '\uf067', className: 'myTableButton',
+                            action: function (e, dt, node, config) {
+                                CreateProcess();
+                            }
+                        }
+                    ],
+                autoWidth: false,
+                scrollX: true,
+                scrollY: true,
+                language: {
+
+                    "lengthMenu": locale_lengthmenu,
+                    "zeroRecords": locale_norecord,
+                    "info": locale_info,
+                    "infoEmpty": locale_norecord,
+                    "infoFiltered": locale_infofiltered,
+                    "search": locale_search,
+                    "paginate": {
+                        "first": locale_first,
+                        "previous": locale_previous,
+                        "next": locale_next,
+                        "last": locale_last
+                    }
+                },
+                ajax: {
+
+                    url: '/Announcement/GetData',
+                    type: "POST",
+                    datatype: "json",
+                    dataSrc: ''
+                },
+                rowId: 'AnnouncementID',
+                columns: [
+
+                    {
+                        "render": function (data, type, full, meta)
+                        {
+                            return "<a href='#'  onclick='UpdateProcess(" + '"' + full.AnnouncementID + '"' + ");'> <i class='icofont-edit' style='color: dodgerblue; font-size: 14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Update'></i> </a>";
+                        }
+                    },
+                    {
+                        "render": function (data, type, row)
+                        {
+                            return "<a href='#'  onclick='DeleteProcess(" + '"' + row.AnnouncementID + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+                        }
+                    },
+                    { "data": "AnnouncementID" },
+                    { "data": "AnnouncementMessage" },                    
+                    {
+                        "data": "AnnouncedOn", "render": function (data) { return convertToDate(data); }
+                    }
+
+                ],
+                columnDefs: [
+                    { targets: 0, className: 'text-center', width: '15px', orderable: false  },
+                    { targets: 1, className: 'text-center', width: '15px', orderable: false },
+                    { targets: 2, 'visible': false, searchable: false },
+                    { targets: 3, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 4, type: 'date-euro', className: 'text-center', width: '100px', orderable: true }
+                ],
+                order: [[4, 'asc']]
+            });
+
+
+            function CreateProcess() {
+
+                document.getElementById('pid').value = 'create';
+
+                loadDivCRUD();
+
+                $.ajax({
+                    datatype: 'text/plain',
+                    type: 'GET',
+                    url: 'Announcement/_Create',
+                    cache: false,
+                    success: function (data) {
+
+                  $('#divCRUD').html(data);
+
+                    $('#btnCancel').on('click', function () {
+                            unloadDivCRUD();
+                        });
+                    }
+                });
+
+            };
+
+        });
+
+        function UpdateProcess(id) {
+
+            document.getElementById('pid').value = 'update';
+
+            loadDivCRUD();
+
+            $.ajax({
+                    datatype: 'text/plain',
+                    type: 'GET',
+                    url: 'Announcement/_Update/' + id,
+                    cache: false,
+                    success: function (data) {
+
+                        $('#divCRUD').html(data);
+
+                        $('#btnCancel').on('click', function () {
+                            unloadDivCRUD();
+                        });
+                    }
+            });
+
+        };
+
+        function DeleteProcess(id) {
+
+            document.getElementById('pid').value = 'delete';
+
+            loadDivCRUD();
+
+            $.ajax({
+                    datatype: 'text/plain',
+                    type: 'GET',
+                    url: 'Announcement/_Delete/' + id,
+                    cache: false,
+                    success: function (data) {
+
+                        $('#divCRUD').html(data);
+
+                        $('#btnCancel').on('click', function () {
+                            unloadDivCRUD();
+                        });
+                    }
+            });
+        };
+
+        function onSuccessProcess(result, status, xhr) {
+
+            if (result.status == 1) {
+
+                unloadSpinner();
+                unloadDivCRUD();
+
+                $('#listDatatable').DataTable().ajax.reload(null, false);
+
+               var messageString = '';
+
+                switch (document.getElementById('pid').value) {
+
+                    case 'create':
+                         messageString  = '@MyTime.Resource.MessageSuccessCreate';
+                        break;
+                    case 'update':
+                         messageString  = '@MyTime.Resource.MessageSuccessUpdate';
+                        break;
+                    case 'delete':
+                         messageString  = '@MyTime.Resource.MessageSuccessDelete';
+                        break;
+                    default:
+                         messageString  = '@MyTime.Resource.MessageSuccessCreate';
+                         break;
+                 }
+
+                bootbox.alert({
+                    title: '@MyTime.Resource.MessageInfo',
+                    message: messageString,
+
+                    backdrop: true,
+                    buttons: {
+                                ok: {
+                                  className:'btn-primary',
+                                  label: ' @MyTime.Resource.Close'
+                        }
+                    },
+                    callback: function () {
+                    }
+                });
+
+            }
+            else {
+                $('#btnCancel').on('click', function () {
+                    unloadDivCRUD();
+                });
+            }
+
+        };
+</script>
+}
+
+
+
+
+

@@ -1,0 +1,74 @@
+﻿@model MyTime.Models.DepartmentModel
+
+@{
+    ViewBag.Title = MyTime.Resource.Department + " :: " + MyTime.Resource.Delete;
+    Layout = null;
+}
+<div class="modal-content">
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-danger text-white">
+                <h6> @ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "onSuccessProcess",
+                    UpdateTargetId = "divCRUD",
+                    LoadingElementId = "divSpinner",
+
+                },
+                new { @id = "formDelete" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DepartmentID, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.DepartmentID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DepartmentName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.IsActivated, htmlAttributes: new { @class = "control-label" })
+                                @Html.CheckBoxFor(model => model.IsActivated, new { @onclick = "return false", htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-12 text-right">
+                                <input type="submit" value="@MyTime.Resource.Delete" class="btn btn-danger" />
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

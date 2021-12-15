@@ -1,0 +1,23 @@
+1. User Sequence - Done
+
+2. Approver :
+
+Dashboard shows 2 months summary of the submitted reason : last month + current month. : done
+
+3. Approver :
+
+Pindaan Diperlu - let them to input Alasan Pindaan Di perlu. : Done
+
+4. Reason Proof Attachment. : Done
+
+5. Hubungi Kami : Done
+
+----------------------------------------
+
+6. Leave Apply : (hold)
+
+7. OT - 1st and 2nd (hold)
+
+8. Email Notification 
+
+

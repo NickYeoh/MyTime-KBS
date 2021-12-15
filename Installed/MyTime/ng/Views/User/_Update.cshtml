@@ -1,0 +1,222 @@
+﻿@model MyTime.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.User + " :: " + MyTime.Resource.Update;
+    Layout = null;
+}
+
+<div class="modal-content">
+
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "onSuccessProcess",
+                    UpdateTargetId = "divCRUD",
+                    LoadingElementId = "divSpinner",
+
+                },
+                new { @id = "formUpdate" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+                    @*@Html.ValidationSummary()*@
+
+                    @Html.HiddenFor(model => model.UserModel.USRID)
+                    @Html.HiddenFor(model => model.UserModel.IsAttendanceExcluded)
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.UserName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.UserName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.NRIC, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.NRIC, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.NRIC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                        <div class="col-md-10">
+                            @Html.RadioButtonFor(model => model.UserModel.Gender, "Lelaki") @MyTime.Resource.Male
+                            <span class="pl-2"></span>
+                            @Html.RadioButtonFor(model => model.UserModel.Gender, "Perempuan") @MyTime.Resource.Female
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.ContactNo, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.ContactNo, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.ContactNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.Email, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.Email, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        @Html.LabelFor(model => model.UserModel.DepartmentName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.UserModel.DepartmentID, Model.SelectListDepartment as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlDepartment", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserModel.DepartmentID, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        @Html.LabelFor(model => model.UserModel.UnitName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+
+                            @Html.DropDownListFor(model => model.UserModel.UnitID, Model.SelectListUnit as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlUnit", @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.UserModel.UnitID, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.Designation, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.Designation, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.Designation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.Grade, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.Grade, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.Grade, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.RoleName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+
+                            @Html.DropDownListFor(model => model.UserModel.RoleID, Model.SelectListRole as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlRole", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserModel.RoleID, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+
+                    @Html.HiddenFor(model => model.UserModel.ShiftID)
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserModel.ShiftName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.UserModel.ShiftName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.UserModel.ShiftName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.UserModel.IsResigned, htmlAttributes: new { @class = "control-label" })
+                            @Html.CheckBoxFor(model => model.UserModel.IsResigned, new { htmlAttributes = new { @class = "form-control", onchange = "checkchange(this);" } })
+                        </div>
+
+                        @if (!Model.UserModel.IsResigned.Equals(false))
+                        {
+                            <div class="col-md-1" id="divResignedOnLabel" style="display:block;">
+                                @Html.LabelFor(model => model.UserModel.ResignedOn, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7" id="divResignedOn" style="display:block;">
+                                @Html.EditorFor(model => model.UserModel.ResignedOn, new { htmlAttributes = new { @class = "form-control datepicker", autocomplete = "off", data_val = "false" } })
+                                @Html.ValidationMessageFor(model => model.UserModel.ResignedOn, "", new { @class = "text-danger" })
+                            </div>
+
+                        }
+                        else
+                        {
+
+                            <div class="col-md-1" id="divResignedOnLabel" style="display:none;">
+                                @Html.LabelFor(model => model.UserModel.ResignedOn, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7" id="divResignedOn" style="display:none;">
+                                @Html.EditorFor(model => model.UserModel.ResignedOn, new { htmlAttributes = new { @class = "form-control datepicker", autocomplete = "off", data_val = "false" } })
+                                @Html.ValidationMessageFor(model => model.UserModel.ResignedOn, "", new { @class = "text-danger" })
+                            </div>
+                        }
+
+
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        @Html.LabelFor(model => model.UserModel.AccessRoleID, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.UserModel.AccessRoleID, Model.SelectListAccessRole as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlAccessRole", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserModel.AccessRoleID, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12 text-right">
+                            <input type="submit" value="@MyTime.Resource.Update" class="btn btn-primary" />
+                            <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                        </div>
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+

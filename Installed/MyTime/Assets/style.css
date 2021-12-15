@@ -1,0 +1,334 @@
+﻿/*
+    1. Layout - General
+    2. Spiner Loader
+    3. Sidebar Menu
+    4. Breadcrumb
+    5. DataTables.Net
+*/
+
+
+/*1. Layout - General*/
+#events {
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: #f6f6f6;
+    border: 1px solid #999;
+    border-radius: 3px;
+    height: 100px;
+    overflow: auto;
+}
+
+/* Form Layout */
+
+body {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    background-color: whitesmoke !important;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 80%;
+}
+
+p {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.4s;
+}
+
+#divBody {
+    opacity: 0;
+}
+
+.image-left-pane {
+    left: 0;
+    background-image: url('/images/htr_bg.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 970px;
+    opacity: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.center-block {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.div-text-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.top-navbar-bg-color {
+    /* background-color: #3963cc;*/
+    /*background-color: dodgerblue;*/
+    /* background-color: #7496c2;*/
+    /*background-color: royalblue;*/
+    background-color: #095f90;
+}
+
+.appname-shadow {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin: auto;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt !important;
+    font-weight: 500;
+    color: black;
+    text-shadow: 1px 1px 2px white, 0 0 0px black;
+}
+
+.header-bg-color {
+    /* background-color: #3963cc;*/
+    background-color: dodgerblue;
+}
+
+
+
+/* Form Control - Label, dropdown, inputbox, button*/
+.form-control {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    font-size: 90%;
+}
+
+.control-label {
+    margin-bottom: 0px
+}
+
+.dropdown-item {
+    font-size: 90%;
+}
+
+.btn {
+    border-radius: 16px;
+    font-size: 90%;
+    min-width: 60px;
+}
+
+/* Icon */
+a.icon-malaysia {
+    display: block;
+    height: 25px;
+    width: 25px;
+    background: url('/images/Malaysia-Flag.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+a.icon-uk {
+    display: block;
+    height: 25px;
+    width: 25px;
+    background: url('/images/UK-Flag.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+/* 2. Spiner Loader */
+#divSpinner {
+    z-index: 999;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+}
+
+/* 3. Sidebar Menu*/
+.wrapper {
+    display: flex;
+    text-decoration: none;
+    transition: all 0.4s;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    /* background: #262933;*/
+    /*color: #fff;*/
+    /* background: #49aee9;*/
+    background: #095f90;
+    color: #fff;
+    transition: all 0.4s;
+    height: auto;
+    min-height: 100vh;
+}
+
+    #sidebar.active {
+        margin-left: -250px;
+    }
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        /*background: #1b1d24;*/
+        background: #02225b;
+    }
+
+    #sidebar ul.components {
+        padding: 20px 0;
+         border-bottom: 1px solid #47748b; 
+    }
+
+    /*    #sidebar ul.components li:hover {
+            color: #262933;
+            background: #fff;
+        }*/
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+
+        #sidebar ul li a:hover {
+            color: #262933;
+            background: #fff;
+        }
+
+    #sidebar ul li.active > a,
+    a[aria-expanded="true"] {
+        color: #fff;
+        /*background: #1b1d24;*/
+        background: #095f90;
+    }
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    /* background: #1b1d24;*/
+    background: #095f90;
+}
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-width: height 100vh;
+    transition: all 0.4s;
+}
+
+    #content h2 {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    #content p {
+        text-align: justify;
+    }
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+
+        #sidebar.active {
+            margin-left: 0;
+        }
+
+    #sidebarCollapse span {
+        display: none;
+    }
+}
+
+
+
+/* 4. Breadcrumb*/
+.breadcrumb {
+    background-color: transparent;
+}
+
+    .breadcrumb > .active {
+        color: black;
+    }
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+}
+
+
+/* 5. DataTables */
+table.dataTable {
+    background-color: white;
+}
+
+    table.dataTable tbody tr:hover {
+        background: #ffd800;
+        color: black;
+    }
+
+        table.dataTable tbody tr:hover > .sorting_1 {
+            background: #ffd800;
+            color: black;
+        }
+
+    table.dataTable td {
+        overflow: hidden;
+    }
+
+
+.dataTables_scrollHeadInner, .table {
+    width: 100% !important;
+}
+
+
+.myTableButton {
+    background-color: dodgerblue;
+    color: white;
+    border-style: none;
+    font-family: 'FontAwesome';
+}
+
+    .myTableButton:hover {
+        background-color: royalblue;
+        color: white;
+    }
+
+.myTableTextButton {
+    background-color: dodgerblue;
+    color: white;
+    border-style: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+    .myTableTextButton:hover {
+        background-color: royalblue;
+        color: white;
+    }

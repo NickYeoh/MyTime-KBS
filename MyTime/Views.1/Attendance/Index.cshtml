@@ -1,0 +1,697 @@
+﻿@model MyTime.ViewModels.AttendanceViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.AttendanceIndividual;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div id="divList" class="col-md-12">
+
+            <div class="card shadow">
+                <div class="card-header bg-transparent text-center">
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group row text-center">
+                            <div class="col-md-12">
+                                <h5>@MyTime.Resource.AttendanceIndividual</h5>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group row text-left">
+
+                            @Html.Label(MyTime.Resource.Month, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                            <div class="col-md-12 d-flex justify-content-start">
+                                @Html.DropDownList("MonthYear", Model.SelectListMonthYear as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @style = "width:100px;", @class = "form-control", @id = "ddlMonthYear" })
+                                <span class="pl-2"></span>
+                                <input id="btnGenerate" type="button" value="@MyTime.Resource.Generate" class="btn btn-primary text-center" style="width:80px;" />
+                                <span class="pl-1"></span>
+                                <input id="btnReset" type="button" value="@MyTime.Resource.Reset" class="btn btn-warning text-center" style="width:80px;" />
+                                <span class="pl-1"></span>
+                                <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="width:80px;" onclick="location.href='@Url.Action("PrintAttendanceMonthlyReport", "Attendance")'" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row pt-0">
+                            <div class="col-md-12 d-flex justify-content-end">
+
+                                @if (!Model.UserApproverList.Count.Equals(0))
+                                {
+                                    string approverName = "";
+
+                                    foreach (var item in Model.UserApproverList)
+                                    {
+                                        if (approverName.Length > 0)
+                                        {
+                                            approverName += ", ";
+                                        }
+
+                                        approverName += item.UserName.ToString();
+
+                                    };
+
+                                    if (approverName.Length > 0)
+                                    {
+                                        @Html.Label(string.Format("{0} : {1}", MyTime.Resource.Approver, approverName), htmlAttributes: new { @class = "control-label" })
+                                    }
+
+                                }
+                                else
+                                {
+                                    @Html.Label(string.Format("{0} : {1}", MyTime.Resource.Approver, "-"), htmlAttributes: new { @class = "control-label" })
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                @Html.Label(MyTime.Resource.TotalLateIn, htmlAttributes: new { @class = "control-label pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0 text-center", @id = "TotalLateIn" }) </span>
+
+                                @Html.Label(MyTime.Resource.TotalEarlyOut, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalEarlyOut" }) </span>
+
+                                @Html.Label(MyTime.Resource.TotalLateInEarlyOut, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalLateInEarlyOut" }) </span>
+
+                                @Html.Label(MyTime.Resource.TotalIncomplete, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalIncomplete" }) </span>
+
+                                @Html.Label(MyTime.Resource.TotalAbsent, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalAbsent" }) </span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12 d-flex justify-content-end">
+
+                                @Html.Label(MyTime.Resource.TotalAttend, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalAttend" }) </span>
+
+                                @Html.Label(MyTime.Resource.TotalOnLeave, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
+                                <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalOnLeave" }) </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6 d-flex justify-content-start">
+                                @Html.Label(MyTime.Resource.SubmissionDueDate + " : -", htmlAttributes: new { @class = "control-label pr-2", @id = "SubmissionDueDate" })
+
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end">
+
+                                <span class="fa fa-circle pl-2 pr-1" style="color:orange"> @MyTime.Resource.StatusSubmitted </span>
+                                <span class="fa fa-check pl-2 pr-1" style="color:green"> @MyTime.Resource.StatusApproved </span>
+                                <span class="fa fa-times pl-2 pr-1" style="color:red"> @MyTime.Resource.StatusRejected </span>
+                                <span class="fa fa-circle pl-2 pr-1" style="color:indigo"> @MyTime.Resource.StatusRequestedToAmend </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="card-body pt-0">
+
+                        <table id="listDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                            <thead>
+
+                                <tr class="text-white header-bg-color">
+                                    <th>@MyTime.Resource.UserName</th>
+                                    <th>@MyTime.Resource.NRIC</th>
+                                    <th>@MyTime.Resource.Date</th>
+                                    <th>@MyTime.Resource.Day</th>
+                                    <th>@MyTime.Resource.ShiftID</th>
+                                    <th>@MyTime.Resource.AttendanceStatusID</th>
+                                    <th>@MyTime.Resource.AttendanceStatus</th>
+                                    <th>@MyTime.Resource.FirstIn</th>
+                                    <th>@MyTime.Resource.Lateness</th>
+                                    <th>@MyTime.Resource.LastOut</th>
+                                    <th>@MyTime.Resource.WorkTime</th>
+                                    <th>@MyTime.Resource.Overtime</th>
+                                    <th>@MyTime.Resource.SubmissionDueDate</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>@MyTime.Resource.Reason</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @*<div id="divCRUD" class="col-md-6 hide">
+            </div>*@
+
+
+        <div class="modal fade" id="modalCRUD" role="dialog" data-backdrop="static" keyboard="false">
+            <div class="modal-dialog">
+                <div id="divCRUD">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <input type=hidden id="pid" value="" />
+</div>
+
+@section styles
+                                    {
+    @Styles.Render("~/Content/dataTables")
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @Scripts.Render("~/bundles/dataTables")
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@Scripts.Render("~/bundles/custom-js")*@
+
+    <script type="text/javascript">
+
+
+        var customDatatable;
+        var dataList;
+
+        function convertToDate(data) {
+
+                var dte = new Date(parseInt(data.substr(6)));
+                var dteWrapper = moment(dte);
+                return dteWrapper.format("DD/MM/YYYY");
+        };
+
+    $(document).ready(function () {
+
+            //toggleSidebar();
+            unloadSpinner();
+            showDivBody();
+
+            $('#btnGenerate').prop('disabled', true);
+            $('#btnReset').prop('disabled', true);
+            $('#btnPrint').prop('disabled', true);
+
+            $('#ddlMonthYear').change(function () {
+
+                var monthYear;
+
+                $('#ddlMonthYear option:selected').each(function () {
+                    monthYear = $(this)[0].value;
+
+                    if (monthYear != '') {
+                        $('#btnGenerate').prop('disabled', false);
+                    }
+                    else {
+                        $('#btnGenerate').prop('disabled', true);
+                    }
+                });
+
+            });
+
+            var submissionDueDate = document.getElementById('SubmissionDueDate');
+            submissionDueDate.innerHTML = '@MyTime.Resource.SubmissionDueDate' + ' : -';
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+
+            if (culture != 'ms-MY') {
+                //locale_norecord = '- No record -';
+                locale_norecord = '-';
+                locale_lengthmenu = 'Display _MENU_';
+                //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'First';
+                locale_previous = 'Previous';
+                locale_next = 'Next';
+                locale_last = 'Last';
+            }
+            else {
+                //locale_norecord = '- Tidak ada rekod -';
+                locale_norecord = '-';
+                locale_lengthmenu = 'Paparan _MENU_ ';
+                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                //locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'Pertama';
+                locale_previous = 'Sebelumnya';
+                locale_next = 'Seterusnya';
+                locale_last = 'Terakhir';
+
+            };
+
+            //var dataList;
+
+            //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
+
+            customDatatable = $('#listDatatable').DataTable(
+                {
+                    dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12">>>t<"panel-footer"<"row pt-2"<"col-md-12">>>>',
+                    buttons:
+                        [
+                        ],
+                    autoWidth: false,
+                    scrollX: true,
+                    scrollY: true,
+                    pageLength: 31,
+                    //responsive: true,
+                language: {
+                    "lengthMenu": locale_lengthmenu,
+                    "zeroRecords": locale_norecord,
+                    "info": locale_info,
+                    "infoEmpty": locale_norecord,
+                    "infoFiltered": locale_infofiltered,
+                    "search": locale_search,
+                    "paginate": {
+                        "first": locale_first,
+                        "previous": locale_previous,
+                        "next": locale_next,
+                        "last": locale_last
+                    }
+                },
+                data: '',
+                rowId: 'AttendanceDate',
+                    columns: [                 
+                    { "data": "UserName" },
+                    { "data": "NRIC" },
+                    {
+                      "data": "AttendanceDate", "render": function (data) { return convertToDate(data); }
+                    },
+                    { "data": "AttendanceDay" },
+                    { "data": "ShiftID" },
+                    {
+                        "data": "AttendanceStatusID", function(data) {
+                            attendanceStatusID = data;
+                            return data;
+                        }
+                    },
+                    { "data": "AttendanceStatus" },
+                    {
+                        "data": "FirstIn", "render": function (data, type, row) {
+
+                            var attendanceStatusID = row.AttendanceStatusID;
+
+                            if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E' || attendanceStatusID=='ICP') {
+                                return '<span style="color:red">' + data + '</span>';
+                            }
+                            else {
+                                return data;
+                            }
+                        }
+                    },
+                    { "data": "Lateness" },
+                    {
+                        "data": "LastOut", "render": function (data, type, row) {
+
+                            var attendanceStatusID = row.AttendanceStatusID;
+
+                            if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
+                                return '<span style="color:red">' + data + '</span>';
+                            }
+                            else {
+                                return  data;
+                            }
+
+                        }
+                    },
+                    { "data": "WorkTime" },
+                    { "data": "Overtime" },
+                    {
+                        "data": "SubmissionDueDate", "render": function (data) { return convertToDate(data); }
+                    },
+                    {
+                        "render": function (data, type, row, meta)
+                        {
+                            var attendanceStatusID = row.AttendanceStatusID;
+
+                            if (attendanceStatusID != 'NOR' && attendanceStatusID != 'HLY' && attendanceStatusID != 'NWK' && attendanceStatusID != '') {
+
+                                if (row.IsSubmissionDue == false && row.IsApproved == false && row.IsRejected == false) {
+                                    return "<a href='#'  onclick='SubmitReasonProcess(" + '"' + meta.row + '"' + ");'> <i class='icofont-edit' style='color: dodgerblue; font-size: 14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Reason'></i> </a>";
+                                }
+                                else {
+                                    return '';
+                                }
+
+                            }
+                            else {
+                                return '';
+                            }
+                        }
+                        },
+                    { "data": "ReasonID" },
+                    {
+                        "render": function (data, type, row, meta) {
+
+                            if (row.IsSubmitted == true) {
+                                if (row.Remark == '') {
+                                    return row.ReasonName;
+                                }
+                                else {
+
+                                    return row.ReasonName + "<br/>" + "[ " + row.Remark + " ]";
+                                };
+                            }
+
+                            return '';
+
+                        }
+                    },
+                    {
+                        "render": function (data, type, row, meta) {
+
+                            if (row.IsSubmitted == true) {
+
+
+                                if (row.IsApproved == true) {
+
+
+                                    return "<i class='fa fa-check' style='color: green' data-toggle='tooltip' data-placement='top' title='MyTime.Resource.StatusApproved'/>";
+                                }
+                                else {
+                                    if (row.IsSubmissionDue != true) {
+
+                                        if ( row.IsRejected == true) {
+
+                                            return "<i class='fa fa-times' style='color:red' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.StatusRejected'/>";
+                                        }
+                                        else if (row.IsRequestedToAmend == true) {
+
+                                            return "<i class='fa fa-circle' style='color:indigo' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.StatusRequestedToAmend'/>";
+                                        }
+                                        else {
+
+                                            return "<i class='fa fa-circle' style='color:orange' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.StatusSubmitted'/>";
+                                        };
+                                    }
+                                    else {
+
+                                        return "<i class='fa fa-times' style='color:red' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.StatusRejected'/>";
+                                    };
+                                };
+
+                            }
+                            else {
+
+                                return '';
+                            }
+
+                        }
+                    }
+                ],
+                    columnDefs: [
+                    { targets: 0, className: 'text-left', width: '40px', orderable: true, visible: false },
+                    { targets: 1, className: 'text-left', width: '40px', orderable: true, visible: false },
+                    { targets: 2, type: 'date-euro', className: 'text-center', width: '80px', orderable: true },
+                    { targets: 3, className: 'text-center', width: '40px', orderable: true },
+                    { targets: 4, className: 'text-left', width: '40px', orderable: true, visible: false },
+                    { targets: 5, className: 'text-left', width: '40px', orderable: true, visible: false},
+                    { targets: 6, className: 'text-left', width: '100px', orderable: true },
+                    { targets: 7, className: 'text-center', width: '50px', orderable: true },
+                    { targets: 8, className: 'text-center', width: '50px', orderable: true, visible: false },
+                    { targets: 9, className: 'text-center', width: '50px', orderable: true },
+                    { targets: 10, className: 'text-center', width: '50px', orderable: true },
+                    { targets: 11, className: 'text-center', width: '50px', orderable: true },
+                    { targets: 12, className: 'text-center', width: '50px', orderable: true, visible: false },
+                    { targets: 13, className: 'text-center', width: '10px', orderable: true },
+                    { targets: 14, className: 'text-center', width: '40px', orderable: true, visible: false },
+                    { targets: 15, className: 'text-left', width: '150px', orderable: true },
+                    { targets: 16, className: 'text-center', width: '10px', orderable: true }
+                ],
+                order: [[2, 'asc']]
+            });
+
+            $('#btnGenerate').click(function () {
+
+                GenerateAttendanceList();
+
+            });
+
+            $('#btnReset').click(function () {
+
+                var submissionDueDate = document.getElementById('SubmissionDueDate');
+                submissionDueDate.innerHTML = '@MyTime.Resource.SubmissionDueDate' + ' : -';
+
+                var totalLateIn = document.getElementById('TotalLateIn');
+                totalLateIn.innerHTML = "0";
+
+                var totalEarlyOut = document.getElementById('TotalEarlyOut');
+                totalEarlyOut.innerHTML = "0";
+
+                var totalLateInEarlyOut = document.getElementById('TotalLateInEarlyOut');
+                totalLateInEarlyOut.innerHTML = "0";
+
+                var totalIncomplete = document.getElementById('TotalIncomplete');
+                totalIncomplete.innerHTML = "0";
+
+                var totalAbsent = document.getElementById('TotalAbsent');
+                totalAbsent.innerHTML = "0";
+
+                var totalAttend = document.getElementById('TotalAttend');
+                totalAttend.innerHTML = "0";
+
+                var totalOnLeave = document.getElementById('TotalOnLeave');
+                totalOnLeave.innerHTML = "0";
+
+                customDatatable.clear().draw();
+
+                $('#ddlMonthYear').prop('disabled', false);
+                $('#btnGenerate').prop('disabled', false);
+                $('#btnReset').prop('disabled', true);
+                $('#btnPrint').prop('disabled', true);
+            });
+
+    });
+
+        function GenerateAttendanceList() {
+
+
+            loadSpinner();
+
+            var startDate = $("#ddlMonthYear option:selected").val();
+
+            $.ajax({
+                datatype: 'text/plain',
+                type: 'GET',
+                url: 'Attendance/GenerateAttendanceList',
+                data: { startDate: startDate },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    unloadSpinner();
+                                     
+                    if (data != null) {
+                        customDatatable.clear().rows.add(data).draw(false);
+                    }
+                    else {
+                        customDatatable.clear().draw(false);
+                    }
+
+                    var submissionDueDate = document.getElementById('SubmissionDueDate');
+                    submissionDueDate.innerHTML =  '@MyTime.Resource.SubmissionDueDate' + ' : ' + convertToDate(customDatatable.cell(0, 12).data());
+
+                    $('#ddlMonthYear').prop('disabled', true);
+                    $('#btnGenerate').prop('disabled', true);
+                    $('#btnReset').prop('disabled', false);
+                    $('#btnPrint').prop('disabled', false);
+                  
+                    GetAttendanceSummary();
+
+                
+
+                }
+            });
+    };
+
+    function GetAttendanceSummary() {
+
+        $.ajax({
+            datatype: 'text/plain',
+            type: 'GET',
+            url: 'Attendance/GetAttendanceSummary',
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+
+                var totalLateIn = document.getElementById('TotalLateIn');
+                totalLateIn.innerHTML = data.TotalLateIn;
+
+                var totalEarlyOut = document.getElementById('TotalEarlyOut');
+                totalEarlyOut.innerHTML = data.TotalEarlyOut;
+
+                var totalLateInEarlyOut = document.getElementById('TotalLateInEarlyOut');
+                totalLateInEarlyOut.innerHTML = data.TotalLateInEarlyOut;
+
+                var totalIncomplete = document.getElementById('TotalIncomplete');
+                totalIncomplete.innerHTML = data.TotalIncomplete;
+
+                var totalAbsent = document.getElementById('TotalAbsent');
+                totalAbsent.innerHTML = data.TotalAbsent;
+
+                var totalAttend = document.getElementById('TotalAttend');
+                totalAttend.innerHTML = data.TotalAttend;
+
+                var totalOnLeave = document.getElementById('TotalOnLeave');
+                totalOnLeave.innerHTML = data.TotalOnLeave;
+
+            }
+        });
+    };
+
+    function SubmitReasonProcess(rowIndex) {
+
+        var selectedRow = $('#listDatatable').DataTable().row(rowIndex).data();
+
+        var NRIC = selectedRow.NRIC;       
+        var dte = new Date(parseInt(selectedRow.AttendanceDate.substr(6)));
+        var AttendanceDate = moment(dte).format('YYYY-MM-DD');
+        var AttendanceDay = selectedRow.AttendanceDay;
+        var ShiftID = selectedRow.ShiftID;
+        var AttendanceStatusID = selectedRow.AttendanceStatusID;
+        var AttendanceStatus = selectedRow.AttendanceStatus;
+        var FirstIn = selectedRow.FirstIn;
+        var Lateness = selectedRow.Lateness;
+        var LastOut = selectedRow.LastOut;
+        var WorkTime = selectedRow.WorkTime;
+        var Overtime = selectedRow.Overtime;
+        var ReasonID = selectedRow.ReasonID;
+        var ReasonName = selectedRow.ReasonName;
+        var Remark = selectedRow.Remark;
+
+        var rowData = NRIC;       
+        rowData += '#' + AttendanceDate;
+        rowData += '#' + AttendanceDay;
+        rowData += '#' + ShiftID;
+        rowData += '#' + AttendanceStatusID;
+        rowData += '#' + AttendanceStatus;
+        rowData += '#' + FirstIn;
+        rowData += '#' + Lateness;
+        rowData += '#' + LastOut;
+        rowData += '#' + WorkTime;
+        rowData += '#' + Overtime;
+        rowData += '#' + ReasonID;
+        rowData += '#' + ReasonName;
+        rowData += '#' + Remark;
+
+        document.getElementById('pid').value = "submit reason";
+
+        loadDivCRUD();
+
+        $.ajax({
+            datatype: 'text/plain',
+            type: 'GET',
+            url: 'Attendance/_SubmitReason',
+            data: { rowData : rowData },
+            cache: false,
+            success: function (data) {
+
+                $('#divCRUD').html(data);
+
+                $('#btnCancel').on('click', function () {
+                    unloadDivCRUD();
+                });
+            }
+        });
+
+    };
+
+    function onSuccessProcess(result, status, xhr) {
+
+        if (result.status == 1) {
+
+                unloadSpinner();
+                unloadDivCRUD();
+
+                //$('#listDatatable').DataTable().ajax.reload(null, false);
+
+               GenerateAttendanceList();
+
+               var messageString = '';
+
+                switch (document.getElementById('pid').value) {
+
+                    case 'submit reason':
+                         messageString  = '@MyTime.Resource.MessageSuccessSubmitReason';
+                        break;
+                    default:
+                         messageString  = '@MyTime.Resource.MessageSuccessSubmitReason';
+                         break;
+                }
+
+
+                bootbox.alert({
+                    title: '@MyTime.Resource.MessageInfo',
+                    message: messageString,
+
+                    backdrop: true,
+                    buttons: {
+                                ok: {
+                                  className:'btn-primary',
+                                  label: ' @MyTime.Resource.Close'
+                        }
+                    },
+                    callback: function () {
+                    }
+                });
+
+            }
+            else {
+                $('#btnCancel').on('click', function () {
+                    unloadDivCRUD();
+                });
+            }
+
+        };
+    </script>
+}
+
+
+
+
+

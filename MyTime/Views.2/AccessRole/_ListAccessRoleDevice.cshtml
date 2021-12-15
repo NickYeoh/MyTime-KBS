@@ -1,0 +1,99 @@
+﻿@model MyTime.Models.AccessRoleModel
+
+@{
+    ViewBag.Title = MyTime.Resource.AccessRole + " :: " + MyTime.Resource.AssignDevice;
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title </h6>
+            </div>
+            <div class="card-body">
+
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-accessrole-tab" data-toggle="tab" href="#nav-accessrole" role="tab" aria-controls="nav-accessrole" aria-selected="true">@MyTime.Resource.AccessRole</a>
+                        <a class="nav-item nav-link" id="nav-accessroledevicelist-tab" data-toggle="tab" href="#nav-accessroledevicelist" role="tab" aria-controls="nav-accessroledevice" aria-selected="false">@MyTime.Resource.Device</a>
+                    </div>
+                </nav>
+
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-accessrole" role="tabpanel" aria-labelledby="nav-accessrole-tab">
+
+
+
+                        <div class="form-horizontal">
+
+                            <div class="form-group row pt-3">
+                                @Html.LabelFor(model => model.AccessRoleName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.AccessRoleName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.AccessRoleName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.IsActivated, htmlAttributes: new { @class = "control-label" })
+                                    @Html.CheckBoxFor(model => model.IsActivated, new { @onclick = "return false", htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            @*<div class="form-group row">
+                                    <div class="col-md-12 text-center">
+                                        <input id="btnCancel" type="button" value="@MyTime.Resource.Close" class="btn btn-primary" />
+                                    </div>
+                                </div>*@
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-accessroledevicelist" role="tabpanel" aria-labelledby="nav-accessroledevicelist-tab">
+
+                        <div class="row pt-3">
+
+                            <div id="divAccessRoleDeviceList" class="col-md-12">
+
+                                <table id="listAccessRoleDeviceDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                                    <thead>
+                                        <tr class="text-white header-bg-color">
+                                            <th></th>
+                                            <th>@MyTime.Resource.DeviceID</th>
+                                            <th>@MyTime.Resource.DeviceName</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-horizontal pt-2">
+                        <div class="form-group row">
+                            <div class="col-md-12 text-center">
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Close" class="btn btn-primary" data-dismiss="modal" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+

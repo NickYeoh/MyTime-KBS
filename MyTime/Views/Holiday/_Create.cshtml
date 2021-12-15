@@ -1,0 +1,80 @@
+﻿@model MyTime.Models.HolidayModel
+
+@{
+    ViewBag.Title = MyTime.Resource.Holiday + " :: " + MyTime.Resource.Create;
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title </h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "onSuccessProcess",
+                    UpdateTargetId = "divCRUD",
+                    LoadingElementId = "divSpinner",
+
+                },
+                new { @id = "formCreate" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.HolidayName, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.HolidayName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.HolidayName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.StartOn, htmlAttributes: new { @class = "control-label col-md-12 required" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.StartOn, new { htmlAttributes = new { @class = "form-control datepicker", autocomplete = "off", data_val = "false" } })
+                                @Html.ValidationMessageFor(model => model.StartOn, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.EndOn, htmlAttributes: new { @class = "control-label col-md-12 required" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.EndOn, new { htmlAttributes = new { @class = "form-control datepicker", autocomplete = "off", data_val = "false" } })
+                                @Html.ValidationMessageFor(model => model.EndOn, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12 text-right">
+                                <input type="submit" value="@MyTime.Resource.Save" class="btn btn-primary" />
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+

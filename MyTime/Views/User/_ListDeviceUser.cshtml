@@ -1,0 +1,77 @@
+﻿@model MyTime.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.User + " :: " + MyTime.Resource.ImportNewUser;
+    Layout = null;
+}
+
+<div class="modal-content">
+
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "ImportDeviceUserProcess",
+                    //OnSuccess = "onSuccess",
+                    UpdateTargetId = "divForm",
+                    LoadingElementId = "divSpinner",
+                },
+                new { @id = "formListDeviceUser" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+                    @*@Html.ValidationSummary()*@
+
+                    <div class="form-group row">
+
+                        @Html.Label(MyTime.Resource.NRIC, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.UserModel.NRIC, Model.SelectListDeviceUser as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserModel.NRIC, "", new { @class = "text-danger" })
+                        </div>                       
+
+                    </div>
+
+
+                    <div class="form-group row text-center">
+                                               
+                        <div class="col-md-12">
+                            <input type="submit" value="@MyTime.Resource.Import" class="btn btn-primary" />
+                            <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+

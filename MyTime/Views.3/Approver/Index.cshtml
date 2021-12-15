@@ -1,0 +1,700 @@
+﻿@{
+    ViewBag.Title = MyTime.Resource.Approver;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" aria-current="page">@MyTime.Resource.SystemSetting</li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div id="divList" class="col-md-12">
+
+            <div class="card shadow">
+                <div class="card-header bg-transparent text-center">
+                    <h5>@MyTime.Resource.ApproverList</h5>
+                </div>
+                <div class="card-body">
+
+                    <table id="listDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                        <thead>
+                            <tr class="text-white header-bg-color">
+
+                                <th></th>
+                                <th>@MyTime.Resource.UserName</th>
+                                <th>@MyTime.Resource.NRIC</th>
+                                <th>@MyTime.Resource.DepartmentName</th>
+                                <th>@MyTime.Resource.UnitName</th>
+                                <th>@MyTime.Resource.RoleName</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="modal fade" id="modalCRUD" role="dialog" data-backdrop="static" keyboard="false">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div id="divCRUD">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div id="divCRUD" class="col-md-6 hide">
+            </div>*@
+
+    </div>
+
+    <div class="row">
+        <div id="divSelectNewApproverUser" class="col-md-12">
+        </div>
+    </div>
+
+</div>
+
+
+<input type=hidden id="pid" value="" />
+
+
+@section styles {
+    @Styles.Render("~/Content/dataTables")
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @Scripts.Render("~/bundles/dataTables")
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @Scripts.Render("~/bundles/custom-js")
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+            //toggleSidebar();
+            unloadSpinner();
+            showDivBody();
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+
+            if (culture != 'ms-MY') {
+                locale_norecord = '- No record -';
+                locale_lengthmenu = 'Display _MENU_';
+                //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'First';
+                locale_previous = 'Previous';
+                locale_next = 'Next';
+                locale_last = 'Last';
+            }
+            else {
+                locale_norecord = '- Tidak ada rekod -';
+                locale_lengthmenu = 'Paparan _MENU_ ';
+                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                //locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'Pertama';
+                locale_previous = 'Sebelumnya';
+                locale_next = 'Seterusnya';
+                locale_last = 'Terakhir';
+
+            };
+
+            function convertToDate(data) {
+
+                var dte = new Date(parseInt(data.substr(6)));
+                var dteWrapper = moment(dte);
+                return dteWrapper.format("DD/MM/YYYY");
+            };
+
+            var customDatatable = $('#listDatatable').DataTable({
+                //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
+                dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
+                buttons:
+                    [
+                    ],
+                autoWidth: false,
+                scrollX: true,
+                scrollY: true,
+                language: {
+
+                    "lengthMenu": locale_lengthmenu,
+                    "zeroRecords": locale_norecord,
+                    "info": locale_info,
+                    "infoEmpty": locale_norecord,
+                    "infoFiltered": locale_infofiltered,
+                    "search": locale_search,
+                    "paginate": {
+                        "first": locale_first,
+                        "previous": locale_previous,
+                        "next": locale_next,
+                        "last": locale_last
+                    }
+                },
+                ajax: {
+
+                    url: '/Approver/GetData',
+                    type: "POST",
+                    datatype: "json",
+                    dataSrc: ''
+                },
+                rowId: 'ApproverNRIC',
+                columns: [
+                    {
+                        "render": function (data, type, full, meta) {
+                            return "<a href='#'  onclick='ListApproverUser(" + '"' + full.ApproverNRIC + '"' + ");'> <i class='icofont-info-circle' style='color: dodgerblue; font-size: 14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.ApproverDetail'></i> </a>";
+                        }
+                    },
+                    { "data": 'ApproverName' },
+                    { "data": 'ApproverNRIC' },
+                    { "data": 'DepartmentName' },
+                    { "data": 'UnitName' },
+                    { "data": 'RoleName' }
+                ],
+                columnDefs: [
+                    { targets: 0, className: 'text-center', width: '12px', orderable: false },
+                    { targets: 1, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 2, className: 'text-left', width: '150px', orderable: true },
+                    { targets: 3, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 4, className: 'text-left', width: '150px', orderable: true },
+                    { targets: 5, className: 'text-left', width: '150px', orderable: true }
+                ],
+                order: [[1, 'asc']]
+            });
+
+        });
+
+        function ListApproverUser(id) {
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+
+            if (culture != 'ms-MY') {
+                locale_norecord = '- No record -';
+                locale_lengthmenu = 'Display _MENUMyTime  / page';NRICDeleteUserDelete
+                //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                locale_search = '';
+
+                 locale_infofiltered = '';
+
+                locale_first = 'First';
+                locale_previous = 'Previous';
+                locale_next = 'Next';
+                locale_last = 'Last';
+            }
+            else {
+                locale_norecord = '- Tidak ada rekod -';
+                locale_lengthmenu = 'Paparan _MENU_ ';
+                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                //locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'Pertama';
+                locale_previous = 'Sebelumnya';
+                locale_next = 'Seterusnya';
+                locale_last = 'Terakhir';
+
+            };
+
+            document.getElementById('pid').value = 'list';
+
+            loadDivCRUD();
+
+            $.ajax({
+                    datatype: 'text/plain',
+                    type: 'GET',
+                url: 'Approver/_ListApproverUser/' + id,
+                    cache: false,
+                success: function (data) {
+
+                    $('#divCRUD').html(data);
+
+                    var customApproverUserDatatable = $('#listApproverUserDatatable').DataTable({
+                        //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-2 text-eft"B><"col-md-10"f>><"row"<"col-md-6"l><"col-md-6 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-12 text-right"p>>>>',
+                        dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-12 d-flex justify-content-end text-left"l>"<"col-md-12 d-flex justify-content-end text-left"p>>>>',
+                        buttons:
+                            [
+                                {
+                                    text: '\uf067', className: 'myTableButton',
+                                    action: function (e, dt, node, config) {
+                                        SelectNewApproverUserProcess(id);
+                                    }
+                                }
+                            ],
+                        autoWidth: false,
+                        scrollX: true,
+                        scrollY: true,
+                        language: {
+
+                            "lengthMenu": locale_lengthmenu,
+                            "zeroRecords": locale_norecord,
+                            "info": locale_info,
+                            "infoEmpty": locale_norecord,
+                            "infoFiltered": locale_infofiltered,
+                            "search": locale_search,
+                            "paginate": {
+                                "first": locale_first,
+                                "previous": locale_previous,
+                                "next": locale_next,
+                                "last": locale_last
+                            }
+                        },
+                        ajax: {
+
+                            url: '/Approver/GetApproverUserData/' + id,
+                            type: "POST",
+                            datatype: "json",
+                            dataSrc: ''
+                        },
+                        rowId: 'ApproverNRIC',
+                        columns: [
+                            {
+                                "render": function (data, type, full, meta) {
+
+                                    return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.ApproverNRIC + '",' + '"' + full.NRIC + '", ' + '"' + full.UserName + '",' + '"' + full.DepartmentName + '", ' + '"' + full.UnitName + '"' +   ");'> <i class='icofont-trash' style='color:red; font-size: 14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.ApproverDetail'></i> </a>";
+
+                                  }
+                            },
+                            { "data": 'ApproverNRIC' },
+                            { "data": 'UserName' },
+                            { "data": 'NRIC' },
+                            { "data": 'DepartmentName' },
+                            { "data": 'UnitName' }
+                        ],
+                        columnDefs: [
+                            { targets: 0, className: 'text-center', width: '15px', orderable: false },
+                            { targets: 1, className: 'text-left', width: '150px', visible: false },
+                            { targets: 2, className: 'text-left', width: '250px', orderable: true },
+                            { targets: 3, className: 'text-left', width: '150px', orderable: true },
+                            { targets: 4, className: 'text-left', width: '250px', orderable: true },
+                            { targets: 5, className: 'text-left', width: '150px', orderable: true }
+                        ],
+                        order: [[2, 'asc']]
+                    });
+
+
+                    $('#btnCancel').on('click', function () {
+                         unloadDivCRUD();
+                    });
+
+                }
+            });
+        };
+
+
+        function ShowConfirmDialog(p1, p2, p3,p4, p5) {
+
+            // p1 : Approver NRIC
+            // p2 : User NRIC
+            // p3 : User Name
+            // p4 : Department Name
+            // p5 : Unit Name
+
+            var titleString = "@MyTime.Resource.MessageConfirmation";
+            var messageString = "<div id='divDialog'>";
+            messageString += "<div class='form-horizontal'>";
+            messageString += "<div class='form-group'>";
+
+            messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.UserName</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p3 + "</div>";
+
+            messageString += "<div class='label-control col-md-12 pl-0 pt-2'>@MyTime.Resource.NRIC</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p2 + "</div>";
+
+            messageString += "<div class='label-control col-md-12 pl-0 pt-2'>@MyTime.Resource.DepartmentName</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p4 + "</div>";
+
+            messageString += "<div class='label-control col-md-12 pl-0 pt-2'>@MyTime.Resource.UnitName</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p5 + "</div>";
+
+            messageString += "</div>";
+            messageString += "</div>";
+            messageString += "</div>";
+
+            bootbox.confirm({
+                title: titleString,
+                message: messageString,
+                backdrop: true,
+                buttons: {
+                    cancel: {
+                        className:'btn-warning',
+                        label: ' @MyTime.Resource.No'
+                    },
+                    confirm: {
+                        className: 'btn-danger',
+                        label: ' @MyTime.Resource.Delete'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        DeleteProcess(p1, p2);
+                    }
+                }
+            });
+
+    };
+
+        function SelectNewApproverUserProcess(id) {
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+            var locale_rowselected = '';
+
+            if (culture != 'ms-MY') {
+                locale_norecord = '- No record -';
+                locale_lengthmenu = 'Display _MENUMyTime  / page';NRICDeleteUserDelete
+                //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                locale_search = '';
+
+                locale_infofiltered = '';
+                locale_rowselected = ' ( Selected %d records ) ';
+
+                locale_first = 'First';
+                locale_previous = 'Previous';
+                locale_next = 'Next';
+                locale_last = 'Last';
+            }
+            else {
+                locale_norecord = '- Tidak ada rekod -';
+                locale_lengthmenu = 'Paparan _MENU_ ';
+                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                //locale_search = '';
+
+                locale_infofiltered = '';
+                locale_rowselected = ' ( Telah Pilih %d rekod ) ';
+
+                locale_first = 'Pertama';
+                locale_previous = 'Sebelumnya';
+                locale_next = 'Seterusnya';
+                locale_last = 'Terakhir';
+
+            };
+
+            document.getElementById('pid').value = 'update';
+
+            $('#divSelectNewApproverUser').show();
+
+            $.ajax({
+                datatype: 'text/plain',
+                type: 'GET',
+                url: 'Approver/_ListNewApproverUser',
+                data: {id:id},
+                cache: false,
+                success: function (data) {
+
+                    $('#divSelectNewApproverUser').html(data);
+
+
+                    var customNewApprovalUserDatatable = $('#listNewApproverUserDatatable').DataTable({
+                        //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
+                        dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-12 d-flex justify-content-end text-left"l>"<"col-md-12 d-flex justify-content-end text-left"p>>>>',
+                        buttons:
+                            [
+
+                            ],
+                        autoWidth: false,
+                        scrollX: true,
+                        scrollY: true,
+                        language: {
+
+                            "lengthMenu": locale_lengthmenu,
+                            "zeroRecords": locale_norecord,
+                            "info": locale_info,
+                            "infoEmpty": locale_norecord,
+                            "infoFiltered": locale_infofiltered,
+                            "selected": locale_rowselected,
+                            "search": locale_search,
+                            "paginate": {
+                                "first": locale_first,
+                                "previous": locale_previous,
+                                "next": locale_next,
+                                "last": locale_last
+                            },
+                            select: {
+                                "rows": locale_rowselected
+                            }
+                        },
+                        ajax: {
+
+                            url: '/Approver/GetNewApproverUserData',
+                            type: "POST",
+                            data: { id: id },
+                            datatype: "json",
+                            dataSrc: ''
+                        },
+                        rowId: 'NRIC',
+                        columns: [
+                            {
+                                "data": 'selectAll',
+                                "render": function (data, type, row) {
+                                    return '<input type="checkbox">';
+                                }
+                            },
+                            { "data": 'UserName' },
+                            { "data": 'NRIC' },
+                            { "data": 'DepartmentName' },
+                            { "data": 'UnitName' }
+                        ],
+                        columnDefs: [
+                            { targets: 0, className: 'text-center select-checkbox', width: '15px', orderable: false, defaultContent: '' },
+                            { targets: 1, className: 'text-left', width: '250px', orderable: true },
+                            { targets: 2, className: 'text-left', width: '150px', orderable: true },
+                            { targets: 3, className: 'text-left', width: '250px', orderable: true },
+                            { targets: 4, className: 'text-left', width: '150px', orderable: true }
+                        ],
+                        select: {
+                            style: 'multi',
+                            selector: 'td:first-child'
+                        },
+                        order: [[1, 'asc']]
+
+                    });
+
+
+                    $("#selectAll").on("click", function (e) {
+
+
+                        var customNewApprovalUserDatatable = $('#listNewApproverUserDatatable').DataTable();
+
+                        var rows = customNewApprovalUserDatatable.rows({ 'search': 'applied' }).nodes();
+                        // Check/uncheck checkboxes for all rows in the table
+
+
+                        if ($(this).is(":checked")) {
+                            customNewApprovalUserDatatable.rows().select();
+                         } else {
+                            customNewApprovalUserDatatable.rows().deselect();
+                        }
+
+                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                    });
+
+
+                    document.getElementById("btnUpdate").addEventListener('click', function () {
+
+                        var customNewApprovalUserDatatable = $('#listNewApproverUserDatatable').DataTable();
+                        var data = customNewApprovalUserDatatable.rows({ selected: true }).data();
+
+                        var approverNRIC = document.getElementById('approverNRIC').value;
+                        var selectedUserNRIC = '';
+
+                        if (data.length > 0) {
+
+                            for (var i = 0; i < data.length; i++) {
+
+                                if (selectedUserNRIC != '') {
+                                    selectedUserNRIC += '#';
+                                };
+
+                                selectedUserNRIC += data[i].NRIC;
+                            };
+
+
+                            $.ajax({
+                                datatype: 'text/plain',
+                                type: 'POST',
+                                url: 'Approver/AddApproverUser/',
+                                data: { approverNRIC: approverNRIC, selectedUserNRIC: selectedUserNRIC },
+                                cache: false,
+                                success: function (status) {
+                                }
+                            });
+
+                        }
+
+                        $('#modalNewApproverUser').modal('hide');
+                        $('#divSelectNewApproverUser').hide();
+
+                        var messageString = '';
+
+                        switch (document.getElementById('pid').value) {
+
+                            case 'update':
+                                 messageString  = '@MyTime.Resource.MessageSuccessUpdate';
+                                break;
+                            default:
+                                 messageString  = '@MyTime.Resource.MessageSuccessCreate';
+                                 break;
+                         }
+
+                        bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                            callback: function () {
+
+
+                                $('#listApproverUserDatatable').DataTable().ajax.reload(null, false);
+
+
+                            }
+                        });
+
+
+
+
+                    });
+
+                    $('#btnCancel').on('click', function () {
+                        $('#divSelectNewApproverUser').hide();
+                    });
+
+                    $('#modalNewApproverUser').modal('show');
+                }
+            });
+
+        };
+
+
+
+
+        function DeleteProcess(p1, p2) {
+
+            $.ajax({
+                    datatype: 'text/plain',
+                    type: 'POST',
+                     url: 'Approver/DeleteApproverUser/',
+                    data: { approverNRIC: p1, userNRIC: p2 },
+                    cache: false,
+                    success: function (result) {
+
+                        $('#listApproverUserDatatable').DataTable().ajax.reload();
+
+                        bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: '@MyTime.Resource.MessageSuccessDelete',
+                            backdrop: true,
+                            buttons: {
+                                ok: {
+                                  className:'btn-primary',
+                                  label: ' @MyTime.Resource.Close'
+                                }
+                        },
+                            callback: function () {
+                            }
+                        });
+
+                    }
+            });
+        };
+
+        function onSuccessProcess(result, status, xhr) {
+
+            if (result.status == 1) {
+
+                unloadSpinner();
+                unloadDivCRUD();
+
+                $('#listDatatable').DataTable().ajax.reload(null, false);
+
+                var messageString = '';
+
+                switch (document.getElementById('pid').value) {
+
+                    case 'update':
+                         messageString  = '@MyTime.Resource.MessageSuccessUpdate';
+                        break;
+                    default:
+                          messageString  = '@MyTime.Resource.MessageSuccessUpdate';
+                         break;
+                 }
+
+
+                bootbox.alert({
+                    title: '@MyTime.Resource.MessageInfo',
+                    message: messageString,
+
+                    backdrop: true,
+                    buttons: {
+                                ok: {
+                                  className:'btn-primary',
+                                  label: ' @MyTime.Resource.Close'
+                        }
+                    },
+                    callback: function () {
+                    }
+                });
+
+            }
+            else {
+
+                $('#btnCancel').on('click', function () {
+                    unloadDivCRUD();
+                });
+            }
+
+        };
+</script>
+}
+
+
+
+
+

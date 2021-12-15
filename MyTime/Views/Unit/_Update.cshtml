@@ -1,0 +1,80 @@
+﻿@model MyTime.Models.UnitModel
+
+@{
+    ViewBag.Title = MyTime.Resource.Unit + " :: " + MyTime.Resource.Update;
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "onSuccessProcess",
+                    UpdateTargetId = "divCRUD",
+                    LoadingElementId = "divSpinner",
+
+                },
+                new { @id = "formUpdate" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(model => model.DepartmentID)
+                    @Html.HiddenFor(model => model.UnitID)
+
+                    <div class="form-horizontal">
+                        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DepartmentName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.UnitName, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.UnitName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UnitName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.IsActivated, htmlAttributes: new { @class = "control-label" })
+                                @Html.CheckBoxFor(model => model.IsActivated, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12 text-right">
+                                <input type="submit" value="@MyTime.Resource.Update" class="btn btn-primary" />
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

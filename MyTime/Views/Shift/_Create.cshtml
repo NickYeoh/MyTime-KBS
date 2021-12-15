@@ -1,0 +1,157 @@
+﻿@model MyTime.Models.ShiftModel
+
+@{
+    ViewBag.Title = MyTime.Resource.Shift + " :: " + MyTime.Resource.Create;
+    Layout = null;
+}
+
+
+<div class="modal-content">
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title </h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "onSuccessProcess",
+                    UpdateTargetId = "divCRUD",
+                    LoadingElementId = "divSpinner",
+
+                },
+                new { @id = "formCreate" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="form-horizontal">
+                        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.ShiftID, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ShiftID, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.ShiftID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            @Html.LabelFor(model => model.ShiftName, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ShiftName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.ShiftName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <hr />
+
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <table>
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th></th>
+                                            <th>@MyTime.Resource.WorkDay</th>
+                                            <th>@MyTime.Resource.TimeIn</th>
+                                            <th>@MyTime.Resource.TimeOut</th>
+                                            <th>@MyTime.Resource.FlexiTimeInterval</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Mon</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay1) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn1, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut1, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval1, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Tues</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay2) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn2, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut2, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval2, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Wed</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay3) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn3, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut3, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval3, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Thu</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay4) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn4, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut4, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval4, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Fri</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay5) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn5, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut5, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval5, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Sat</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay6) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn6, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut6, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval6, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                        <tr>
+                                            <th>@MyTime.Resource.Day_Sun</th>
+                                            <th class="pl-1 pr-1 text-center">@Html.CheckBoxFor(model => model.IsWorkDay7) </th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeIn7, new { htmlAttributes = new { @class = "form-control", Type = "Time" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.TimeOut7, new { htmlAttributes = new { @class = "form-control", Type = "Time" } })</th>
+                                            <th class="pl-1 pr-1">@Html.EditorFor(model => model.FlexiTimeInterval7, new { htmlAttributes = new { @class = "form-control text-center", @min = "0", @max = "240" } })</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.IsActivated, htmlAttributes: new { @class = "control-label" })
+                                @Html.CheckBoxFor(model => model.IsActivated, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-12 text-right">
+                                <input type="submit" value="@MyTime.Resource.Save" class="btn btn-primary" />
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+

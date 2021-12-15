@@ -1,0 +1,320 @@
+﻿@model MyTime.ViewModels.UserAccessControlViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.UserAccessControl;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="divForm" class="d-flex justify-content-center">
+
+    <div class="card shadow" style="width:496px;">
+        <div class="card-header bg-transparent">
+            <h6> @ViewBag.Title </h6>
+        </div>
+        <div class="card-body">
+
+            @using (Ajax.BeginForm(null, null, new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                AllowCache = false,
+                HttpMethod = "POST",
+                OnSuccess = "onSuccessProcess",
+                UpdateTargetId = "divForm",
+                LoadingElementId = "divSpinner",
+
+            },
+            new { @id = "formUpdate" }
+            ))
+            {
+                @Html.AntiForgeryToken()
+
+
+                <div class="form-horizontal">
+
+                    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+                    <div class="form-group row">
+
+                        @Html.LabelFor(model => model.RoleModel.RoleName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.UserAccessControlModel.RoleID, Model.SelectListRole as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlRole", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserAccessControlModel.RoleID, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            @Html.Label(MyTime.Resource.FunctionAccessAllowed, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedDashboard, htmlAttributes: new { @class = "Dashboard", @id = "IsAllowedDashboard" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedDashboard, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedAttendance, htmlAttributes: new { @class = "Dashboard", @id = "IsAllowedAttendance" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedAttendance, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedAnnouncement, htmlAttributes: new { @class = "Announcement", @id = "IsAllowedAnnouncement" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedAnnouncement, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedSystemSetting, htmlAttributes: new { @class = "SystemSetting", @id = "IsAllowedSystemSetting" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedSystemSetting, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedDevice, htmlAttributes: new { @class = "Device", @id = "IsAllowedDevice" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedDevice, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedOrganisation, htmlAttributes: new { @class = "Organisation", @id = "IsAllowedOrganisation" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedOrganisation, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedUser, htmlAttributes: new { @class = "User", @id = "IsAllowedUser" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedUser, htmlAttributes: new { @class = "control-label" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedShiftSchedule, htmlAttributes: new { @class = "ShiftSchedule", @id = "IsAllowedShiftSchedule" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedShiftSchedule, htmlAttributes: new { @class = "control-label" })
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedApproveReason, htmlAttributes: new { @class = "ApproveReason", @id = "IsAllowedApproveReason" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedApproveReason, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.UserAccessControlModel.IsAllowedPrintReport, htmlAttributes: new { @class = "PrintReport", @id = "IsAllowedPrintReport" })
+                            @Html.LabelFor(model => model.UserAccessControlModel.IsAllowedPrintReport, htmlAttributes: new { @class = "control-label" })
+
+                        </div>
+
+                        <div class="col-md-4">
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-md-12 text-right">
+                            <input id="btnSubmit" type="submit" value="@MyTime.Resource.Save" class="btn btn-primary" />
+                            <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+<button type="button" id="btnToggleMessageModal" class="btn btn-primary" style="visibility:hidden;" data-toggle="modal" data-target="#messageModal">
+</button>
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="Dialog">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@MyTime.Resource.MessageInfo</h5>
+            </div>
+            <div class="modal-body">
+                <p><label id="lblMessage"></label></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseMessageModal" class="btn btn-primary" data-dismiss="modal">@MyTime.Resource.Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@Scripts.Render("~/bundles/custom-js")*@
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //toggleSidebar();
+            unloadSpinner();
+            showDivBody();
+
+            //$('#btnSubmit').prop('disabled', true);
+
+            var btn = document.getElementById('btnToggleMessageModal');
+            btn.innerText = '2';
+
+                $('#btnCancel').on('click', function () {
+                     history.go(-1);
+                });
+
+              $('#btnCloseMessageModal').on('click', function () {
+                    var url = '@Url.Action("Index","home")';
+                    window.location.href = url;
+              });
+
+
+                  $("#ddlRole").change(function () {
+
+                      var id = $("#ddlRole").val();
+
+                      $('#btnSubmit').prop('disabled', true);
+
+                      if (id != '') {
+                          $('#btnSubmit').prop('disabled', false);
+                      }
+
+                      
+                            $.ajax({
+                                cache: false,
+                                type: "GET",
+                                url: '@Url.Action("ListFunctionAccessStatus", "UserAccessControl")',
+                                data: { "roleID": id },
+                                success: function (json, textStatus) {
+
+                                    json = json || {};
+
+                                    $(".Dashboard").prop("disabled", false);
+                                    $(".Attendance").prop("disabled", false);
+                                    $(".Announcement").prop("disabled", false);
+                                    $(".SystemSetting").prop("disabled", false);
+                                    $(".Device").prop("disabled", false);
+                                    $(".Organisation").prop("disabled", false);
+                                    $(".User").prop("disabled", false);
+                                    $(".ShiftSchedule").prop("disabled", false);
+                                    $(".ApproveReason").prop("disabled", false);
+                                    $(".PrintReport").prop("disabled", false);
+
+                                    $(".Dashboard").prop("checked", json.IsAllowedDashboard);
+                                    $(".Attendance").prop("checked", json.IsAllowedAttendance);
+                                    $(".Announcement").prop("checked", json.IsAllowedAnnouncement);
+                                    $(".SystemSetting").prop("checked", json.IsAllowedSystemSetting);
+                                    $(".Device").prop("checked", json.IsAllowedDevice);
+                                    $(".Organisation").prop("checked", json.IsAllowedOrganisation);
+                                    $(".User").prop("checked", json.IsAllowedSystemUser);
+                                    $(".ShiftSchedule").prop("checked", json.IsAllowedShiftSchedule);
+                                    $(".ApproveReason").prop("checked", json.IsAllowedApproveReason);
+                                    $(".PrintReport").prop("checked", json.IsAllowedPrintReport);
+
+                                },
+                                error: function () {
+
+
+                                    $(".Dashboard").prop("disabled", true);
+                                    $(".Attendance").prop("disabled", true);
+                                    $(".Announcement").prop("disabled", true);
+                                    $(".SystemSetting").prop("disabled", true);
+                                    $(".Device").prop("disabled", true);
+                                    $(".Organisation").prop("disabled", true);
+                                    $(".User").prop("disabled", true);
+                                    $(".ShiftSchedule").prop("disabled", true);
+                                    $(".ApproveReason").prop("disabled", true);
+                                    $(".PrintReport").prop("disabled", true);
+
+                                    $(".Dashboard").prop("checked", false);
+                                    $(".Attendance").prop("checked", false);
+                                    $(".Announcement").prop("checked", false);
+                                    $(".SystemSetting").prop("checked", false);
+                                    $(".Device").prop("checked", false);
+                                    $(".Organisation").prop("checked", false);
+                                    $(".User").prop("checked", false);
+                                    $(".ShiftSchedule").prop("checked", false);
+                                    $(".ApproveReason").prop("checked", false);
+                                    $(".PrintReport").prop("checked", false);
+
+                                }
+                            });
+
+
+                  });
+
+        });
+
+
+        function onSuccessProcess(result, status, xhr) {
+
+            if (result.status == 1) {
+
+                unloadSpinner();
+
+                var btn = document.getElementById('btnToggleMessageModal');
+                var lbl = document.getElementById('lblMessage');
+
+                switch (btn.textContent.trim()) {
+                    case '1':
+                        lbl.innerText = '@MyTime.Resource.MessageSuccessCreate';
+                        break;
+                    case '2':
+                        lbl.innerText = '@MyTime.Resource.MessageSuccessUpdate';
+                        break;
+                    default:
+                        lbl.innerText = '@MyTime.Resource.MessageSuccessCreate';
+                        break;
+                };
+
+                $('#btnToggleMessageModal').click();
+
+            }
+
+        };
+
+    </script>
+}
+
+
+
