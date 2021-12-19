@@ -19,9 +19,9 @@ namespace MyTimeAutomation
     public partial class frmMain : Form
     {
 
-        private DateTime pdteScheduleClosingDateTime;
+        private DateTime pdteNextClosingDateTime;
         private Boolean blnIsClosingDone;
-         
+
         private string connStr;
         private string connDeviceStr;
 
@@ -29,20 +29,25 @@ namespace MyTimeAutomation
         {
             InitializeComponent();
 
+
             init();
         }
 
         private void init()
-        {           
-
-            this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Width, Screen.PrimaryScreen.WorkingArea.Height - this.Height);
+        {
+            setWindowsPosition();
 
             lblNextScheduleClosingDate.Text = "-";
-
             blnIsClosingDone = false;
 
             getConnSetting();
+
+        }
+
+        private void setWindowsPosition()
+        {
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Width, Screen.PrimaryScreen.WorkingArea.Height - this.Height);
 
         }
 
@@ -54,7 +59,7 @@ namespace MyTimeAutomation
             if (ConfigurationManager.ConnectionStrings["MyTimeDB"] == null)
             {
 
-                config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("MyTimeDB", String.Format("Persist Security Info=false; Integrated Security=true; Data Source={0};Initial Catalog={1};", "DESKTOP-FPM7EFQ\\SQL2019", "MyTimeDB"), "System.Data.SqlClient"));
+                config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("MyTimeDB", String.Format("Persist Security Info=false; Integrated Security=true; Data Source={0};Initial Catalog={1};", "localhost\\SQL2019", "MyTimeDB"), "System.Data.SqlClient"));
                 config.Save(ConfigurationSaveMode.Modified, true);
                 ConfigurationManager.RefreshSection("connectionStrings");
 
@@ -66,7 +71,7 @@ namespace MyTimeAutomation
             if (ConfigurationManager.ConnectionStrings["DeviceDB"] == null)
             {
 
-                config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("DeviceDB", String.Format("Persist Security Info=false; Integrated Security=true; Data Source={0};Initial Catalog={1};", "DESKTOP-FPM7EFQ\\SQL2016", "Pegasys"), "System.Data.SqlClient"));
+                config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("DeviceDB", String.Format("Persist Security Info=false; Integrated Security=true; Data Source={0};Initial Catalog={1};", "localhost\\SQL2016", "Pegasys"), "System.Data.SqlClient"));
                 config.Save(ConfigurationSaveMode.Modified, true);
                 ConfigurationManager.RefreshSection("connectionStrings");
 
@@ -76,8 +81,7 @@ namespace MyTimeAutomation
 
         }
 
-
-        private string getScheduleSetting(string param)
+        private string getGeneralSetting(string param)
         {
             string strValue = "";
 
@@ -121,31 +125,116 @@ namespace MyTimeAutomation
 
         private void optEnable_CheckedChanged(object sender, EventArgs e)
         {
-            DateTime dteScheduleClosingDateTime;
+
             string strScheduledClosingDay;
             string strScheduledClosingTime;
-            string strScheduledClosingDateTime;
 
             lblMonthEndClosingProcessStatus.Text = "Running";
             lblMonthEndClosingProcessStatus.ForeColor = Color.Green;
 
-            //mydate = "2016/31/05 13:33";
-            //date = mydate.ToDateTime("yyyy/d/M HH:mm"); // {31.05.2016 13:33:00}
+            strScheduledClosingDay = getGeneralSetting("ScheduledClosingDay");
+            strScheduledClosingTime = getGeneralSetting("ScheduledClosingTime");
 
-            strScheduledClosingDay = getScheduleSetting("ScheduledClosingDay");
-            strScheduledClosingTime = getScheduleSetting("ScheduledClosingTime");
+            setNextClosingDateTime(strScheduledClosingDay, strScheduledClosingTime);
 
-            strScheduledClosingDateTime = string.Format("{0}-{1}-{2} {3}", DateTime.Now.Year.ToString("D4"), DateTime.Now.Month.ToString("D2"), Convert.ToInt32(strScheduledClosingDay).ToString("D2"), strScheduledClosingTime);
-
-            dteScheduleClosingDateTime = DateTime.ParseExact(strScheduledClosingDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            pdteScheduleClosingDateTime = new DateTime();
-            pdteScheduleClosingDateTime = dteScheduleClosingDateTime;
-
-            lblNextScheduleClosingDate.Text = Convert.ToString(pdteScheduleClosingDateTime);
+            lblNextScheduleClosingDate.Text = Convert.ToString(pdteNextClosingDateTime);
 
             tmrAutoCloseService.Enabled = true;
 
         }
+
+
+        private void setNextClosingDateTime(string strScheduledClosingDay, string strScheduledClosingTime)
+        {
+
+            DateTime dteNextClosingDateTime;
+            string strNextClosingDateTime;
+
+            try
+            {
+                DateTime dteCurrentMonth = DateTime.Now;
+                DateTime dteLastMonth;
+                DateTime dteNextMonth;
+
+                dteLastMonth = dteCurrentMonth.AddMonths(-1);
+                dteNextMonth = dteCurrentMonth.AddMonths(1);
+
+                if (createMonthAttendanceTable(dteLastMonth) == true)
+                {
+                    // New table created
+                    // Get and insert trans                                  
+
+                }
+                else
+                {
+                    // Table already existe
+
+                 
+                    // Previous data table found in database
+                    strNextClosingDateTime = string.Format("{0}-{1}-{2} {3}", dteNextMonth.Year.ToString("D4"), dteNextMonth.Month.ToString("D2"), Convert.ToInt32(strScheduledClosingDay).ToString("D2"), strScheduledClosingTime);
+
+                    //dteNextClosingDateTime = DateTime.ParseExact(strNextClosingDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                    //pdteNextClosingDateTime = new DateTime();
+                    //pdteNextClosingDateTime = dteNextClosingDateTime;
+
+                }               
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+              
+            }
+
+        }
+
+        private bool createMonthAttendanceTable(DateTime dteMonth)
+        {
+           
+            bool isTableCreated = false;
+            string tableName;
+            string sql;
+
+            SqlConnection conn = new SqlConnection(connStr);
+            conn.Open();
+
+            tableName = string.Format("AttendanceTrans_{0}", dteMonth.ToString("yyyyMM"));
+            sql = "Select count(*) from  information_schema.tables Where table_name='" + tableName + "'";
+
+            SqlCommand cmd = new SqlCommand(sql, conn);
+          
+            if ((int)cmd.ExecuteScalar() == 0)
+            {
+
+                sql = "CREATE TABLE " + tableName;
+                sql += " " + "(NRIC NVARCHAR(20) NOT NULL, AttendanceDate DATETIME NOT NULL, AttendanceDay NVARCHAR(10) NOT NULL,";
+                sql += " " + "AttendanceStatusID NVARCHAR(3), AttendanceStatus NVARCHAR(25),";
+                sql += " " + "FirstIn NVARCHAR(20), Lateness NVARCHAR(20), LastOut NVARCHAR(20),";
+                sql += " " + "WorkTime NVARCHAR(20), OvertimeStart NVARCHAR(20), OvertimeEnd NVARCHAR(20), Overtime NVARCHAR(20),";
+                sql += " " + "OvertimeExtraStart NVARCHAR(20), OvertimeExtraEnd NVARCHAR(20), OvertimeExtra NVARCHAR(20), TotalOvertime NVARCHAR(20)";
+                sql += " " + "PRIMARY KEY (NRIC, AttendanceDate))";
+
+                cmd = new SqlCommand(sql, conn);
+
+                cmd.ExecuteNonQuery();
+
+
+                isTableCreated = true;
+            }
+                     
+          
+            conn.Close();
+            conn.Dispose();
+
+
+            return isTableCreated;
+        }
+
+
 
         private void listUser(DateTime teScheduleClosingDateTime)
         {
@@ -178,29 +267,37 @@ namespace MyTimeAutomation
 
         private void tmrAutoCloseService_Tick(object sender, EventArgs e)
         {
-            if (blnIsClosingDone == false)
-            {
 
-                if (DateTime.Now.ToString("yyyyMMdd hh:mm") == pdteScheduleClosingDateTime.ToString("yyyyMMdd hh:mm"))
+            DateTime dteCurrentDateTime = DateTime.Now;
+
+
+            //if (DateTime.Now.ToString("yyyyMMdd hh:mm") >= pdteNextClosingDateTime.ToString("yyyyMMdd hh:mm"))
+            if (dteCurrentDateTime >= pdteNextClosingDateTime)
+            {
+                if (blnIsClosingDone == false)
                 {
 
+                    // Perform Closing Here
+
+
+
+                    // Set the Flag to true
                     blnIsClosingDone = true;
+                    Application.DoEvents();
 
-                    if (blnIsClosingDone == true)
-                    {
 
-                        MessageBox.Show("OK");
-                        Application.DoEvents();
-
-                        blnIsClosingDone = false;
-                        Application.DoEvents();
-                    }
-
+                    MessageBox.Show("OK");
 
                 }
 
+                Application.DoEvents();
+
             }
 
+            Application.DoEvents();
+
         }
+
+
     }
 }
