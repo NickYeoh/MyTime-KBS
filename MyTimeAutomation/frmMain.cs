@@ -37,7 +37,7 @@ namespace MyTimeAutomation
         {
             setWindowsPosition();
 
-            lblNextScheduleClosingDate.Text = "-";
+            lblLastActivity.Text = "-";
             blnIsClosingDone = false;
 
             getConnSetting();
@@ -137,7 +137,7 @@ namespace MyTimeAutomation
 
             setNextClosingDateTime(strScheduledClosingDay, strScheduledClosingTime);
 
-            lblNextScheduleClosingDate.Text = Convert.ToString(pdteNextClosingDateTime);
+            lblLastActivity.Text = Convert.ToString(pdteNextClosingDateTime);
 
             tmrAutoCloseService.Enabled = true;
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTime", "MyTime\MyTime.csproj", "{0E632695-7FCC-4BF7-8D42-48A2EE23538C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTimeAutomation", "MyTimeAutomation\MyTimeAutomation.csproj", "{CAE5CE09-9B9E-4C4A-9E56-CA7D2E1026C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTimeBackendService", "MyTimeAutomation\MyTimeBackendService.csproj", "{CAE5CE09-9B9E-4C4A-9E56-CA7D2E1026C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

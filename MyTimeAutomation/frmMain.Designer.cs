@@ -31,7 +31,7 @@ namespace MyTimeAutomation
         {
             this.components = new System.ComponentModel.Container();
             this.gbxAutoCloseLastMonthAttendance = new System.Windows.Forms.GroupBox();
-            this.lblNextScheduleClosingDate = new System.Windows.Forms.Label();
+            this.lblLastActivity = new System.Windows.Forms.Label();
             this.lblCaption01 = new System.Windows.Forms.Label();
             this.lblMonthEndClosingProcessStatus = new System.Windows.Forms.Label();
             this.optDisable = new System.Windows.Forms.RadioButton();
@@ -42,42 +42,48 @@ namespace MyTimeAutomation
             // 
             // gbxAutoCloseLastMonthAttendance
             // 
-            this.gbxAutoCloseLastMonthAttendance.Controls.Add(this.lblNextScheduleClosingDate);
+            this.gbxAutoCloseLastMonthAttendance.Controls.Add(this.lblLastActivity);
             this.gbxAutoCloseLastMonthAttendance.Controls.Add(this.lblCaption01);
             this.gbxAutoCloseLastMonthAttendance.Controls.Add(this.lblMonthEndClosingProcessStatus);
             this.gbxAutoCloseLastMonthAttendance.Controls.Add(this.optDisable);
             this.gbxAutoCloseLastMonthAttendance.Controls.Add(this.optEnable);
-            this.gbxAutoCloseLastMonthAttendance.Location = new System.Drawing.Point(12, 12);
+            this.gbxAutoCloseLastMonthAttendance.ForeColor = System.Drawing.SystemColors.Window;
+            this.gbxAutoCloseLastMonthAttendance.Location = new System.Drawing.Point(23, 17);
+            this.gbxAutoCloseLastMonthAttendance.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.gbxAutoCloseLastMonthAttendance.Name = "gbxAutoCloseLastMonthAttendance";
-            this.gbxAutoCloseLastMonthAttendance.Size = new System.Drawing.Size(304, 98);
+            this.gbxAutoCloseLastMonthAttendance.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.gbxAutoCloseLastMonthAttendance.Size = new System.Drawing.Size(393, 123);
             this.gbxAutoCloseLastMonthAttendance.TabIndex = 0;
             this.gbxAutoCloseLastMonthAttendance.TabStop = false;
-            this.gbxAutoCloseLastMonthAttendance.Text = "Month End Closing Process :";
+            this.gbxAutoCloseLastMonthAttendance.Text = "Compile Last Month Attendance Data :";
             // 
-            // lblNextScheduleClosingDate
+            // lblLastActivity
             // 
-            this.lblNextScheduleClosingDate.Location = new System.Drawing.Point(12, 74);
-            this.lblNextScheduleClosingDate.Name = "lblNextScheduleClosingDate";
-            this.lblNextScheduleClosingDate.Size = new System.Drawing.Size(152, 13);
-            this.lblNextScheduleClosingDate.TabIndex = 4;
-            this.lblNextScheduleClosingDate.Text = "-";
-            this.lblNextScheduleClosingDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLastActivity.Location = new System.Drawing.Point(21, 80);
+            this.lblLastActivity.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblLastActivity.Name = "lblLastActivity";
+            this.lblLastActivity.Size = new System.Drawing.Size(332, 23);
+            this.lblLastActivity.TabIndex = 4;
+            this.lblLastActivity.Text = "-";
+            this.lblLastActivity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblCaption01
             // 
             this.lblCaption01.AutoSize = true;
-            this.lblCaption01.Location = new System.Drawing.Point(12, 54);
+            this.lblCaption01.Location = new System.Drawing.Point(21, 60);
+            this.lblCaption01.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblCaption01.Name = "lblCaption01";
-            this.lblCaption01.Size = new System.Drawing.Size(152, 13);
+            this.lblCaption01.Size = new System.Drawing.Size(74, 15);
             this.lblCaption01.TabIndex = 3;
-            this.lblCaption01.Text = "Next Scheduled Closing Date :";
+            this.lblCaption01.Text = "Last Activity :";
             // 
             // lblMonthEndClosingProcessStatus
             // 
-            this.lblMonthEndClosingProcessStatus.AutoSize = true;
-            this.lblMonthEndClosingProcessStatus.Location = new System.Drawing.Point(199, 26);
+            this.lblMonthEndClosingProcessStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMonthEndClosingProcessStatus.Location = new System.Drawing.Point(234, 38);
+            this.lblMonthEndClosingProcessStatus.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblMonthEndClosingProcessStatus.Name = "lblMonthEndClosingProcessStatus";
-            this.lblMonthEndClosingProcessStatus.Size = new System.Drawing.Size(10, 13);
+            this.lblMonthEndClosingProcessStatus.Size = new System.Drawing.Size(142, 58);
             this.lblMonthEndClosingProcessStatus.TabIndex = 2;
             this.lblMonthEndClosingProcessStatus.Text = "-";
             this.lblMonthEndClosingProcessStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -85,9 +91,10 @@ namespace MyTimeAutomation
             // optDisable
             // 
             this.optDisable.AutoSize = true;
-            this.optDisable.Location = new System.Drawing.Point(87, 24);
+            this.optDisable.Location = new System.Drawing.Point(117, 30);
+            this.optDisable.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.optDisable.Name = "optDisable";
-            this.optDisable.Size = new System.Drawing.Size(60, 17);
+            this.optDisable.Size = new System.Drawing.Size(67, 19);
             this.optDisable.TabIndex = 1;
             this.optDisable.TabStop = true;
             this.optDisable.Text = "Disable";
@@ -97,9 +104,10 @@ namespace MyTimeAutomation
             // optEnable
             // 
             this.optEnable.AutoSize = true;
-            this.optEnable.Location = new System.Drawing.Point(12, 24);
+            this.optEnable.Location = new System.Drawing.Point(21, 30);
+            this.optEnable.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.optEnable.Name = "optEnable";
-            this.optEnable.Size = new System.Drawing.Size(58, 17);
+            this.optEnable.Size = new System.Drawing.Size(64, 19);
             this.optEnable.TabIndex = 0;
             this.optEnable.TabStop = true;
             this.optEnable.Text = "Enable";
@@ -113,15 +121,18 @@ namespace MyTimeAutomation
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(328, 180);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ClientSize = new System.Drawing.Size(439, 162);
             this.Controls.Add(this.gbxAutoCloseLastMonthAttendance);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Automation";
+            this.Text = "MyTime Backend Service";
             this.gbxAutoCloseLastMonthAttendance.ResumeLayout(false);
             this.gbxAutoCloseLastMonthAttendance.PerformLayout();
             this.ResumeLayout(false);
@@ -136,7 +147,7 @@ namespace MyTimeAutomation
         private System.Windows.Forms.Label lblMonthEndClosingProcessStatus;
         private System.Windows.Forms.Timer tmrAutoCloseService;
         private System.Windows.Forms.Label lblCaption01;
-        private System.Windows.Forms.Label lblNextScheduleClosingDate;
+        private System.Windows.Forms.Label lblLastActivity;
     }
 }
 
