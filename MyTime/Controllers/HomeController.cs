@@ -14,6 +14,9 @@ namespace MyTime.Controllers
     public class HomeController : EnvironmentController
     {
 
+        // version : 1.0.5 : Enable the email notification function based on IsEmailNotificationEnabled column value in Setting Table
+        // to solve the email server offline caused user unable to submit reason
+
         UserDBService userDBService = new UserDBService();
         UserAccessControlDBService userAccessControlDBService = new UserAccessControlDBService();
 

@@ -394,6 +394,9 @@ namespace MyTime.Controllers
 
             //attendanceReasonViewModel.AttendanceReasonModel.PostedProof.si
 
+            string isEmailNotificationEnabled = Session["IsEmailNotificationEnabled"].ToString();
+
+
             var reg = new Regex(@"([a-zA-Z0-9\s_\\.\-:\(\)])+(.pdf|.png|.jpg|.gif)$");
 
             //string fn = attendanceReasonViewModel.AttendanceReasonModel.PostedProof.FileName;
@@ -430,7 +433,7 @@ namespace MyTime.Controllers
                             userEmail = userModel.Email;
                         }
 
-                        if (attendanceDBService.SubmitReason(attendanceReasonModel, userName, userEmail, approverUserList).Equals(false))
+                        if (attendanceDBService.SubmitReason(attendanceReasonModel, userName, userEmail, approverUserList, isEmailNotificationEnabled).Equals(false))
                         {
                             return Json(new { status = 0 }, JsonRequestBehavior.AllowGet);
 

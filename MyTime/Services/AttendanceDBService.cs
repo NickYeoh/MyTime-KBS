@@ -839,7 +839,7 @@ namespace MyTime.Services
         }
 
 
-        public bool SubmitReason(AttendanceReasonModel attendanceReasonModel, string userName, string userEmail, List<ApproverUserModel> approverUserList)
+        public bool SubmitReason(AttendanceReasonModel attendanceReasonModel, string userName, string userEmail, List<ApproverUserModel> approverUserList, string isEmailNotificationEnabled)
         {
             bool status = false;
             bool isTableFound = false;
@@ -974,12 +974,15 @@ namespace MyTime.Services
                         string password = ConfigurationManager.AppSettings["Password"].ToString();
                         string enableSSL = ConfigurationManager.AppSettings["EnableSSL"].ToString();
 
+                        //string isEmailNotificationEnabled = Session["IsEmailNotificationEnabled"].ToString();
+
+                      
                         if (userModel.Email != null)
                         {
                             approverEmail = userModel.Email;
                         }
 
-                        if (approverEmail != "")
+                        if (approverEmail != "" && isEmailNotificationEnabled != "False")
                         {
 
                             MailMessage mail = new MailMessage();
