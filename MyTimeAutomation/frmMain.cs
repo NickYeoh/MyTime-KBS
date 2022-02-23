@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,11 +20,12 @@ namespace MyTimeAutomation
     public partial class frmMain : Form
     {
 
-        private DateTime pdteNextClosingDateTime;
+        //private DateTime pdteNextClosingDateTime;
         private Boolean blnIsClosingDone;
 
         private string connStr;
         private string connDeviceStr;
+        private DateTime dataStartDate;
 
         public frmMain()
         {
@@ -35,16 +37,16 @@ namespace MyTimeAutomation
 
         private void init()
         {
-            setWindowsPosition();
+            SetWindowsPosition();
 
             lblLastActivity.Text = "-";
             blnIsClosingDone = false;
 
-            getConnSetting();
+            GetConnSetting();
 
         }
 
-        private void setWindowsPosition()
+        private void SetWindowsPosition()
         {
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Width, Screen.PrimaryScreen.WorkingArea.Height - this.Height);
@@ -52,7 +54,7 @@ namespace MyTimeAutomation
         }
 
 
-        private void getConnSetting()
+        private void GetConnSetting()
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
@@ -81,7 +83,7 @@ namespace MyTimeAutomation
 
         }
 
-        private string getGeneralSetting(string param)
+        private string GetGeneralSetting(string param)
         {
             string strValue = "";
 
@@ -132,54 +134,49 @@ namespace MyTimeAutomation
             lblMonthEndClosingProcessStatus.Text = "Running";
             lblMonthEndClosingProcessStatus.ForeColor = Color.Green;
 
-            strScheduledClosingDay = getGeneralSetting("ScheduledClosingDay");
-            strScheduledClosingTime = getGeneralSetting("ScheduledClosingTime");
+            strScheduledClosingDay = GetGeneralSetting("ScheduledClosingDay");
+            strScheduledClosingTime = GetGeneralSetting("ScheduledClosingTime");
 
-            setNextClosingDateTime(strScheduledClosingDay, strScheduledClosingTime);
+            //setNextClosingDateTime(strScheduledClosingDay, strScheduledClosingTime);
 
-            lblLastActivity.Text = Convert.ToString(pdteNextClosingDateTime);
+            //lblLastActivity.Text = Convert.ToString(pdteNextClosingDateTime);
 
-            tmrAutoCloseService.Enabled = true;
+            lblLastActivity.Text = "-";
+
+            //tmrAutoCloseService.Enabled = true;
+
+            if (optEnable.Checked)
+            {
+                // Get the Data Start Date
+                GetDataStartDate();
+                GenerateMonthlyAttendanceTrans();
+            }
+
 
         }
 
-
-        private void setNextClosingDateTime(string strScheduledClosingDay, string strScheduledClosingTime)
+        private void GetDataStartDate()
         {
+            string sql;
 
-            DateTime dteNextClosingDateTime;
-            string strNextClosingDateTime;
+            SqlConnection conn = new SqlConnection(connStr);
 
             try
             {
-                DateTime dteCurrentMonth = DateTime.Now;
-                DateTime dteLastMonth;
-                DateTime dteNextMonth;
+                conn.Open();
 
-                dteLastMonth = dteCurrentMonth.AddMonths(-1);
-                dteNextMonth = dteCurrentMonth.AddMonths(1);
+                sql = "SELECT DataStartDate FROM [System]";
 
-                if (createMonthAttendanceTable(dteLastMonth) == true)
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
                 {
-                    // New table created
-                    // Get and insert trans                                  
+                    dr.Read();
 
+                    dataStartDate = Convert.ToDateTime(dr["DataStartDate"]);
                 }
-                else
-                {
-                    // Table already existe
-
-                 
-                    // Previous data table found in database
-                    strNextClosingDateTime = string.Format("{0}-{1}-{2} {3}", dteNextMonth.Year.ToString("D4"), dteNextMonth.Month.ToString("D2"), Convert.ToInt32(strScheduledClosingDay).ToString("D2"), strScheduledClosingTime);
-
-                    //dteNextClosingDateTime = DateTime.ParseExact(strNextClosingDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                    //pdteNextClosingDateTime = new DateTime();
-                    //pdteNextClosingDateTime = dteNextClosingDateTime;
-
-                }               
-
-
             }
             catch (Exception e)
             {
@@ -187,14 +184,100 @@ namespace MyTimeAutomation
             }
             finally
             {
-              
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
             }
+
+
 
         }
 
-        private bool createMonthAttendanceTable(DateTime dteMonth)
+        private void GenerateMonthlyAttendanceTrans()
         {
-           
+
+            DateTime currentMonth = DateTime.Now;
+
+            int monthCount = CalculateMonthDiff(dataStartDate, currentMonth);
+            DateTime monthStart, monthEnd;
+
+            monthStart = dataStartDate;
+            //monthEnd = new DateTime(monthStart.Year, monthStart.Month + 1, 1).AddDays(-1);
+
+            if (monthCount > 0)
+            {
+                for (int monthNo = 0; monthNo < monthCount; monthNo++)
+                { 
+                    monthStart = monthStart.AddMonths(monthNo);
+                    monthEnd = new DateTime(monthStart.Year, monthStart.Month + 1, 1).AddDays(-1);
+
+                    CreateMonthAttendanceTable(monthStart);
+
+                }
+            }
+        }
+
+        public int CalculateMonthDiff(DateTime firstDate, DateTime secondDate)
+        {
+            int monthsApart = 12 * (firstDate.Year - secondDate.Year) + firstDate.Month - secondDate.Month;
+            return Math.Abs(monthsApart);
+        }
+
+
+
+        //private void setNextClosingDateTime(string strScheduledClosingDay, string strScheduledClosingTime)
+        //{
+
+        //    DateTime dteNextClosingDateTime;
+        //    string strNextClosingDateTime;
+
+        //    try
+        //    {
+        //        DateTime dteCurrentMonth = DateTime.Now;
+        //        DateTime dteLastMonth;
+        //        DateTime dteNextMonth;
+
+        //        dteLastMonth = dteCurrentMonth.AddMonths(-1);
+        //        dteNextMonth = dteCurrentMonth.AddMonths(1);
+
+        //        if (createMonthAttendanceTable(dteLastMonth) == true)
+        //        {
+        //            // New table created
+        //            // Get and insert trans                                  
+
+        //        }
+        //        else
+        //        {
+        //            // Table already existe
+
+
+        //            // Previous data table found in database
+        //            strNextClosingDateTime = string.Format("{0}-{1}-{2} {3}", dteNextMonth.Year.ToString("D4"), dteNextMonth.Month.ToString("D2"), Convert.ToInt32(strScheduledClosingDay).ToString("D2"), strScheduledClosingTime);
+
+        //            //dteNextClosingDateTime = DateTime.ParseExact(strNextClosingDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+        //            //pdteNextClosingDateTime = new DateTime();
+        //            //pdteNextClosingDateTime = dteNextClosingDateTime;
+
+        //        }
+
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message.ToString());
+        //    }
+        //    finally
+        //    {
+
+        //    }
+
+        //}
+
+        private bool CreateMonthAttendanceTable(DateTime monthStart)
+        {
+
             bool isTableCreated = false;
             string tableName;
             string sql;
@@ -202,11 +285,11 @@ namespace MyTimeAutomation
             SqlConnection conn = new SqlConnection(connStr);
             conn.Open();
 
-            tableName = string.Format("AttendanceTrans_{0}", dteMonth.ToString("yyyyMM"));
-            sql = "Select count(*) from  information_schema.tables Where table_name='" + tableName + "'";
+            tableName = string.Format("AttendanceTrans_{0}", monthStart.ToString("yyyyMM"));
+            sql = "SELECT COUNT(*) FROM  information_schema.tables WHERE table_name='" + tableName + "'";
 
             SqlCommand cmd = new SqlCommand(sql, conn);
-          
+
             if ((int)cmd.ExecuteScalar() == 0)
             {
 
@@ -225,8 +308,8 @@ namespace MyTimeAutomation
 
                 isTableCreated = true;
             }
-                     
-          
+
+
             conn.Close();
             conn.Dispose();
 
@@ -268,31 +351,34 @@ namespace MyTimeAutomation
         private void tmrAutoCloseService_Tick(object sender, EventArgs e)
         {
 
-            DateTime dteCurrentDateTime = DateTime.Now;
+            DateTime dteCurrentDate = DateTime.Now;
+
+            DateTime dteMonthStart;
+            DateTime dteMonthEnd;
 
 
             //if (DateTime.Now.ToString("yyyyMMdd hh:mm") >= pdteNextClosingDateTime.ToString("yyyyMMdd hh:mm"))
-            if (dteCurrentDateTime >= pdteNextClosingDateTime)
-            {
-                if (blnIsClosingDone == false)
-                {
+            //if (dteCurrentDateTime >= pdteNextClosingDateTime)
+            //{
+            //    if (blnIsClosingDone == false)
+            //    {
 
-                    // Perform Closing Here
-
-
-
-                    // Set the Flag to true
-                    blnIsClosingDone = true;
-                    Application.DoEvents();
+            //        // Perform Closing Here
 
 
-                    MessageBox.Show("OK");
 
-                }
+            //        // Set the Flag to true
+            //        blnIsClosingDone = true;
+            //        Application.DoEvents();
 
-                Application.DoEvents();
 
-            }
+            //        MessageBox.Show("OK");
+
+            //    }
+
+            //    Application.DoEvents();
+
+            //}
 
             Application.DoEvents();
 
