@@ -1005,4 +1005,10 @@
   <data name="WorkOvertime" xml:space="preserve">
     <value>Kerja Lebih Masa</value>
   </data>
+  <data name="AttendanceCardStatus" xml:space="preserve">
+    <value>Status Kad Kedatangan</value>
+  </data>
+  <data name="AttendanceMonth" xml:space="preserve">
+    <value>Bulan</value>
+  </data>
 </root>

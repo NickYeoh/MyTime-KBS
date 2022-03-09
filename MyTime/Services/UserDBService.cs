@@ -68,7 +68,9 @@ namespace MyTime.Services
                 sql += " " + $@"U.Grade, U.IsResigned, U.ResignedOn,";
                 sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded";
 
-                sql += " " + $@"FROM [User] U";
+                //sql += " " + $@"IIF ("
+
+                sql += " " + $@"FROM [User] U, [AttendanceCardStatus) ACS";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
@@ -193,6 +195,12 @@ namespace MyTime.Services
                         if (!dr["IsAttendanceExcluded"].Equals(DBNull.Value))
                         {
                             userModel.IsAttendanceExcluded = Convert.ToBoolean(dr["IsAttendanceExcluded"]);
+                        }
+
+
+                        if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                        {
+                            userModel.AttendanceCardStatus= dr["AttendanceCardStatus"].ToString();
                         }
 
                         dataList.Add(userModel);

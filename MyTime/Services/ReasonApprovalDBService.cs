@@ -239,7 +239,7 @@ namespace MyTime.Services
                 try
                 {
                     string sql = $@"UPDATE {attendanceReasonTableName} SET IsApproved='True',";
-                    sql += " " + $@"ProcessedBy='{approverNRIC}', ProcessedOn='{DateTime.Now.ToString("yyyyMMdd hh:mm:ss")}'";
+                    sql += " " + $@"ProcessedBy='{approverNRIC}', ProcessedOn='{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}'";
                     sql += " " + $@"WHERE CONVERT(VARCHAR, AttendanceDate, 112)='{reasonApprovalModel.AttendanceDate.ToString("yyyyMMdd")}'";
                     sql += " " + $@"AND NRIC='{reasonApprovalModel.NRIC}'";
 
@@ -296,7 +296,7 @@ namespace MyTime.Services
 
                     string sql = $@"UPDATE {attendanceReasonTableName} SET IsRejected='True',";
                     sql += " " + $@"ApproverComment='{reasonApprovalModel.ApproverComment}',";
-                    sql += " " + $@"ProcessedBy='{approverNRIC}', ProcessedOn='{DateTime.Now.ToString("yyyyMMdd hh:mm:ss")}'";
+                    sql += " " + $@"ProcessedBy='{approverNRIC}', ProcessedOn='{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}'";
                     sql += " " + $@"WHERE CONVERT(VARCHAR, AttendanceDate, 112)='{reasonApprovalModel.AttendanceDate.ToString("yyyyMMdd")}'";
                     sql += " " + $@"AND NRIC='{reasonApprovalModel.NRIC}'";
 
@@ -353,7 +353,7 @@ namespace MyTime.Services
 
                     string sql = $@"UPDATE {attendanceReasonTableName} SET IsRequestedToAmend='True',";
                     sql += " " + $@"ApproverComment='{reasonApprovalModel.ApproverComment}',";
-                    sql += " " + $@"ProcessedBy='{approverNRIC}', ProcessedOn='{DateTime.Now.ToString("yyyyMMdd hh:mm:ss")}'";
+                    sql += " " + $@"ProcessedBy='{approverNRIC}', ProcessedOn='{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}'";
                     sql += " " + $@"WHERE CONVERT(VARCHAR, AttendanceDate, 112)='{reasonApprovalModel.AttendanceDate.ToString("yyyyMMdd")}'";
                     sql += " " + $@"AND NRIC='{reasonApprovalModel.NRIC}'";
 

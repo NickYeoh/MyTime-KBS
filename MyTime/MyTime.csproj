@@ -173,6 +173,7 @@
     <Compile Include="Models\AccessRoleModel.cs" />
     <Compile Include="Models\AnnouncementModel.cs" />
     <Compile Include="Models\AttendanceAnalysisModel.cs" />
+    <Compile Include="Models\AttendanceCardStatusModel.cs" />
     <Compile Include="Models\AttendanceStatisticsModel.cs" />
     <Compile Include="Models\AttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceAnalysisModel.cs" />

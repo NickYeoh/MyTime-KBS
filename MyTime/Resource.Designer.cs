@@ -358,6 +358,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance Card Status.
+        /// </summary>
+        public static string AttendanceCardStatus {
+            get {
+                return ResourceManager.GetString("AttendanceCardStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string AttendanceDate {
@@ -381,6 +390,15 @@ namespace MyTime {
         public static string AttendanceIndividual {
             get {
                 return ResourceManager.GetString("AttendanceIndividual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string AttendanceMonth {
+            get {
+                return ResourceManager.GetString("AttendanceMonth", resourceCulture);
             }
         }
         

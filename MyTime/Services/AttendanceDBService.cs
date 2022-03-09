@@ -890,7 +890,7 @@ namespace MyTime.Services
                 // Delete previous submission is any
                 sql = $@"DELETE " + tableName;
                 sql += " " + $@"WHERE NRIC='{attendanceReasonModel.NRIC}'";
-                sql += " " + $@"AND AttendanceDate='{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd hh:mm:ss")}'";
+                sql += " " + $@"AND CONVERT(nvarchar, AttendanceDate,112) ='{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd")}'";
                 conn.Open();
 
                 cmd = new SqlCommand(sql, conn);
@@ -929,12 +929,12 @@ namespace MyTime.Services
                 sql += " " + $@"ReasonID, Remark, Proof, SubmittedOn,";
                 sql += " " + $@"IsApproved, IsRejected, IsRequestedToAmend) VALUES";
                 //sql += " " + $@"ProcessedBy, ProcessedOn) VALUES";
-                sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd hh:mm:ss")}', '{attendanceReasonModel.AttendanceDay}',";
+                sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}', '{attendanceReasonModel.AttendanceDay}',";
                 sql += " " + $@"'{attendanceReasonModel.AttendanceStatusID}', '{attendanceReasonModel.AttendanceStatus}',";
                 sql += " " + $@"'{attendanceReasonModel.FirstIn}', '{attendanceReasonModel.Lateness}', '{attendanceReasonModel.LastOut}', '{attendanceReasonModel.WorkTime}',";
                 sql += " " + $@"'{attendanceReasonModel.OvertimeStart}','{attendanceReasonModel.OvertimeEnd}' ,  '{attendanceReasonModel.Overtime}',";
                 sql += " " + $@"'{attendanceReasonModel.OvertimeExtraStart}','{attendanceReasonModel.OvertimeExtraEnd}' , '{attendanceReasonModel.OvertimeExtra}', '{attendanceReasonModel.TotalOvertime}',";
-                sql += " " + $@"'{attendanceReasonModel.ReasonID}', '{attendanceReasonModel.Remark}', '{proof}', '{DateTime.Now.ToString("yyyyMMdd hh:mm:ss")}',";
+                sql += " " + $@"'{attendanceReasonModel.ReasonID}', '{attendanceReasonModel.Remark}', '{proof}', '{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}',";
                 sql += " " + $@"'False', 'False', 'False')";
                 //sql += " " + $@"'{SqlString.Null}', '{DBNull.Value}')";
 
@@ -946,12 +946,12 @@ namespace MyTime.Services
                 {
                     status = true;
 
-                    string logData = $@"{attendanceReasonModel.NRIC}, {attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd hh:mm:ss")}, {attendanceReasonModel.AttendanceDay},";
+                    string logData = $@"{attendanceReasonModel.NRIC}, {attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}, {attendanceReasonModel.AttendanceDay},";
                     logData += " " + $@"{attendanceReasonModel.AttendanceStatusID}, {attendanceReasonModel.AttendanceStatus},";
                     logData += " " + $@"{attendanceReasonModel.FirstIn}, {attendanceReasonModel.Lateness}, {attendanceReasonModel.LastOut}, {attendanceReasonModel.WorkTime},";
                     logData += " " + $@"{attendanceReasonModel.OvertimeStart}, {attendanceReasonModel.OvertimeEnd}, {attendanceReasonModel.Overtime},";
                     logData += " " + $@"{attendanceReasonModel.OvertimeExtraStart}, {attendanceReasonModel.OvertimeExtraEnd}, {attendanceReasonModel.OvertimeExtra}, {attendanceReasonModel.TotalOvertime}, ";
-                    logData += " " + $@"{attendanceReasonModel.ReasonID}, {attendanceReasonModel.ReasonName}, {attendanceReasonModel.Proof}, {attendanceReasonModel.Remark}, {DateTime.Now.ToString("yyyyMMdd hh:mm:ss")},";
+                    logData += " " + $@"{attendanceReasonModel.ReasonID}, {attendanceReasonModel.ReasonName}, {attendanceReasonModel.Proof}, {attendanceReasonModel.Remark}, {DateTime.Now.ToString("yyyyMMdd HH:mm:ss")},";
                     logData += " " + $@"False, False, False)";
 
                     logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "Attendance", $@"Submit; {logData}", DateTime.Now);
@@ -994,7 +994,7 @@ namespace MyTime.Services
                             string body = "Tuan / Puan,";
                             body += "<br><br>";
                             body += $@"Pegawai {userName} telah menghantar alasan dalam sistem kedatangan <br>";
-                            //body += $@"bagi kedatangan tarikh {attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd hh:mm:ss")} <br>";
+                            //body += $@"bagi kedatangan tarikh {attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")} <br>";
                             body += $@"dan memerlukan tuan/puan membuatkan pengesahan.<br><br>";
                             body += $@"Sekian Terima Kasih.";
 

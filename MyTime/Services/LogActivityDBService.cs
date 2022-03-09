@@ -67,7 +67,7 @@ namespace MyTime.Services
 
                 sql = "INSERT INTO" + " " + tableName;
                 sql += " " + $@"(IP, NRIC, Functionality, Activity, LogDateTime) VALUES";
-                sql += " " + $@"('{ip}', '{NRIC}', '{functionality}', '{activity}', '{logDateTime.ToString("yyyyMMdd hh:mm:ss")}')";
+                sql += " " + $@"('{ip}', '{NRIC}', '{functionality}', '{activity}', '{logDateTime.ToString("yyyyMMdd HH:mm:ss")}')";
 
                 conn.Open();
 

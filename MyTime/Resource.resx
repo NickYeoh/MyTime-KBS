@@ -1005,4 +1005,10 @@
   <data name="WorkOvertime" xml:space="preserve">
     <value>Work Overtime</value>
   </data>
+  <data name="AttendanceCardStatus" xml:space="preserve">
+    <value>Attendance Card Status</value>
+  </data>
+  <data name="AttendanceMonth" xml:space="preserve">
+    <value>Month</value>
+  </data>
 </root>
