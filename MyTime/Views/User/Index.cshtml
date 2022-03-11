@@ -35,6 +35,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                                 <th>@MyTime.Resource.UserName</th>
                                 <th>@MyTime.Resource.NRIC</th>
                                 <th>@MyTime.Resource.Gender</th>
@@ -202,6 +203,19 @@
                             return "<a href='#'  onclick='DeletePassword(" + '"' + row.NRIC + '"' + ");'> <i class='icofont-key' style='color: dodgerblue ; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.DeletePassword'></i> </a>";
                         }
                     },
+                    {
+                        "render": function (data, type, row) {
+
+                            switch (row.AttendanceCardStatus) {
+                                case 'YL':
+                                    return "<a href='#'  onclick='';'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCardStatus'></i>  </a>";
+                                case 'GR':
+                                    return "<a href='#'  onclick='';'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCardStatus'></i></a>";
+                                case 'RD':
+                                    return "<a href='#'  onclick='';'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCardStatus'></i>  </a>";
+                            }
+                        }
+                    },
                     { "data": "UserName" },
                     { "data": "NRIC" },
                     { "data": "Gender" },
@@ -250,22 +264,23 @@
                     { targets: 0, className: 'text-center', width: '12px', orderable: false  },
                     { targets: 1, className: 'text-center', width: '15px', orderable: false },
                     { targets: 2, className: 'text-center', width: '15px', orderable: false },
-                    { targets: 3, className: 'text-left', width: '250px', orderable: true },
-                    { targets: 4, className: 'text-left', width: '150px', orderable: true },
-                    { targets: 5, className: 'text-left', width: '100px', orderable: true },
+                    { targets: 3, className: 'text-center', width: '15px', orderable: false },
+                    { targets: 4, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 5, className: 'text-left', width: '150px', orderable: true },
                     { targets: 6, className: 'text-left', width: '100px', orderable: true },
-                    { targets: 7, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 7, className: 'text-left', width: '100px', orderable: true },
                     { targets: 8, className: 'text-left', width: '250px', orderable: true },
-                    { targets: 9, className: 'text-left', width: '150px', orderable: true },
-                    { targets: 10, className: 'text-left', width: '100px', orderable: true },
+                    { targets: 9, className: 'text-left', width: '250px', orderable: true },
+                    { targets: 10, className: 'text-left', width: '150px', orderable: true },
                     { targets: 11, className: 'text-left', width: '100px', orderable: true },
-                    { targets: 12, className: 'text-left', width: '150px', orderable: true },
-                    { targets: 13, className: 'text-center', width: '150px', orderable: true },
-                    { targets: 14, className: 'text-center', width: '100px' },
-                    { targets: 15, type: 'date-euro', className: 'text-center', width: '100px' },
-                    { targets: 16, className: 'text-left', width: '150px', orderable: true },
+                    { targets: 12, className: 'text-left', width: '100px', orderable: true },
+                    { targets: 13, className: 'text-left', width: '150px', orderable: true },
+                    { targets: 14, className: 'text-center', width: '150px', orderable: true },
+                    { targets: 15, className: 'text-center', width: '100px' },
+                    { targets: 16, type: 'date-euro', className: 'text-center', width: '100px' },
+                    { targets: 17, className: 'text-left', width: '150px', orderable: true },
                 ],
-                order: [[3, 'asc']]
+                order: [[4, 'asc']]
             });
 
         });

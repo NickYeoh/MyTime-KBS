@@ -722,6 +722,15 @@ namespace MyTime.Controllers
             return Json(unitList, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult _UpdateAttendanceCardStatus(string ID)
+        {
+
+            UserModel userModel = new UserModel();
+            userModel = userDBService.GetDataByID(ID);
+
+            return PartialView(userModel);
+        }
+
     }
 
 }

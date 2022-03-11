@@ -66,15 +66,18 @@ namespace MyTime.Services
                 sql += " " + $@"U.ContactNo, U.Email, U.DepartmentID, D.DepartmentName,";
                 sql += " " + $@"U.UnitID, UT.UnitName, U.Designation,";
                 sql += " " + $@"U.Grade, U.IsResigned, U.ResignedOn,";
-                sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded";
+                sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded,";
 
-                //sql += " " + $@"IIF ("
+                // 2022-03-11 : Attendance Card Status
+                sql += " " + $@"AC.AttendanceMonth, IIF(AC.StatusCode IS NULL, 'YL',AC.StatusCode) AS AttendanceCardStatus";
 
-                sql += " " + $@"FROM [User] U, [AttendanceCardStatus) ACS";
+                sql += " " + $@"FROM [User] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
                 sql += " " + $@"LEFT JOIN AccessRole A ON A.AccessRoleID = U.AccessRoleID";
+                sql += " " + $@"LEFT JOIN (SELECT TOP 1  * FROM [AttendanceCard]";
+                sql += " " + $@"ORDER BY AttendanceMonth DESC) AC ON AC.NRIC = U.NRIC";
                 sql += " " + $@"ORDER BY NRIC ASC";
 
                 conn.Open();
