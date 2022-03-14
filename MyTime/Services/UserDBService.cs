@@ -69,7 +69,7 @@ namespace MyTime.Services
                 sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded,";
 
                 // 2022-03-11 : Attendance Card Status
-                sql += " " + $@"AC.AttendanceMonth, IIF(AC.StatusCode IS NULL, 'YL',AC.StatusCode) AS AttendanceCardStatus";
+                sql += " " + $@"AC.YearMonth, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
 
                 sql += " " + $@"FROM [User] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
@@ -77,7 +77,7 @@ namespace MyTime.Services
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
                 sql += " " + $@"LEFT JOIN AccessRole A ON A.AccessRoleID = U.AccessRoleID";
                 sql += " " + $@"LEFT JOIN (SELECT TOP 1  * FROM [AttendanceCard]";
-                sql += " " + $@"ORDER BY AttendanceMonth DESC) AC ON AC.NRIC = U.NRIC";
+                sql += " " + $@"ORDER BY YearMonth DESC) AC ON AC.NRIC = U.NRIC";
                 sql += " " + $@"ORDER BY NRIC ASC";
 
                 conn.Open();
@@ -1232,6 +1232,67 @@ namespace MyTime.Services
             }
 
             return userModel;
+        }
+
+
+        public List<AttendanceCardModel> GetAttendanceCardList(string ID)
+        {
+            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
+            AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
+
+            string sql = $@"SELECT NRIC, YearMonth, AttendanceCardStatus";
+            sql += " " + $@"FROM AttendanceCard";
+            sql += " " + $@"WHERE NRIC='{ID}'";
+            sql += " " + $@"ORDER BY NRIC, YearMonth";
+           
+
+            try
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+
+                    while (dr.Read())
+                    {
+                        attendanceCardModel = new AttendanceCardModel();
+
+                        attendanceCardModel.NRIC = ID;
+                    
+                        if (!dr["YearMonth"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.YearMonth = dr["YearMonth"].ToString();
+                        }
+
+                        if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AttendanceCardStatus = dr["AttendanceCardStatus"].ToString();
+                        }
+
+                        attendanceCardList.Add(attendanceCardModel);
+
+                    }
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return attendanceCardList;
         }
 
 

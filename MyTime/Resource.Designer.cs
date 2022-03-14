@@ -358,11 +358,11 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Status.
+        ///   Looks up a localized string similar to Attendance Card Colour.
         /// </summary>
-        public static string AttendanceCardStatus {
+        public static string AttendanceCardColour {
             get {
-                return ResourceManager.GetString("AttendanceCardStatus", resourceCulture);
+                return ResourceManager.GetString("AttendanceCardColour", resourceCulture);
             }
         }
         
@@ -570,6 +570,33 @@ namespace MyTime {
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Green.
+        /// </summary>
+        public static string Colour_Green {
+            get {
+                return ResourceManager.GetString("Colour.Green", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Red.
+        /// </summary>
+        public static string Colour_Red {
+            get {
+                return ResourceManager.GetString("Colour.Red", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yellow.
+        /// </summary>
+        public static string Colour_Yellow {
+            get {
+                return ResourceManager.GetString("Colour.Yellow", resourceCulture);
             }
         }
         
@@ -1461,6 +1488,15 @@ namespace MyTime {
         public static string MessageSuccessUpdate {
             get {
                 return ResourceManager.GetString("MessageSuccessUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance Card Status is successfully updated.
+        /// </summary>
+        public static string MessageSuccessUpdateAttendanceCardStatus {
+            get {
+                return ResourceManager.GetString("MessageSuccessUpdateAttendanceCardStatus", resourceCulture);
             }
         }
         
@@ -2590,6 +2626,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Attendance Card Status.
+        /// </summary>
+        public static string UpdateAttendanceCardStatus {
+            get {
+                return ResourceManager.GetString("UpdateAttendanceCardStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
         public static string User {
@@ -2730,6 +2775,15 @@ namespace MyTime {
         public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string YearMonth {
+            get {
+                return ResourceManager.GetString("YearMonth", resourceCulture);
             }
         }
         

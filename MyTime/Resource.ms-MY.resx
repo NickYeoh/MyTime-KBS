@@ -1005,10 +1005,28 @@
   <data name="WorkOvertime" xml:space="preserve">
     <value>Kerja Lebih Masa</value>
   </data>
-  <data name="AttendanceCardStatus" xml:space="preserve">
-    <value>Status Kad Kedatangan</value>
+  <data name="UpdateAttendanceCardStatus" xml:space="preserve">
+    <value>Kemaskini Status Kad Kedatangan</value>
   </data>
   <data name="AttendanceMonth" xml:space="preserve">
     <value>Bulan</value>
+  </data>
+  <data name="Colour.Green" xml:space="preserve">
+    <value>Hijau</value>
+  </data>
+  <data name="Colour.Red" xml:space="preserve">
+    <value>Merah</value>
+  </data>
+  <data name="Colour.Yellow" xml:space="preserve">
+    <value>Kuning</value>
+  </data>
+  <data name="YearMonth" xml:space="preserve">
+    <value>Bulan</value>
+  </data>
+  <data name="MessageSuccessUpdateAttendanceCardStatus" xml:space="preserve">
+    <value>Status Kad Kedatangan Pengguna telah berjaya dikemaskini</value>
+  </data>
+  <data name="AttendanceCardColour" xml:space="preserve">
+    <value>Warna Kad Kedatangan</value>
   </data>
 </root>

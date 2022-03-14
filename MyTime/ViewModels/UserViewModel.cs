@@ -36,5 +36,9 @@ namespace MyTime.ViewModels
         public ChangePasswordModel ChangePasswordModel { get; set; }
         public UserAccessControlModel UserAccessControlModel { get; set; }
 
+        // For Attendance Card Status
+        public IEnumerable<SelectListItem> SelectListMonthYear { get; set; }
+      
+        public List<AttendanceCardModel> AttendanceCardList { get; set; }
     }
 }

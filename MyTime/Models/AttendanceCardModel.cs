@@ -6,14 +6,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyTime.Models
 {
-    public class AttendanceCardStatusModel
+    public class AttendanceCardModel
     {
 
         [Display(Name = "NRIC", ResourceType = typeof(Resource))]
         public string NRIC { get; set; }
 
-        [Display(Name = "AttendanceMonth", ResourceType = typeof(Resource))]
-        public string AttendanceMonth { get; set; }
+    
+        [Display(Name = "YearMonth", ResourceType = typeof(Resource))]
+        public string YearMonth { get; set; }
 
         [Display(Name = "AttendanceCardStatus", ResourceType = typeof(Resource))]
         public string AttendanceCardStatus { get; set; }

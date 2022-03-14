@@ -208,11 +208,11 @@
 
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
-                                    return "<a href='#'  onclick='';'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='UpdateAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
                                 case 'GR':
-                                    return "<a href='#'  onclick='';'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCardStatus'></i></a>";
+                                    return "<a href='#'  onclick='UpdateAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i></a>";
                                 case 'RD':
-                                    return "<a href='#'  onclick='';'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='UpdateAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
                             }
                         }
                     },
@@ -401,6 +401,34 @@
             });
     };
 
+    function UpdateAttendanceCardStatusProcess(NRIC, UserName) {
+
+        //var NRIC = data.NRIC;
+        //var userName = data.UserName;
+
+        /*alert(userName);*/
+
+        document.getElementById('pid').value = 'update attendance card status';
+
+        loadDivCRUD();
+
+        $.ajax({
+            datatype: 'text/plain',
+            type: 'GET',
+            url: 'User/_UpdateAttendanceCardStatus',
+            data: { NRIC: NRIC, userName: UserName },
+            cache: false,
+            success: function (data) {
+
+                $('#divCRUD').html(data);
+
+                $('#btnCancel').on('click', function () {
+                    unloadDivCRUD();
+                });
+            }
+        });
+    };
+
 
     function SearchDeviceUserProcess() {
 
@@ -573,6 +601,11 @@
                    case 'import user':
                         messageString  = '@MyTime.Resource.MessageSuccessImportNewUser';
                         break;
+                    case 'update attendance card status' :
+
+                        messageString  = '@MyTime.Resource.MessageSuccessUpdateAttendanceCardStatus';
+                        break;
+
                     default:
                          messageString  = '@MyTime.Resource.MessageSuccessUpdate';
                          break;

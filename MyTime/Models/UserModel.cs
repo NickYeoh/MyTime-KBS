@@ -92,7 +92,6 @@ namespace MyTime.Models
         public bool IsAttendanceExcluded { get; set; }
 
         [Display(Name = "AttendanceCardStatus", ResourceType = typeof(Resource))]
-
         public string AttendanceCardStatus{ get; set; }
 
     }

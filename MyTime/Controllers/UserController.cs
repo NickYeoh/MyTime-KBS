@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using MyTime.ViewModels;
 using MyTime.Services;
 using MyTime.Models;
-
+using MyTime.Interfaces;
 
 namespace MyTime.Controllers
 {
@@ -563,8 +563,7 @@ namespace MyTime.Controllers
         }
 
         [HttpPost]
-        public ActionResult
-            _ImportDeviceUser(UserViewModel userViewModel)
+        public ActionResult _ImportDeviceUser(UserViewModel userViewModel)
         {
             UserModel userModel = new UserModel();
             userModel = userViewModel.UserModel;
@@ -613,6 +612,40 @@ namespace MyTime.Controllers
             }
 
         }
+
+       
+        public ActionResult _UpdateAttendanceCardStatus(string NRIC, string userName)
+        {
+            SystemDBService systemDBService = new SystemDBService();
+
+            UserViewModel userViewModel = new UserViewModel();
+            SystemModel systemModel = new SystemModel();
+            DateTime dataStartDate;
+
+            // User Model
+            UserModel userModel = new UserModel();
+
+            userModel.NRIC = NRIC;
+            userModel.UserName = userName;
+         
+            userViewModel.UserModel = userModel;
+
+            // Year, Month and AttendanceCardStatus
+
+            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
+            attendanceCardList = userDBService.GetAttendanceCardList(NRIC);
+            userViewModel.AttendanceCardList = attendanceCardList;
+
+            systemModel = systemDBService.GetData();
+            dataStartDate = systemModel.DataStartDate;
+
+            userViewModel.SelectListMonthYear = PrepareSelectMonthYearList(dataStartDate);                     
+
+            
+            
+            return PartialView(userViewModel);
+        }
+
 
 
         private IEnumerable<SelectListItem> PrepareSelectListDepartment(List<DepartmentModel> DepartmentList)
@@ -710,6 +743,37 @@ namespace MyTime.Controllers
             return selectList;
         }
 
+
+        private IEnumerable<SelectListItem> PrepareSelectMonthYearList(DateTime dataStartDate)
+        {
+            ISharedFunction sharedFunction;
+            sharedFunction = new SharedFunction();
+
+            var selectMonthYearList = new List<SelectListItem>();
+
+            int totalMonthDiff = sharedFunction.CalculateMonthDiff(dataStartDate, DateTime.Now);
+
+
+            DateTime monthStart;
+            string monthYear;
+
+            for (int month = totalMonthDiff; month >= 0; month--)
+            {
+
+                monthStart = new DateTime(dataStartDate.AddMonths(month).Year, dataStartDate.AddMonths(month).Month, 1);
+                monthYear = dataStartDate.AddMonths(month).ToString("MMM, yyyy");
+
+                selectMonthYearList.Add(new SelectListItem
+                {
+                    Value = monthStart.ToString("yyyy-MM-dd"),
+                    Text = monthYear
+                });
+            }
+
+
+            return selectMonthYearList;
+        }
+
         public ActionResult FilterUnit(string departmentID)
         {
             List<UnitModel> unitList = new List<UnitModel>();
@@ -722,14 +786,6 @@ namespace MyTime.Controllers
             return Json(unitList, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult _UpdateAttendanceCardStatus(string ID)
-        {
-
-            UserModel userModel = new UserModel();
-            userModel = userDBService.GetDataByID(ID);
-
-            return PartialView(userModel);
-        }
 
     }
 

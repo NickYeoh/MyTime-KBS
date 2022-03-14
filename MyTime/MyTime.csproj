@@ -173,7 +173,7 @@
     <Compile Include="Models\AccessRoleModel.cs" />
     <Compile Include="Models\AnnouncementModel.cs" />
     <Compile Include="Models\AttendanceAnalysisModel.cs" />
-    <Compile Include="Models\AttendanceCardStatusModel.cs" />
+    <Compile Include="Models\AttendanceCardModel.cs" />
     <Compile Include="Models\AttendanceStatisticsModel.cs" />
     <Compile Include="Models\AttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceAnalysisModel.cs" />
@@ -820,6 +820,7 @@
     <Content Include="Views\AttendanceStatistics\Index.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\User\_ListDeviceUser.cshtml" />
+    <Content Include="Views\User\_UpdateAttendanceCardStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,143 @@
+﻿
+@model MyTime.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = MyTime.Resource.User + " :: " + MyTime.Resource.UpdateAttendanceCardStatus;
+    Layout = null;
+}
+
+<div class="modal-content">
+
+    <div id="divForm" class="d-flex justify-content-center">
+
+        <div class="card shadow" style="width:496px;">
+            <div class="card-header bg-transparent">
+                <h6> @ViewBag.Title</h6>
+            </div>
+            <div class="card-body">
+
+                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    AllowCache = false,
+                    HttpMethod = "POST",
+                    OnSuccess = "UpdateAttendanceCardStatusProcess",
+                    //OnSuccess = "onSuccess",
+                    UpdateTargetId = "divForm",
+                    LoadingElementId = "divSpinner",
+                },
+                new { @id = "formUpdateAttendanceCardStatus" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.UserModel.UserName, htmlAttributes: new { @class = "control-label col-md-12" })
+
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.UserModel.UserName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.UserModel.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.UserModel.NRIC, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.UserModel.NRIC, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.UserModel.NRIC, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12 d-flex text-left">
+                                <div>
+                                    @Html.Label(MyTime.Resource.Month, htmlAttributes: new { @class = "control-label col-md-12 required p-0" })
+
+                                    <div>
+                                        @Html.DropDownList("MonthYear", Model.SelectListMonthYear as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @style = "width:100px;", @class = "form-control", @id = "ddlMonthYear" })
+                                    </div>
+                                </div>
+                                <div class="pl-4">
+                                    @Html.Label(MyTime.Resource.AttendanceCardColour, htmlAttributes: new { @class = "control-label col-md-12 required p-0" })
+
+                                    <div class="pt-2">
+
+                                        <span>
+                                            @Html.RadioButton("AttendanceCardStatus", "YL", true) @MyTime.Resource.Colour_Yellow
+
+                                            <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'>
+                                            </i>
+
+                                        </span>
+
+                                        <span class="pl-4">
+                                            @Html.RadioButton("AttendanceCardStatus", "GN", false) @MyTime.Resource.Colour_Green
+                                            <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'>
+                                            </i>
+                                        </span>
+                                        <span class="pl-4">
+                                            @Html.RadioButton("AttendanceCardStatus", "RD", false) @MyTime.Resource.Colour_Red
+                                            <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'>
+                                            </i>
+                                        </span>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+
+                                <input id="btnUpdate" type="button" value="@MyTime.Resource.Update" class="btn btn-primary text-center" style="width:80px;" />
+                                <span class="pl-1"></span>
+                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning text-center" style="width:80px;" />
+
+                            </div>
+                        </div>
+
+                        <div class="row pt-3">
+
+                            <div id="divAttendanceCardStatusList" class="col-md-12">
+
+                                <table id="listAttendanceCardStatusDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                                    <thead>
+                                        <tr class="text-white header-bg-color">
+                                            <th></th>
+                                            <th>@MyTime.Resource.NRIC</th>
+                                            <th>@MyTime.Resource.AttendanceMonth</th>
+                                            <th>@MyTime.Resource.AttendanceCardColour</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
