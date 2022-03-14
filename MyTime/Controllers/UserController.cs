@@ -614,7 +614,7 @@ namespace MyTime.Controllers
         }
 
        
-        public ActionResult _UpdateAttendanceCardStatus(string NRIC, string userName)
+        public ActionResult _ListAttendanceCardStatus(string NRIC, string userName)
         {
             SystemDBService systemDBService = new SystemDBService();
 
@@ -630,20 +630,24 @@ namespace MyTime.Controllers
          
             userViewModel.UserModel = userModel;
 
-            // Year, Month and AttendanceCardStatus
-
-            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
-            attendanceCardList = userDBService.GetAttendanceCardList(NRIC);
-            userViewModel.AttendanceCardList = attendanceCardList;
-
+            // Year, Month and AttendanceCardStatus           
             systemModel = systemDBService.GetData();
             dataStartDate = systemModel.DataStartDate;
 
-            userViewModel.SelectListMonthYear = PrepareSelectMonthYearList(dataStartDate);                     
-
-            
-            
+            userViewModel.SelectListMonthYear = PrepareSelectMonthYearList(dataStartDate);                    
+                                   
             return PartialView(userViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult GetAttendanceCardStatusData(string NRIC)
+        {
+
+            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
+            attendanceCardList = userDBService.GetAttendanceCardList(NRIC);
+          
+            return Json(attendanceCardList, JsonRequestBehavior.AllowGet);
         }
 
 

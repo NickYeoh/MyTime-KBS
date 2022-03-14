@@ -67,7 +67,7 @@
         </div>
 
         @*<div id="divCRUD" class="col-md-6 hide">
-        </div>*@
+            </div>*@
     </div>
 </div>
 
@@ -208,11 +208,11 @@
 
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
-                                    return "<a href='#'  onclick='UpdateAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
                                 case 'GR':
-                                    return "<a href='#'  onclick='UpdateAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i></a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i></a>";
                                 case 'RD':
-                                    return "<a href='#'  onclick='UpdateAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
                             }
                         }
                     },
@@ -284,6 +284,68 @@
             });
 
         });
+
+        function initializeListAttendanceCardStatusDatatable(NRIC) {
+
+         listAttendanceCardStatusDatatable = $('#listAttendanceCardStatusDatatable').DataTable({
+            //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-12 text-right"p>><"row pt-2"<"col-md-12 text-right"l>>>>',
+            dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-12 d-flex justify-content-end text-left"l>"<"col-md-12 d-flex justify-content-end text-left"p>>>>',
+            buttons:
+                        [
+                            {
+                                text: '\uf067', className: 'myTableButton',
+                                action: function (e, dt, node, config) {
+
+                                  /*  SelectNewDeviceProcess(id, true);*/
+                                }
+                            }
+                        ],
+
+                    autoWidth: false,
+                    scrollX: true,
+                    scrollY: true,
+                    language: {
+
+                        "lengthMenu": locale_lengthmenu,
+                        "zeroRecords": locale_norecord,
+                        "info": locale_info,
+                        "infoEmpty": locale_norecord,
+                        "infoFiltered": locale_infofiltered,
+                        "search": locale_search,
+                        "paginate": {
+                            "first": locale_first,
+                            "previous": locale_previous,
+                            "next": locale_next,
+                            "last": locale_last
+                        }
+
+                    },
+                    ajax: {
+                        url: '/User/GetAttendanceCardStatusData/' + NRIC,
+                        type: "POST",
+                        datatype: "json",
+                        dataSrc: ''
+                    },
+                    rowId: 'NRIC',
+                    columns: [
+                        {
+                            "render": function (data, type, full, meta) {
+                                //return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full..NRIC + '", "' + full.YearMonth + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+                            }
+                        },
+                        { "data": 'NRIC' },
+                        { "data": 'YearMonth' },
+                        { "data": 'AttendanceCardStatus' }
+                    ],
+                    columnDefs: [
+                        { targets: 0, className: 'text-center', width: '15px', orderable: false },
+                        { targets: 1, className: 'text-left', width: '150px', orderable: true, visible: false },
+                        { targets: 2, className: 'text-left', width: '150px', orderable: true, visible : false },
+                        { targets: 3, className: 'text-left', width: '250px', orderable: true }
+                    ],
+                order: [[1, 'asc']]
+            });
+        };
 
         function DeletePassword(id) {
 
@@ -401,12 +463,7 @@
             });
     };
 
-    function UpdateAttendanceCardStatusProcess(NRIC, UserName) {
-
-        //var NRIC = data.NRIC;
-        //var userName = data.UserName;
-
-        /*alert(userName);*/
+    function ListAttendanceCardStatusProcess(NRIC, UserName) {
 
         document.getElementById('pid').value = 'update attendance card status';
 
@@ -415,12 +472,14 @@
         $.ajax({
             datatype: 'text/plain',
             type: 'GET',
-            url: 'User/_UpdateAttendanceCardStatus',
+            url: 'User/_ListAttendanceCardStatus',
             data: { NRIC: NRIC, userName: UserName },
             cache: false,
             success: function (data) {
 
                 $('#divCRUD').html(data);
+
+                initializeListAttendanceCardStatusDatatable(NRIC);
 
                 $('#btnCancel').on('click', function () {
                     unloadDivCRUD();
@@ -573,6 +632,47 @@
 
     };
 
+
+          function ShowConfirmDialog(p1, p2) {
+
+            // p1 : NRIC
+            // p2 : YearMonth
+           
+
+            var titleString = "@MyTime.Resource.MessageConfirmation";
+            var messageString = "<div id='divDialog'>";
+            messageString += "<div class='form-horizontal'>";
+            messageString += "<div class='form-group'>";
+
+            messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.YearMonth</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p3 + "</div>";
+
+            messageString += "</div>";
+            messageString += "</div>";
+            messageString += "</div>";
+
+            bootbox.confirm({
+                title: titleString,
+                message: messageString,
+                backdrop: true,
+                buttons: {
+                    cancel: {
+                        className:'btn-warning',
+                        label: ' @MyTime.Resource.No'
+                    },
+                    confirm: {
+                        className: 'btn-danger',
+                        label: ' @MyTime.Resource.Delete'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        //DeleteAccessRoleDevice(p1, p2);
+                    }
+                }
+            });
+
+        };
 
 
         function onSuccessProcess(result, status, xhr) {

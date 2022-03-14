@@ -178,6 +178,11 @@ namespace MyTime.Controllers
             Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             stream.Seek(0, SeekOrigin.Begin);
 
+
+            report.Close();
+            report.Dispose();
+
+
             return File(stream, "application/pdf", "Laporan Kedatangan Harian.pdf");
 
         }

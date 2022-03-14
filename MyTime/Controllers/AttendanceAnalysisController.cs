@@ -104,6 +104,10 @@ namespace MyTime.Controllers
             Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             stream.Seek(0, SeekOrigin.Begin);
 
+            report.Close();
+            report.Dispose();
+
+
             if (reportType.Equals("Monthly"))
             {
                 return File(stream, "application/pdf", "Laporan Analisis Kedatangan Bulanan.pdf");
