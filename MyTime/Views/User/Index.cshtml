@@ -88,7 +88,32 @@
     @*@Scripts.Render("~/bundles/custom-js")*@
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
+
+        //var locale_norecord = '';
+        //var locale_lengthmenu = '';
+        //var locale_info = '';
+        //var locale_search = '';
+        //var locale_first = '';
+        //var locale_previous = '';
+        //var locale_next = '';
+        //var locale_last = '';
+        //var locale_infofiltered = '';
+        //var locale_rowselected = '';
+
+        var locale_norecord = '';
+        var locale_lengthmenu = '';
+        var locale_info = '';
+        var locale_search = '';
+        var locale_first = '';
+        var locale_previous = '';
+        var locale_next = '';
+        var locale_last = '';
+        var locale_infofiltered = '';
+        var locale_rowselected = '';
+
+        var listDatatable;
+        var listAttendanceCardDatatable;
 
         $(document).ready(function () {
 
@@ -96,58 +121,68 @@
             unloadSpinner();
             showDivBody();
 
-            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+            setDataTableLocale();
+            initializeListDataTable();
 
-            var locale_norecord = '';
-            var locale_lengthmenu = '';
-            var locale_info = '';
-            var locale_search = '';
-            var locale_first = '';
-            var locale_previous = '';
-            var locale_next = '';
-            var locale_last = '';
-            var locale_infofiltered = '';
 
-            if (culture != 'ms-MY') {
-                locale_norecord = '- No record -';
-                locale_lengthmenu = 'Display _MENU_';
-                //locale_info = 'Showing page _PAGE_ of _PAGES_';
-                locale_info = 'Record# _START_~_END_  of _TOTAL_';
-                locale_search = '';
 
-                locale_infofiltered = '';
+        });
 
-                locale_first = 'First';
-                locale_previous = 'Previous';
-                locale_next = 'Next';
-                locale_last = 'Last';
-            }
-            else {
-                locale_norecord = '- Tidak ada rekod -';
-                locale_lengthmenu = 'Paparan _MENU_ ';
-                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
-                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
-                //locale_search = '';
+           function setDataTableLocale() {
 
-                locale_infofiltered = '';
+                var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
 
-                locale_first = 'Pertama';
-                locale_previous = 'Sebelumnya';
-                locale_next = 'Seterusnya';
-                locale_last = 'Terakhir';
+                if (culture != 'ms-MY') {
+                    locale_norecord = '- No record -';
+                    //locale_norecord = '-';
+                    locale_lengthmenu = 'Display _MENU_';
+                    //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                    locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                    locale_search = '';
 
-            };
+                    locale_infofiltered = '';
 
-            function convertToDate(data) {
+                    locale_first = 'First';
+                    locale_previous = 'Previous';
+                    locale_next = 'Next';
+                    locale_last = 'Last';
 
-                var dte = new Date(parseInt(data.substr(6)));
-                var dteWrapper = moment(dte);
-                return dteWrapper.format("DD/MM/YYYY");
-            };
+                    locale_rowselected = ' ( Selected %d records ) ';
+                }
+                else {
+                    locale_norecord = '- Tidak ada rekod -';
+                    //locale_norecord = '-';
+                    locale_lengthmenu = 'Paparan _MENU_ ';
+                    //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                    locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                    //locale_search = '';
+
+                    locale_infofiltered = '';
+
+                    locale_first = 'Pertama';
+                    locale_previous = 'Sebelumnya';
+                    locale_next = 'Seterusnya';
+                    locale_last = 'Terakhir';
+
+                    locale_rowselected = ' ( Telah Pilih %d rekod ) ';
+
+                };
+
+    };
+
+    function convertToDate(data) {
+
+        var dte = new Date(parseInt(data.substr(6)));
+        var dteWrapper = moment(dte);
+        return dteWrapper.format("DD/MM/YYYY");
+    };
+
+
+    function initializeListDataTable() {
 
             var isResigned = false;
 
-            var customDatatable = $('#listDatatable').DataTable({
+            listDatatable = $('#listDatatable').DataTable({
                 //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-6"B><"col-md-6 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
                 dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
                 buttons:
@@ -208,11 +243,11 @@
 
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
-                                    return "<a href='#'  onclick='ListAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
                                 case 'GR':
-                                    return "<a href='#'  onclick='ListAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i></a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i></a>";
                                 case 'RD':
-                                    return "<a href='#'  onclick='ListAttendanceCardStatusProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
                             }
                         }
                     },
@@ -283,69 +318,64 @@
                 order: [[4, 'asc']]
             });
 
-        });
-
-        function initializeListAttendanceCardStatusDatatable(NRIC) {
-
-         listAttendanceCardStatusDatatable = $('#listAttendanceCardStatusDatatable').DataTable({
-            //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-12 text-right"p>><"row pt-2"<"col-md-12 text-right"l>>>>',
-            dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-12 d-flex justify-content-end text-left"l>"<"col-md-12 d-flex justify-content-end text-left"p>>>>',
-            buttons:
-                        [
-                            {
-                                text: '\uf067', className: 'myTableButton',
-                                action: function (e, dt, node, config) {
-
-                                  /*  SelectNewDeviceProcess(id, true);*/
-                                }
-                            }
-                        ],
-
-                    autoWidth: false,
-                    scrollX: true,
-                    scrollY: true,
-                    language: {
-
-                        "lengthMenu": locale_lengthmenu,
-                        "zeroRecords": locale_norecord,
-                        "info": locale_info,
-                        "infoEmpty": locale_norecord,
-                        "infoFiltered": locale_infofiltered,
-                        "search": locale_search,
-                        "paginate": {
-                            "first": locale_first,
-                            "previous": locale_previous,
-                            "next": locale_next,
-                            "last": locale_last
-                        }
-
-                    },
-                    ajax: {
-                        url: '/User/GetAttendanceCardStatusData/' + NRIC,
-                        type: "POST",
-                        datatype: "json",
-                        dataSrc: ''
-                    },
-                    rowId: 'NRIC',
-                    columns: [
-                        {
-                            "render": function (data, type, full, meta) {
-                                //return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full..NRIC + '", "' + full.YearMonth + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
-                            }
-                        },
-                        { "data": 'NRIC' },
-                        { "data": 'YearMonth' },
-                        { "data": 'AttendanceCardStatus' }
-                    ],
-                    columnDefs: [
-                        { targets: 0, className: 'text-center', width: '15px', orderable: false },
-                        { targets: 1, className: 'text-left', width: '150px', orderable: true, visible: false },
-                        { targets: 2, className: 'text-left', width: '150px', orderable: true, visible : false },
-                        { targets: 3, className: 'text-left', width: '250px', orderable: true }
-                    ],
-                order: [[1, 'asc']]
-            });
         };
+
+
+        function initializeListAttendanceCardDatatable(NRIC) {
+
+
+            listAttendanceCardDatatable = $('#listAttendanceCardDatatable').DataTable({
+                 dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-12 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-12 d-flex justify-content-end text-left"l>"<"col-md-12 d-flex justify-content-end text-left"p>>>>',
+              
+                        autoWidth: false,
+                        scrollX: true,
+                        scrollY: true,
+                        language: {
+
+                            "lengthMenu": locale_lengthmenu,
+                            "zeroRecords": locale_norecord,
+                            "info": locale_info,
+                            "infoEmpty": locale_norecord,
+                            "infoFiltered": locale_infofiltered,
+                            "search": locale_search,
+                                "paginate": {
+                                    "first": locale_first,
+                                    "previous": locale_previous,
+                                    "next": locale_next,
+                                    "last": locale_last
+                                }
+                        },             
+                        ajax: {
+                            url: '/User/GetAttendanceCardData/',
+                            data: { nric: NRIC },
+                            type: "POST",
+                            datatype: "json",
+                            dataSrc: ''
+                        },
+                        rowId: 'NRIC',
+                        columns: [
+                            {
+                                "render": function (data, type, full, meta) {
+                                    return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.NRIC + '", "' + full.YearMonth + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+                                }
+                            },
+                            { "data": 'NRIC' },
+                            { "data": 'YearMonth' },
+                            { "data": 'AttendanceCardStatus' }
+                        ],
+                        columnDefs: [
+                            { targets: 0, className: 'text-center', width: '15px', orderable: false },
+                            { targets: 1, className: 'text-left', width: '150px', orderable: true, visible: false },
+                            { targets: 2, className: 'text-left', width: '150px', orderable: true},
+                            { targets: 3, className: 'text-left', width: '250px', orderable: true }
+                        ],
+                    order: [[2, 'asc']]
+             });
+
+            
+        };
+
+
 
         function DeletePassword(id) {
 
@@ -364,7 +394,9 @@
 
                          $('#btnCancel').on('click', function () {
                             unloadDivCRUD();
-                        });
+                         });
+
+
                     }
             });
 
@@ -463,27 +495,30 @@
             });
     };
 
-    function ListAttendanceCardStatusProcess(NRIC, UserName) {
+    function ListAttendanceCardProcess(NRIC, UserName) {
 
-        document.getElementById('pid').value = 'update attendance card status';
+     
+        document.getElementById('pid').value = 'list attendance card';
 
         loadDivCRUD();
 
         $.ajax({
             datatype: 'text/plain',
             type: 'GET',
-            url: 'User/_ListAttendanceCardStatus',
-            data: { NRIC: NRIC, userName: UserName },
+            url: 'User/_ListAttendanceCard',
+            data: { nric: NRIC, userName: UserName },
             cache: false,
             success: function (data) {
 
                 $('#divCRUD').html(data);
-
-                initializeListAttendanceCardStatusDatatable(NRIC);
+                           
+                initializeListAttendanceCardDatatable(NRIC);
 
                 $('#btnCancel').on('click', function () {
                     unloadDivCRUD();
                 });
+
+
             }
         });
     };
@@ -637,7 +672,7 @@
 
             // p1 : NRIC
             // p2 : YearMonth
-           
+
 
             var titleString = "@MyTime.Resource.MessageConfirmation";
             var messageString = "<div id='divDialog'>";
@@ -735,7 +770,7 @@
             }
 
         };
-</script>
+    </script>
 }
 
 

@@ -820,7 +820,7 @@
     <Content Include="Views\AttendanceStatistics\Index.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\User\_ListDeviceUser.cshtml" />
-    <Content Include="Views\User\_ListAttendanceCardStatus.cshtml" />
+    <Content Include="Views\User\_ListAttendanceCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

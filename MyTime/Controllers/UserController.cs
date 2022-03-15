@@ -614,7 +614,7 @@ namespace MyTime.Controllers
         }
 
        
-        public ActionResult _ListAttendanceCardStatus(string NRIC, string userName)
+        public ActionResult _ListAttendanceCard(string nric, string userName)
         {
             SystemDBService systemDBService = new SystemDBService();
 
@@ -625,7 +625,7 @@ namespace MyTime.Controllers
             // User Model
             UserModel userModel = new UserModel();
 
-            userModel.NRIC = NRIC;
+            userModel.NRIC = nric;
             userModel.UserName = userName;
          
             userViewModel.UserModel = userModel;
@@ -639,14 +639,15 @@ namespace MyTime.Controllers
             return PartialView(userViewModel);
         }
 
+              
 
         [HttpPost]
-        public ActionResult GetAttendanceCardStatusData(string NRIC)
+        public ActionResult GetAttendanceCardData(string nric)
         {
 
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
-            attendanceCardList = userDBService.GetAttendanceCardList(NRIC);
-          
+            attendanceCardList = userDBService.GetAttendanceCardList(nric);
+            
             return Json(attendanceCardList, JsonRequestBehavior.AllowGet);
         }
 

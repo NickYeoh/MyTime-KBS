@@ -21,12 +21,12 @@
                     InsertionMode = InsertionMode.Replace,
                     AllowCache = false,
                     HttpMethod = "POST",
-                    OnSuccess = "UpdateAttendanceCardStatusProcess",
+                    OnSuccess = "ListAttendanceCardProcess",
                     //OnSuccess = "onSuccess",
                     UpdateTargetId = "divForm",
                     LoadingElementId = "divSpinner",
                 },
-                new { @id = "formUpdateAttendanceCardStatus" }
+                new { @id = "formListAttendanceCard" }
                 ))
                 {
                     @Html.AntiForgeryToken()
@@ -104,9 +104,10 @@
 
                         <div class="row pt-3">
 
-                            <div id="divAttendanceCardStatusList" class="col-md-12">
+                            <div id="divAttendanceCardList" class="col-md-12">
+                                                             
 
-                                <table id="listAttendanceCardStatusDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                                <table id="listAttendanceCardDatatable" class="table table-striped hover" style="table-layout: fixed;">
                                     <thead>
                                         <tr class="text-white header-bg-color">
                                             <th></th>
