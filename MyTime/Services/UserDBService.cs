@@ -203,7 +203,7 @@ namespace MyTime.Services
 
                         if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
                         {
-                            userModel.AttendanceCardStatus= dr["AttendanceCardStatus"].ToString();
+                            userModel.AttendanceCardStatus = dr["AttendanceCardStatus"].ToString();
                         }
 
                         dataList.Add(userModel);
@@ -432,6 +432,121 @@ namespace MyTime.Services
 
         }
 
+        public bool UpdateAttendanceCard(string NRIC, string monthYear, string AttendanceCardStatus)
+        {
+            bool status = false;
+
+            //// convert to Date
+            DateTime startOn;
+            DateTime.TryParse(monthYear, out startOn);
+            string yearMonth = startOn.ToString("yyyyMM");
+
+
+            // Delete
+            try
+            {
+                string sql = $@"DELETE FROM AttendanceCard";
+                sql += " " + $@"WHERE NRIC='{NRIC}' AND YearMonth='{yearMonth}'";
+            
+
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.ExecuteNonQuery();
+
+                conn.Close();
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            // Insert
+            try
+            {
+                string sql = $@"INSERT INTO AttendanceCard";
+                sql += " " + $@"(NRIC, YearMonth, AttendanceCardStatus)";
+                sql += " " + "VALUES";
+                sql += " " + $@"('{NRIC}', '{yearMonth}' , '{AttendanceCardStatus}')";
+
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                if (!cmd.ExecuteNonQuery().Equals(0))
+                {
+                    status = true;
+
+                    string logData = $@"{NRIC},  {yearMonth}, {AttendanceCardStatus}";
+
+                    logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "User", $@"Update Attendance Card; {logData}", DateTime.Now);
+                }
+
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return status;
+
+        }
+
+        public bool DeleteAttendanceCard(string NRIC, string yearMonth)
+        {
+            bool status = false;
+            
+            // Delete
+            try
+            {
+                string sql = $@"DELETE FROM AttendanceCard";
+                sql += " " + $@"WHERE NRIC='{NRIC}' AND YearMonth='{yearMonth}'";
+
+
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.ExecuteNonQuery();
+
+                conn.Close();
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return status;
+
+        }
+
+
         public bool Delete(UserModel userModel)
         {
 
@@ -609,7 +724,7 @@ namespace MyTime.Services
 
             try
             {
-                            
+
                 conn.Open();
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -1235,7 +1350,7 @@ namespace MyTime.Services
         }
 
 
-        public List<AttendanceCardModel> GetAttendanceCardList(string ID)
+        public List<AttendanceCardModel> GetAttendanceCardByID(string ID)
         {
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
             AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
@@ -1244,7 +1359,7 @@ namespace MyTime.Services
             sql += " " + $@"FROM AttendanceCard";
             sql += " " + $@"WHERE NRIC='{ID}'";
             sql += " " + $@"ORDER BY NRIC, YearMonth";
-           
+
 
             try
             {
@@ -1262,7 +1377,7 @@ namespace MyTime.Services
                         attendanceCardModel = new AttendanceCardModel();
 
                         attendanceCardModel.NRIC = ID;
-                    
+
                         if (!dr["YearMonth"].Equals(DBNull.Value))
                         {
                             attendanceCardModel.YearMonth = dr["YearMonth"].ToString();

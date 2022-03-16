@@ -45,7 +45,7 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.UserModel.NRIC, htmlAttributes: new { @class = "control-label col-md-12" })
                             <div class="col-md-12">
-                                @Html.EditorFor(model => model.UserModel.NRIC, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                                @Html.EditorFor(model => model.UserModel.NRIC, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly", @id = "lblNRIC" } })
                                 @Html.ValidationMessageFor(model => model.UserModel.NRIC, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -60,27 +60,31 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    @Html.Label(MyTime.Resource.AttendanceCardColour, htmlAttributes: new { @class = "control-label col-md-12 required p-0" })
+                                    @Html.Label(MyTime.Resource.AttendanceCardStatus, htmlAttributes: new { @class = "control-label col-md-12 required p-0" })
 
                                     <div class="pt-2">
 
                                         <span>
-                                            @Html.RadioButton("AttendanceCardStatus", "YL", true) @MyTime.Resource.Colour_Yellow
+                                            @Html.RadioButton("AttendanceCardStatus", "YL", true)
 
                                             <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'>
                                             </i>
 
+                                            @MyTime.Resource.Colour_Yellow
+
                                         </span>
 
                                         <span class="pl-4">
-                                            @Html.RadioButton("AttendanceCardStatus", "GN", false) @MyTime.Resource.Colour_Green
+                                            @Html.RadioButton("AttendanceCardStatus", "GN", false)
                                             <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'>
                                             </i>
+                                            @MyTime.Resource.Colour_Green
                                         </span>
                                         <span class="pl-4">
-                                            @Html.RadioButton("AttendanceCardStatus", "RD", false) @MyTime.Resource.Colour_Red
+                                            @Html.RadioButton("AttendanceCardStatus", "RD", false)
                                             <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'>
                                             </i>
+                                            @MyTime.Resource.Colour_Red
                                         </span>
 
 
@@ -93,7 +97,7 @@
 
 
                         <div class="form-group row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-center">
 
                                 <input id="btnUpdate" type="button" value="@MyTime.Resource.Update" class="btn btn-primary text-center" style="width:80px;" />
                                 <span class="pl-1"></span>
@@ -111,8 +115,9 @@
                                         <tr class="text-white header-bg-color">
                                             <th></th>
                                             <th>@MyTime.Resource.NRIC</th>
+                                            <th></th>
                                             <th>@MyTime.Resource.AttendanceMonth</th>
-                                            <th>@MyTime.Resource.AttendanceCardColour</th>
+                                            <th>@MyTime.Resource.AttendanceCardStatus</th>
                                         </tr>
                                     </thead>
                                 </table>

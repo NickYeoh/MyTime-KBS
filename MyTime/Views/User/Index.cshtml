@@ -88,7 +88,7 @@
     @*@Scripts.Render("~/bundles/custom-js")*@
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         //var locale_norecord = '';
         //var locale_lengthmenu = '';
@@ -117,14 +117,13 @@
 
         $(document).ready(function () {
 
+
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
 
             setDataTableLocale();
             initializeListDataTable();
-
-
 
         });
 
@@ -244,7 +243,7 @@
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
                                     return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>  </a>";
-                                case 'GR':
+                                case 'GN':
                                     return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i></a>";
                                 case 'RD':
                                     return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>  </a>";
@@ -326,7 +325,7 @@
 
             listAttendanceCardDatatable = $('#listAttendanceCardDatatable').DataTable({
                  dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-12 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-12 d-flex justify-content-end text-left"l>"<"col-md-12 d-flex justify-content-end text-left"p>>>>',
-              
+
                         autoWidth: false,
                         scrollX: true,
                         scrollY: true,
@@ -344,7 +343,7 @@
                                     "next": locale_next,
                                     "last": locale_last
                                 }
-                        },             
+                        },
                         ajax: {
                             url: '/User/GetAttendanceCardData/',
                             data: { nric: NRIC },
@@ -356,23 +355,102 @@
                         columns: [
                             {
                                 "render": function (data, type, full, meta) {
-                                    return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.NRIC + '", "' + full.YearMonth + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+
+                                    return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.NRIC + '", "' + full.YearMonth + '","' + full.AttendanceCardStatus + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
                                 }
                             },
                             { "data": 'NRIC' },
                             { "data": 'YearMonth' },
-                            { "data": 'AttendanceCardStatus' }
+                            {
+                                "data": 'YearMonth',
+                                "className": "text-left",
+                                "render": function (data, type, row) {
+
+                                    var year = data.substr(0, 4);
+                                    var month = data.substr(4, 2)
+
+                                    var yearMonth;
+
+                                    switch (month) {
+                                        case '01':
+                                            yearMonth = '@MyTime.Resource.Month_Jan, ' + year;
+                                            break;
+                                         case '02':
+                                            yearMonth = '@MyTime.Resource.Month_Feb, ' + year;
+                                            break;
+                                         case '03':
+                                            yearMonth = '@MyTime.Resource.Month_Mar, ' + year;
+                                            break;
+                                         case '04':
+                                            yearMonth = '@MyTime.Resource.Month_Apr, ' + year;
+                                            break;
+                                         case '05':
+                                            yearMonth = '@MyTime.Resource.Month_May, ' + year;
+                                            break;
+                                         case '06':
+                                            yearMonth = '@MyTime.Resource.Month_Jun, ' + year;
+                                            break;
+                                         case '07':
+                                            yearMonth = '@MyTime.Resource.Month_Jul, ' + year;
+                                            break;
+                                         case '08':
+                                            yearMonth = '@MyTime.Resource.Month_Aug, ' + year;
+                                            break;
+                                         case '09':
+                                            yearMonth = '@MyTime.Resource.Month_Sep, ' + year;
+                                            break;
+                                         case '10':
+                                            yearMonth = '@MyTime.Resource.Month_Oct, ' + year;
+                                            break;
+                                         case '11':
+                                            yearMonth = '@MyTime.Resource.Month_Nov, ' + year;
+                                            break;
+                                         case '12':
+                                            yearMonth = '@MyTime.Resource.Month_Dec, ' + year;
+                                            break;
+                                        default:
+
+                                    }
+
+
+
+                                    return yearMonth;
+
+                                }
+                            },
+                            {
+                                "data": "AttendanceCardStatus",
+                                "className": "text-left",
+                                "render": function (data, type, row) {
+
+                                    switch (data) {
+                                        case 'YL':
+                                            return "<i class='icofont-address-book pr-1' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow";
+                                            break;
+                                        case 'GN':
+                                            return "<i class='icofont-address-book pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                            break;
+                                        case 'RD':
+                                            return "<i class='icofont-address-book pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                            break;
+                                        default:
+                                            return "<i class='icofont-address-book pr-1' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow";
+                                    }
+
+                                }
+                            }
                         ],
                         columnDefs: [
                             { targets: 0, className: 'text-center', width: '15px', orderable: false },
                             { targets: 1, className: 'text-left', width: '150px', orderable: true, visible: false },
-                            { targets: 2, className: 'text-left', width: '150px', orderable: true},
-                            { targets: 3, className: 'text-left', width: '250px', orderable: true }
+                            { targets: 2, className: 'text-left', width: '80px', orderable: true, visible: false  },
+                            { targets: 3, className: 'text-left', width: '80px', orderable: true},
+                            { targets: 4, className: 'text-left', width: '250px', orderable: true }
                         ],
-                    order: [[2, 'asc']]
+                    order: [[2, 'des']]
              });
 
-            
+
         };
 
 
@@ -497,7 +575,7 @@
 
     function ListAttendanceCardProcess(NRIC, UserName) {
 
-     
+
         document.getElementById('pid').value = 'list attendance card';
 
         loadDivCRUD();
@@ -511,17 +589,133 @@
             success: function (data) {
 
                 $('#divCRUD').html(data);
-                           
+
                 initializeListAttendanceCardDatatable(NRIC);
+
+                // Overcome the bootbox after closed issue
+                $(document).on('hidden.bs.modal', '.bootbox.modal', function (e) {
+                    if ($(".modal").hasClass('show')) {
+                        $('body').addClass('modal-open');
+                    }
+                })
+
+                $('#btnUpdate').prop('disabled', true);
+
+                $('#ddlMonthYear').change(function () {
+
+                    var monthYear;
+
+                    $('#ddlMonthYear option:selected').each(function () {
+                        monthYear = $(this)[0].value;
+
+                        if (monthYear != '') {
+                            $('#btnUpdate').prop('disabled', false);
+                        }
+                        else {
+                            $('#btnUpdate').prop('disabled', true);
+                        }
+                    });
+
+                });
+
+                $('#btnUpdate').on('click', function () {
+
+                    loadSpinner();
+
+                    var NRIC = $("#lblNRIC").val();
+                    var monthYear = $("#ddlMonthYear option:selected").val();
+                    var attendanceCardStatus = $("input[name='AttendanceCardStatus']:checked").val();
+
+                    $.ajax({
+                        datatype: 'text/plain',
+                        type: 'GET',
+                        url: 'User/UpdateAttendanceCard',
+                        data: { NRIC: NRIC, monthYear: monthYear, attendanceCardStatus: attendanceCardStatus},
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+
+                            unloadSpinner();
+
+                            if (data != null) {
+
+                                $('#listAttendanceCardDatatable').DataTable().ajax.reload(null, false);                            
+
+                                var messageString = '@MyTime.Resource.MessageSuccessUpdate';
+
+                                  bootbox.alert({
+                                        title: '@MyTime.Resource.MessageInfo',
+                                        message: messageString,                                        
+                                        backdrop: true,
+                                        buttons: {
+                                                    ok: {
+                                                      className:'btn-primary',
+                                                      label: ' @MyTime.Resource.Close'
+                                            }
+                                        },
+                                      callback: function () {
+
+                                          $('#divForm').show();
+                                        }
+                                  });
+
+                           
+
+                     
+
+                            }
+
+
+
+
+                        }
+                    });
+
+                });
 
                 $('#btnClose').on('click', function () {
                     unloadDivCRUD();
                 });
 
 
+
+
             }
         });
-    };
+        };
+
+        function DeleteAttendanceCard(NRIC, yearMonth) {
+
+            document.getElementById('pid').value = 'delete attendance card';
+
+            loadDivCRUD();
+
+            $.ajax({
+                datatype: 'text/plain',
+                type: 'GET',
+                url: 'User/DeleteAttendanceCard',
+                data: { nric: NRIC, yearMonth: yearMonth },
+                cache: false,
+                success: function (data) {
+
+                    unloadSpinner();
+
+                    if (data != null) {
+
+
+
+                        $('#listAttendanceCardDatatable').DataTable().ajax.reload(null, false);
+
+
+
+
+                    }
+
+
+                }
+            });
+
+        }
 
 
     function SearchDeviceUserProcess() {
@@ -668,10 +862,71 @@
     };
 
 
-          function ShowConfirmDialog(p1, p2) {
+          function ShowConfirmDialog(p1, p2, p3) {
 
             // p1 : NRIC
             // p2 : YearMonth
+
+
+            var year = p2.substr(0, 4);
+            var month = p2.substr(4, 2)
+            var yearMonth;
+
+            switch (month) {
+                   case '01':
+                       yearMonth = '@MyTime.Resource.Month_Jan, ' + year;
+                       break;
+                   case '02':
+                        yearMonth = '@MyTime.Resource.Month_Feb, ' + year;
+                        break;
+                   case '03':
+                        yearMonth = '@MyTime.Resource.Month_Mar, ' + year;
+                        break;
+                   case '04':
+                        yearMonth = '@MyTime.Resource.Month_Apr, ' + year;
+                        break;
+                   case '05':
+                        yearMonth = '@MyTime.Resource.Month_May, ' + year;
+                        break;
+                   case '06':
+                        yearMonth = '@MyTime.Resource.Month_Jun, ' + year;
+                        break;
+                   case '07':
+                         yearMonth = '@MyTime.Resource.Month_Jul, ' + year;
+                         break;
+                   case '08':
+                         yearMonth = '@MyTime.Resource.Month_Aug, ' + year;
+                         break;
+                   case '09':
+                         yearMonth = '@MyTime.Resource.Month_Sep, ' + year;
+                         break;
+                   case '10':
+                          yearMonth = '@MyTime.Resource.Month_Oct, ' + year;
+                          break;
+                   case '11':
+                          yearMonth = '@MyTime.Resource.Month_Nov, ' + year;
+                          break;
+                   case '12':
+                          yearMonth = '@MyTime.Resource.Month_Dec, ' + year;
+                          break;
+                   default:
+
+              }
+
+              var attendanceCardStatus;
+
+              switch (p3) {
+                  case 'YL':
+                      attendanceCardStatus = '@MyTime.Resource.Colour_Yellow';
+                      break;
+                  case 'GN':
+                      attendanceCardStatus = '@MyTime.Resource.Colour_Green';
+                      break;
+                  case 'RD':
+                      attendanceCardStatus = '@MyTime.Resource.Colour_Red';
+                      break;
+              }
+
 
 
             var titleString = "@MyTime.Resource.MessageConfirmation";
@@ -680,7 +935,10 @@
             messageString += "<div class='form-group'>";
 
             messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.YearMonth</div>";
-            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p3 + "</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + yearMonth + "</div>";
+
+            messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.AttendanceCardStatus</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + attendanceCardStatus  + "</div>";
 
             messageString += "</div>";
             messageString += "</div>";
@@ -702,7 +960,7 @@
                 },
                 callback: function (result) {
                     if (result == true) {
-                        //DeleteAccessRoleDevice(p1, p2);
+                        DeleteAttendanceCard(p1, p2);
                     }
                 }
             });
@@ -770,7 +1028,7 @@
             }
 
         };
-    </script>
+</script>
 }
 
 

@@ -360,6 +360,30 @@ namespace MyTime.Controllers
 
         }
 
+        public ActionResult UpdateAttendanceCard(string NRIC, string monthYear, string attendanceCardStatus)
+        {
+            bool status;
+
+            status = userDBService.UpdateAttendanceCard(NRIC, monthYear, attendanceCardStatus);
+
+            //return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult DeleteAttendanceCard(string NRIC, string yearMonth)
+        {
+            bool status;
+
+            status = userDBService.DeleteAttendanceCard(NRIC, yearMonth);
+
+            //return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult _ListDeviceUser()
         {
             UserViewModel userViewModel = new UserViewModel();
@@ -646,7 +670,7 @@ namespace MyTime.Controllers
         {
 
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
-            attendanceCardList = userDBService.GetAttendanceCardList(nric);
+            attendanceCardList = userDBService.GetAttendanceCardByID(nric);
             
             return Json(attendanceCardList, JsonRequestBehavior.AllowGet);
         }

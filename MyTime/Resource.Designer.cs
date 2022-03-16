@@ -376,6 +376,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance Card Status.
+        /// </summary>
+        public static string AttendanceCardStatus {
+            get {
+                return ResourceManager.GetString("AttendanceCardStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string AttendanceDate {
@@ -1533,6 +1542,114 @@ namespace MyTime {
         public static string Month {
             get {
                 return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apr.
+        /// </summary>
+        public static string Month_Apr {
+            get {
+                return ResourceManager.GetString("Month.Apr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aug.
+        /// </summary>
+        public static string Month_Aug {
+            get {
+                return ResourceManager.GetString("Month.Aug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dec.
+        /// </summary>
+        public static string Month_Dec {
+            get {
+                return ResourceManager.GetString("Month.Dec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feb.
+        /// </summary>
+        public static string Month_Feb {
+            get {
+                return ResourceManager.GetString("Month.Feb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jan.
+        /// </summary>
+        public static string Month_Jan {
+            get {
+                return ResourceManager.GetString("Month.Jan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jul.
+        /// </summary>
+        public static string Month_Jul {
+            get {
+                return ResourceManager.GetString("Month.Jul", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jun.
+        /// </summary>
+        public static string Month_Jun {
+            get {
+                return ResourceManager.GetString("Month.Jun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mar.
+        /// </summary>
+        public static string Month_Mar {
+            get {
+                return ResourceManager.GetString("Month.Mar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May.
+        /// </summary>
+        public static string Month_May {
+            get {
+                return ResourceManager.GetString("Month.May", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nov.
+        /// </summary>
+        public static string Month_Nov {
+            get {
+                return ResourceManager.GetString("Month.Nov", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oct.
+        /// </summary>
+        public static string Month_Oct {
+            get {
+                return ResourceManager.GetString("Month.Oct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sep.
+        /// </summary>
+        public static string Month_Sep {
+            get {
+                return ResourceManager.GetString("Month.Sep", resourceCulture);
             }
         }
         

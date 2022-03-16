@@ -463,6 +463,13 @@
 
                 $('#divCRUD').html(data);
 
+                // Overcome the bootbox after closed issue
+                $(document).on('hidden.bs.modal', '.bootbox.modal', function (e) {
+                    if ($(".modal").hasClass('show')) {
+                        $('body').addClass('modal-open');
+                    }
+                })
+
                 initializeListAccessRoleDeviceDatatable(id);
                 initializeListAccessRoleOvertimeDeviceDatatable(id);
                 //GenerateAccessRoleDeviceList();

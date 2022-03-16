@@ -1032,4 +1032,43 @@
   <data name="AttendanceCard" xml:space="preserve">
     <value>Kad Kedatangan</value>
   </data>
+  <data name="AttendanceCardStatus" xml:space="preserve">
+    <value>Status Kad Kedatangan</value>
+  </data>
+  <data name="Month.Apr" xml:space="preserve">
+    <value>Apr</value>
+  </data>
+  <data name="Month.Aug" xml:space="preserve">
+    <value>Ogo</value>
+  </data>
+  <data name="Month.Dec" xml:space="preserve">
+    <value>Dis</value>
+  </data>
+  <data name="Month.Feb" xml:space="preserve">
+    <value>Feb</value>
+  </data>
+  <data name="Month.Jan" xml:space="preserve">
+    <value>Jan</value>
+  </data>
+  <data name="Month.Jul" xml:space="preserve">
+    <value>Jul</value>
+  </data>
+  <data name="Month.Jun" xml:space="preserve">
+    <value>Jun</value>
+  </data>
+  <data name="Month.Mar" xml:space="preserve">
+    <value>Mac</value>
+  </data>
+  <data name="Month.May" xml:space="preserve">
+    <value>Mei</value>
+  </data>
+  <data name="Month.Nov" xml:space="preserve">
+    <value>Nov</value>
+  </data>
+  <data name="Month.Oct" xml:space="preserve">
+    <value>Okt</value>
+  </data>
+  <data name="Month.Sep" xml:space="preserve">
+    <value>Sep</value>
+  </data>
 </root>
