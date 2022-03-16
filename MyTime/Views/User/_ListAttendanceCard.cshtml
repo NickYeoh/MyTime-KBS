@@ -2,7 +2,7 @@
 @model MyTime.ViewModels.UserViewModel
 
 @{
-    ViewBag.Title = MyTime.Resource.User + " :: " + MyTime.Resource.UpdateAttendanceCardStatus;
+    ViewBag.Title = MyTime.Resource.User + " :: " + MyTime.Resource.AttendanceCard;
     Layout = null;
 }
 
@@ -97,15 +97,14 @@
 
                                 <input id="btnUpdate" type="button" value="@MyTime.Resource.Update" class="btn btn-primary text-center" style="width:80px;" />
                                 <span class="pl-1"></span>
-                                <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning text-center" style="width:80px;" />
-
+                                 <input id="btnClose" type="button" value="@MyTime.Resource.Close" class="btn btn-primary" />
+                                <hr />
                             </div>
                         </div>
 
-                        <div class="row pt-3">
+                        <div class="row pt-1">
 
-                            <div id="divAttendanceCardList" class="col-md-12">
-                                                             
+                            <div id="divAttendanceCardList" class="col-md-12">                                                             
 
                                 <table id="listAttendanceCardDatatable" class="table table-striped hover" style="table-layout: fixed;">
                                     <thead>

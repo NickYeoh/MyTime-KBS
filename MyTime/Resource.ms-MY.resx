@@ -1029,4 +1029,7 @@
   <data name="AttendanceCardColour" xml:space="preserve">
     <value>Warna Kad Kedatangan</value>
   </data>
+  <data name="AttendanceCard" xml:space="preserve">
+    <value>Kad Kedatangan</value>
+  </data>
 </root>

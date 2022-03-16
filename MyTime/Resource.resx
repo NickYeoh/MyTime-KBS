@@ -1029,4 +1029,7 @@
   <data name="AttendanceCardColour" xml:space="preserve">
     <value>Attendance Card Colour</value>
   </data>
+  <data name="AttendanceCard" xml:space="preserve">
+    <value>Attendance Card</value>
+  </data>
 </root>

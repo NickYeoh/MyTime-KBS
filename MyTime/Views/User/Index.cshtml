@@ -243,11 +243,11 @@
 
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
-                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>  </a>";
                                 case 'GR':
-                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i></a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i></a>";
                                 case 'RD':
-                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.UpdateAttendanceCardStatus'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>  </a>";
                             }
                         }
                     },
@@ -514,7 +514,7 @@
                            
                 initializeListAttendanceCardDatatable(NRIC);
 
-                $('#btnCancel').on('click', function () {
+                $('#btnClose').on('click', function () {
                     unloadDivCRUD();
                 });
 

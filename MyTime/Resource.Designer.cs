@@ -358,6 +358,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance Card.
+        /// </summary>
+        public static string AttendanceCard {
+            get {
+                return ResourceManager.GetString("AttendanceCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attendance Card Colour.
         /// </summary>
         public static string AttendanceCardColour {
