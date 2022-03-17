@@ -242,11 +242,11 @@
 
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
-                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book pr-1' style='color: yellow ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow  </a>";
                                 case 'GN':
-                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i></a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green</a>";
                                 case 'RD':
-                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>  </a>";
+                                    return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red  </a>";
                             }
                         }
                     },
@@ -298,7 +298,7 @@
                     { targets: 0, className: 'text-center', width: '12px', orderable: false  },
                     { targets: 1, className: 'text-center', width: '15px', orderable: false },
                     { targets: 2, className: 'text-center', width: '15px', orderable: false },
-                    { targets: 3, className: 'text-center', width: '15px', orderable: false },
+                    { targets: 3, className: 'text-center', width: '80px', orderable: false },
                     { targets: 4, className: 'text-left', width: '250px', orderable: true },
                     { targets: 5, className: 'text-left', width: '150px', orderable: true },
                     { targets: 6, className: 'text-left', width: '100px', orderable: true },
@@ -639,13 +639,13 @@
 
                             if (data != null) {
 
-                                $('#listAttendanceCardDatatable').DataTable().ajax.reload(null, false);                            
+                                $('#listAttendanceCardDatatable').DataTable().ajax.reload(null, false);
 
                                 var messageString = '@MyTime.Resource.MessageSuccessUpdate';
 
                                   bootbox.alert({
                                         title: '@MyTime.Resource.MessageInfo',
-                                        message: messageString,                                        
+                                        message: messageString,
                                         backdrop: true,
                                         buttons: {
                                                     ok: {
@@ -659,9 +659,9 @@
                                         }
                                   });
 
-                           
 
-                     
+
+
 
                             }
 
@@ -674,7 +674,12 @@
                 });
 
                 $('#btnClose').on('click', function () {
+
+
+                    $('#listDatatable').DataTable().ajax.reload(null, false);
+
                     unloadDivCRUD();
+
                 });
 
 

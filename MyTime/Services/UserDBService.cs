@@ -70,14 +70,21 @@ namespace MyTime.Services
 
                 // 2022-03-11 : Attendance Card Status
                 sql += " " + $@"AC.YearMonth, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
-
+              
                 sql += " " + $@"FROM [User] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
                 sql += " " + $@"LEFT JOIN AccessRole A ON A.AccessRoleID = U.AccessRoleID";
-                sql += " " + $@"LEFT JOIN (SELECT TOP 1  * FROM [AttendanceCard]";
-                sql += " " + $@"ORDER BY YearMonth DESC) AC ON AC.NRIC = U.NRIC";
+                //sql += " " + $@"LEFT JOIN (SELECT TOP 1  * FROM [AttendanceCard]";
+                //sql += " " + $@"ORDER BY YearMonth DESC) AC ON AC.NRIC = U.NRIC";
+                sql += " " + $@"OUTER APPLY  (";
+
+                sql += " " + $@"SELECT TOP 1 * FROM [AttendanceCard]";
+                sql += " " + $@"WHERE [AttendanceCard].NRIC = u.NRIC";
+                sql += " " + $@"ORDER BY YearMonth DESC";
+                sql += " " + $@") AS AC";
+
                 sql += " " + $@"ORDER BY NRIC ASC";
 
                 conn.Open();
@@ -432,7 +439,7 @@ namespace MyTime.Services
 
         }
 
-        public bool UpdateAttendanceCard(string NRIC, string monthYear, string AttendanceCardStatus)
+        public bool UpdateAttendanceCard(string NRIC, string monthYear, string attendanceCardStatus)
         {
             bool status = false;
 
@@ -476,7 +483,7 @@ namespace MyTime.Services
                 string sql = $@"INSERT INTO AttendanceCard";
                 sql += " " + $@"(NRIC, YearMonth, AttendanceCardStatus)";
                 sql += " " + "VALUES";
-                sql += " " + $@"('{NRIC}', '{yearMonth}' , '{AttendanceCardStatus}')";
+                sql += " " + $@"('{NRIC}', '{yearMonth}' , '{attendanceCardStatus}')";
 
                 conn.Open();
 
@@ -486,7 +493,7 @@ namespace MyTime.Services
                 {
                     status = true;
 
-                    string logData = $@"{NRIC},  {yearMonth}, {AttendanceCardStatus}";
+                    string logData = $@"{NRIC},  {yearMonth}, {attendanceCardStatus}";
 
                     logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "User", $@"Update Attendance Card; {logData}", DateTime.Now);
                 }
