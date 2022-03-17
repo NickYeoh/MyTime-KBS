@@ -360,11 +360,11 @@ namespace MyTime.Controllers
 
         }
 
-        public ActionResult UpdateAttendanceCard(string NRIC, string effectiveOn, string attendanceCardStatus)
+        public ActionResult UpdateAttendanceCard(string NRIC, string monthYear, string attendanceCardStatus)
         {
             bool status;
 
-            status = userDBService.UpdateAttendanceCard(NRIC, effectiveOn, attendanceCardStatus);
+            status = userDBService.UpdateAttendanceCard(NRIC, monthYear, attendanceCardStatus);
 
             //return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
 
@@ -372,11 +372,11 @@ namespace MyTime.Controllers
 
         }
 
-        public ActionResult DeleteAttendanceCard(string NRIC, string effectiveOn)
+        public ActionResult DeleteAttendanceCard(string NRIC, string yearMonth)
         {
             bool status;
 
-            status = userDBService.DeleteAttendanceCard(NRIC, effectiveOn);
+            status = userDBService.DeleteAttendanceCard(NRIC, yearMonth);
 
             //return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
 
@@ -668,6 +668,7 @@ namespace MyTime.Controllers
         [HttpPost]
         public ActionResult GetAttendanceCardData(string nric)
         {
+
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
             attendanceCardList = userDBService.GetAttendanceCardByID(nric);
             

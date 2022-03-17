@@ -69,7 +69,6 @@ namespace MyTime.Controllers
                 userModel = userDBService.GetDataByID(User.Identity.Name);
                 ViewBag.UserDetail = string.Format("{0} ( {1} )", userModel.UserName, userModel.RoleName);
 
-                homeViewModel.User = userModel;
                 // Get Cuurent Month Start and End Date         
                 DateTime currentDate;
                 string tempDate;

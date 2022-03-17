@@ -356,12 +356,68 @@
                             {
                                 "render": function (data, type, full, meta) {
 
-                                    return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.NRIC + '", "' + full.EffectiveOn + '","' + full.YearMonth + '","' + full.AttendanceCardStatus + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+                                    return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.NRIC + '", "' + full.YearMonth + '","' + full.AttendanceCardStatus + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
                                 }
                             },
                             { "data": 'NRIC' },
-                            { "data": 'EffectiveOn' },
-                            { "data": 'YearMonth' },                           
+                            { "data": 'YearMonth' },
+                            {
+                                "data": 'YearMonth',
+                                "className": "text-left",
+                                "render": function (data, type, row) {
+
+                                    var year = data.substr(0, 4);
+                                    var month = data.substr(4, 2)
+
+                                    var yearMonth;
+
+                                    switch (month) {
+                                        case '01':
+                                            yearMonth = '@MyTime.Resource.Month_Jan, ' + year;
+                                            break;
+                                         case '02':
+                                            yearMonth = '@MyTime.Resource.Month_Feb, ' + year;
+                                            break;
+                                         case '03':
+                                            yearMonth = '@MyTime.Resource.Month_Mar, ' + year;
+                                            break;
+                                         case '04':
+                                            yearMonth = '@MyTime.Resource.Month_Apr, ' + year;
+                                            break;
+                                         case '05':
+                                            yearMonth = '@MyTime.Resource.Month_May, ' + year;
+                                            break;
+                                         case '06':
+                                            yearMonth = '@MyTime.Resource.Month_Jun, ' + year;
+                                            break;
+                                         case '07':
+                                            yearMonth = '@MyTime.Resource.Month_Jul, ' + year;
+                                            break;
+                                         case '08':
+                                            yearMonth = '@MyTime.Resource.Month_Aug, ' + year;
+                                            break;
+                                         case '09':
+                                            yearMonth = '@MyTime.Resource.Month_Sep, ' + year;
+                                            break;
+                                         case '10':
+                                            yearMonth = '@MyTime.Resource.Month_Oct, ' + year;
+                                            break;
+                                         case '11':
+                                            yearMonth = '@MyTime.Resource.Month_Nov, ' + year;
+                                            break;
+                                         case '12':
+                                            yearMonth = '@MyTime.Resource.Month_Dec, ' + year;
+                                            break;
+                                        default:
+
+                                    }
+
+
+
+                                    return yearMonth;
+
+                                }
+                            },
                             {
                                 "data": "AttendanceCardStatus",
                                 "className": "text-left",
@@ -567,14 +623,14 @@
                     loadSpinner();
 
                     var NRIC = $("#lblNRIC").val();
-                    var effectiveOn= $("#ddlMonthYear option:selected").val();
+                    var monthYear = $("#ddlMonthYear option:selected").val();
                     var attendanceCardStatus = $("input[name='AttendanceCardStatus']:checked").val();
 
                     $.ajax({
                         datatype: 'text/plain',
                         type: 'GET',
                         url: 'User/UpdateAttendanceCard',
-                        data: { NRIC: NRIC, effectiveOn: effectiveOn, attendanceCardStatus: attendanceCardStatus},
+                        data: { NRIC: NRIC, monthYear: monthYear, attendanceCardStatus: attendanceCardStatus},
                         cache: false,
                         dataType: "json",
                         success: function (data) {
@@ -633,11 +689,9 @@
         });
         };
 
-        function DeleteAttendanceCard(NRIC, effectiveOn) {
+        function DeleteAttendanceCard(NRIC, yearMonth) {
 
             document.getElementById('pid').value = 'delete attendance card';
-
-            //var AttendanceDate = moment(dte).format('YYYY-MM-DD');        
 
             loadDivCRUD();
 
@@ -645,7 +699,7 @@
                 datatype: 'text/plain',
                 type: 'GET',
                 url: 'User/DeleteAttendanceCard',
-                data: { nric: NRIC, effectiveOn: moment(effectiveOn).format('YYYY-MM-DD')},
+                data: { nric: NRIC, yearMonth: yearMonth },
                 cache: false,
                 success: function (data) {
 
@@ -813,13 +867,13 @@
     };
 
 
-          function ShowConfirmDialog(p1, p2, p3, p4) {
+          function ShowConfirmDialog(p1, p2, p3) {
 
             // p1 : NRIC
             // p2 : YearMonth
 
 
-            @*var year = p2.substr(0, 4);
+            var year = p2.substr(0, 4);
             var month = p2.substr(4, 2)
             var yearMonth;
 
@@ -862,11 +916,11 @@
                           break;
                    default:
 
-              }*@
+              }
 
               var attendanceCardStatus;
 
-              switch (p4) {
+              switch (p3) {
                   case 'YL':
                       attendanceCardStatus = '@MyTime.Resource.Colour_Yellow';
                       break;
@@ -886,7 +940,7 @@
             messageString += "<div class='form-group'>";
 
             messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.YearMonth</div>";
-            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p3+ "</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + yearMonth + "</div>";
 
             messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.AttendanceCardStatus</div>";
             messageString += "<div class='form-control col-md-12' readonly='readonly'>" + attendanceCardStatus  + "</div>";

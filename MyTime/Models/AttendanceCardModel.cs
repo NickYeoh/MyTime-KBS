@@ -11,9 +11,8 @@ namespace MyTime.Models
 
         [Display(Name = "NRIC", ResourceType = typeof(Resource))]
         public string NRIC { get; set; }
-           
-        public DateTime EffectiveOn { get; set; }
 
+    
         [Display(Name = "YearMonth", ResourceType = typeof(Resource))]
         public string YearMonth { get; set; }
 
