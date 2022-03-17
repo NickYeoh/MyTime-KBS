@@ -187,6 +187,32 @@
         </div>
 
         <div class="col-md-3 pt-2">
+
+            <div class="card shadow" style="height:9rem;">
+                <div class="card-body">
+
+                    <div class="row text-center" style="font-size:30px;">
+                        <div class="col">
+                            @Html.Hidden(@Model.User.AttendanceCardStatus)
+
+                            <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: yellow ; font-size:30px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
+                            @*@MyTime.Resource.Colour_Yellow*@
+                            <span style="font-size:18px;"></span>
+
+                        </div>
+                     
+
+                    </div>
+
+                    <div class="row pt-4 text-center">
+                        <div class="col">
+                            @MyTime.Resource.AttendanceCardStatus
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -391,15 +417,34 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom-js")
 
-    <script type="text/javascript">
-        $(document).ready(function () {
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        var attendanceCardStatus = @Html.Raw(Json.Encode(Model.User.AttendanceCardStatus));
+
+        switch (attendanceCardStatus) {
+
+            case 'YL':
+                $('#iconAttendanceCardStatus').css({ 'color': 'yellow', 'font-size': '40px'});
+                    break;
+            case 'GN':
+                $('#iconAttendanceCardStatus').css({ 'color': 'green', 'font-size': '40px' });
+                    break;
+            case 'RD':
+                $('#iconAttendanceCardStatus').css({ 'color': 'red', 'font-size': '40px' });
+                    break;
+            default:
+                $('#iconAttendanceCardStatus').css({ 'color': 'yellow', 'font-size': '40px' });
+
+            }
 
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
 
         });
-    </script>
+</script>
 
 }
 

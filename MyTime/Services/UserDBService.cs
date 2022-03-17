@@ -69,7 +69,7 @@ namespace MyTime.Services
                 sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded,";
 
                 // 2022-03-11 : Attendance Card Status
-                sql += " " + $@"AC.YearMonth, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
+                sql += " " + $@"AC.EffectiveOn, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
               
                 sql += " " + $@"FROM [User] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
@@ -82,7 +82,7 @@ namespace MyTime.Services
 
                 sql += " " + $@"SELECT TOP 1 * FROM [AttendanceCard]";
                 sql += " " + $@"WHERE [AttendanceCard].NRIC = u.NRIC";
-                sql += " " + $@"ORDER BY YearMonth DESC";
+                sql += " " + $@"ORDER BY EffectiveOn DESC";
                 sql += " " + $@") AS AC";
 
                 sql += " " + $@"ORDER BY NRIC ASC";
@@ -439,21 +439,21 @@ namespace MyTime.Services
 
         }
 
-        public bool UpdateAttendanceCard(string NRIC, string monthYear, string attendanceCardStatus)
+        public bool UpdateAttendanceCard(string NRIC, string effectiveOn, string attendanceCardStatus)
         {
             bool status = false;
 
             //// convert to Date
-            DateTime startOn;
-            DateTime.TryParse(monthYear, out startOn);
-            string yearMonth = startOn.ToString("yyyyMM");
+            //DateTime startOn;
+            //DateTime.TryParse(monthYear, out startOn);
+            //string yearMonth = startOn.ToString("yyyyMM");
 
 
             // Delete
             try
             {
                 string sql = $@"DELETE FROM AttendanceCard";
-                sql += " " + $@"WHERE NRIC='{NRIC}' AND YearMonth='{yearMonth}'";
+                sql += " " + $@"WHERE NRIC='{NRIC}' AND EffectiveOn='{effectiveOn}'";
             
 
                 conn.Open();
@@ -481,9 +481,9 @@ namespace MyTime.Services
             try
             {
                 string sql = $@"INSERT INTO AttendanceCard";
-                sql += " " + $@"(NRIC, YearMonth, AttendanceCardStatus)";
+                sql += " " + $@"(NRIC, EffectiveOn, AttendanceCardStatus)";
                 sql += " " + "VALUES";
-                sql += " " + $@"('{NRIC}', '{yearMonth}' , '{attendanceCardStatus}')";
+                sql += " " + $@"('{NRIC}', '{effectiveOn}' , '{attendanceCardStatus}')";
 
                 conn.Open();
 
@@ -493,7 +493,7 @@ namespace MyTime.Services
                 {
                     status = true;
 
-                    string logData = $@"{NRIC},  {yearMonth}, {attendanceCardStatus}";
+                    string logData = $@"{NRIC},  {effectiveOn}, {attendanceCardStatus}";
 
                     logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "User", $@"Update Attendance Card; {logData}", DateTime.Now);
                 }
@@ -517,7 +517,7 @@ namespace MyTime.Services
 
         }
 
-        public bool DeleteAttendanceCard(string NRIC, string yearMonth)
+        public bool DeleteAttendanceCard(string NRIC, string effectiveOn)
         {
             bool status = false;
             
@@ -525,7 +525,7 @@ namespace MyTime.Services
             try
             {
                 string sql = $@"DELETE FROM AttendanceCard";
-                sql += " " + $@"WHERE NRIC='{NRIC}' AND YearMonth='{yearMonth}'";
+                sql += " " + $@"WHERE NRIC='{NRIC}' AND effectiveOn = '{effectiveOn}'";
 
 
                 conn.Open();
@@ -1199,14 +1199,25 @@ namespace MyTime.Services
             sql += " " + $@"U.ContactNo, U.Email, U.DepartmentID, D.DepartmentName,";
             sql += " " + $@"U.UnitID, UT.UnitName, U.Designation,";
             sql += " " + $@"U.Grade, U.IsResigned, U.ResignedOn,";
-            sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded";
+            sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded,";
+
+            // 2022-03-11 : Attendance Card Status
+            sql += " " + $@"AC.EffectiveOn, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
 
             sql += " " + $@"FROM [User] U";
+
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
             sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
             sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
             sql += " " + $@"LEFT JOIN AccessRole A ON A.AccessRoleID = U.AccessRoleID";
-            sql += " " + $@"WHERE NRIC = '{ID}'";
+
+            sql += " " + $@"OUTER APPLY  (";
+            sql += " " + $@"SELECT TOP 1 * FROM [AttendanceCard]";
+            sql += " " + $@"WHERE [AttendanceCard].NRIC = U.NRIC";
+            sql += " " + $@"ORDER BY EffectiveOn DESC";
+            sql += " " + $@") AS AC";
+
+            sql += " " + $@"WHERE U.NRIC = '{ID}'";
 
             try
             {
@@ -1336,6 +1347,11 @@ namespace MyTime.Services
                             userModel.IsAttendanceExcluded = Convert.ToBoolean(dr["IsAttendanceExcluded"]);
                         }
 
+                        if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                        {
+                            userModel.AttendanceCardStatus = dr["AttendanceCardStatus"].ToString();
+                        }
+
                     }
                 }
 
@@ -1362,10 +1378,10 @@ namespace MyTime.Services
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
             AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
 
-            string sql = $@"SELECT NRIC, YearMonth, AttendanceCardStatus";
+            string sql = $@"SELECT NRIC, EffectiveOn, Format(EffectiveOn, 'MMM, yyyy') AS YearMonth, AttendanceCardStatus";
             sql += " " + $@"FROM AttendanceCard";
             sql += " " + $@"WHERE NRIC='{ID}'";
-            sql += " " + $@"ORDER BY NRIC, YearMonth";
+            sql += " " + $@"ORDER BY NRIC, EffectiveOn";
 
 
             try
@@ -1384,6 +1400,11 @@ namespace MyTime.Services
                         attendanceCardModel = new AttendanceCardModel();
 
                         attendanceCardModel.NRIC = ID;
+
+                        if (!dr["EffectiveOn"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.EffectiveOn = Convert.ToDateTime( dr["EffectiveOn"]);
+                        }
 
                         if (!dr["YearMonth"].Equals(DBNull.Value))
                         {
