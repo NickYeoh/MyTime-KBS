@@ -135,10 +135,15 @@ namespace MyTime.Services
 
             string attendanceStatusID = "";
 
+            // 2022-03-18
+            string attendanceCardStatus = "";
+
             try
             {
                 // Check User Status
                 userModel = userDBService.GetDataByID(NRIC);
+
+                attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDandMonth(NRIC, startOn);
 
                 isResigned = Convert.ToBoolean(userModel.IsResigned);
 
@@ -182,6 +187,7 @@ namespace MyTime.Services
                         deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID);
                         break;
                 }
+
 
                 // Current Date
                 currentDate = DateTime.Now.Date;
@@ -241,6 +247,26 @@ namespace MyTime.Services
                     attendanceDate = startOn.AddDays(day);
                     attendanceModel.AttendanceDate = attendanceDate;
                     attendanceModel.AttendanceDay = attendanceDate.ToString("ddd", new System.Globalization.CultureInfo("ms-MY"));
+
+                    switch(attendanceCardStatus)
+                    {
+                        case "YL":
+
+                            attendanceModel.AttendanceCardStatus = MyTime.Resource.Colour_Yellow;
+                            break;
+
+                        case "GN":
+
+                            attendanceModel.AttendanceCardStatus = MyTime.Resource.Colour_Green;
+                            break;
+
+                        case "RD":
+
+                            attendanceModel.AttendanceCardStatus = MyTime.Resource.Colour_Red;
+                            break;
+
+                    }
+                   
 
                     attendanceStatusID = "";
 

@@ -70,7 +70,7 @@ namespace MyTime.Services
 
                 // 2022-03-11 : Attendance Card Status
                 sql += " " + $@"AC.EffectiveOn, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
-              
+
                 sql += " " + $@"FROM [User] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
@@ -454,7 +454,7 @@ namespace MyTime.Services
             {
                 string sql = $@"DELETE FROM AttendanceCard";
                 sql += " " + $@"WHERE NRIC='{NRIC}' AND EffectiveOn='{effectiveOn}'";
-            
+
 
                 conn.Open();
 
@@ -520,7 +520,7 @@ namespace MyTime.Services
         public bool DeleteAttendanceCard(string NRIC, string effectiveOn)
         {
             bool status = false;
-            
+
             // Delete
             try
             {
@@ -1178,6 +1178,59 @@ namespace MyTime.Services
 
         }
 
+        public string GetAttendanceCardStatusByIDandMonth(string ID, DateTime startOn)
+        {
+            string attendanceCardStatus = "";
+
+            string sql = " " + $@"SELECT TOP 1 IIF(AttendanceCardStatus IS NULL, 'YL', AttendanceCardStatus) AS AttendanceCardStatus FROM [AttendanceCard]";
+            sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
+            sql += " " + $@"AND FORMAT(EffectiveOn, 'yyyyMM') <= '{startOn.ToString("yyyyMM")}'";
+            sql += " " + $@"ORDER BY EffectiveOn DESC";
+
+            try
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+
+                        if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                        {
+                            attendanceCardStatus = dr["AttendanceCardStatus"].ToString();
+                        }
+
+                    }
+                }
+                else
+                {
+                    // Default to Yellow
+                    attendanceCardStatus = "YL";
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+
+            return attendanceCardStatus;
+        }
+
 
         public UserModel GetDataByID(string ID)
         {
@@ -1403,7 +1456,7 @@ namespace MyTime.Services
 
                         if (!dr["EffectiveOn"].Equals(DBNull.Value))
                         {
-                            attendanceCardModel.EffectiveOn = Convert.ToDateTime( dr["EffectiveOn"]);
+                            attendanceCardModel.EffectiveOn = Convert.ToDateTime(dr["EffectiveOn"]);
                         }
 
                         if (!dr["YearMonth"].Equals(DBNull.Value))

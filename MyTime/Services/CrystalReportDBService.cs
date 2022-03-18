@@ -29,6 +29,7 @@ namespace MyTime.Services
                 crAttendanceMonthlyModel.AttendanceDay = row.AttendanceDay;
                 crAttendanceMonthlyModel.AttendanceStatusID = row.AttendanceStatusID;
                 crAttendanceMonthlyModel.AttendanceStatus = row.AttendanceStatus;
+                crAttendanceMonthlyModel.AttendanceCardStatus = row.AttendanceCardStatus;
 
                 crAttendanceMonthlyModel.IsEarlyIn = row.IsEarlyIn;
                 crAttendanceMonthlyModel.FirstIn = row.FirstIn;

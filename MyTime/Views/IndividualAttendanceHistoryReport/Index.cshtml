@@ -106,7 +106,20 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-12 d-flex justify-content-end">
+
+                            <div class="col-md-4 d-flex justify-content-start">
+
+                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
+
+
+                                <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px; display:none;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
+
+
+                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
+
+                            </div>
+
+                            <div class="col-md-8 d-flex justify-content-end">
 
                                 @Html.Label(MyTime.Resource.TotalAttend, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
                                 <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalAttend" }) </span>
@@ -149,9 +162,10 @@
                                     <th>@MyTime.Resource.WorkTime</th>
                                     <th>@MyTime.Resource.Overtime</th>
                                     <th>@MyTime.Resource.SubmissionDueDate</th>
-                                    <th></th>                                   
+                                    <th></th>
                                     <th>@MyTime.Resource.Reason</th>
                                     <th></th>
+                                    <th>@MyTime.Resource.AttendanceCardStatus</th>
                                 </tr>
                             </thead>
                         </table>
@@ -450,7 +464,7 @@
                                     }
 
                                 }
-                               
+
                             }
                         }
                     },
@@ -462,7 +476,7 @@
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                              
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -480,7 +494,7 @@
 
                             }
                             else {
-                              
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -497,7 +511,7 @@
                                     return data;
                                 }
                             }
-                           
+
 
                         }
                     },
@@ -539,7 +553,7 @@
                     },
                     {
                         "data": "SubmissionDueDate", "render": function (data) { return convertToDate(data); }
-                    },                   
+                    },
                     { "data": "ReasonID" },
                     {
                         "render": function (data, type, row, meta) {
@@ -598,7 +612,8 @@
                             }
 
                         }
-                    }
+                    },
+                    { "data": "AttendanceCardStatus" }
                 ],
                     columnDefs: [
                     { targets: 0, className: 'text-left', width: '40px', orderable: true, visible: false },
@@ -616,20 +631,27 @@
                     { targets: 12, className: 'text-center', width: '40px', orderable: true, visible: false },
                     { targets: 13, className: 'text-center', width: '10px', orderable: true, visible: false },
                     { targets: 14, className: 'text-left', width: '150px', orderable: true },
-                    { targets: 15, className: 'text-center', width: '10px', orderable: true }
+                    { targets: 15, className: 'text-center', width: '10px', orderable: true },
+                    { targets: 16, className: 'text-center', width: '150px', orderable: true, visible: false }
                 ],
                 order: [[2, 'asc']]
                 });
 
 
             $('#btnGenerate').click(function () {
-                
+
 
                 GenerateAttendanceList();
 
             });
 
-            $('#btnReset').click(function () {
+        $('#btnReset').click(function () {
+
+                var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
+                attendanceCardStatus.innerHTML = '-';
+
+                var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
+                iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:none;';
 
                 var totalLateIn = document.getElementById('TotalLateIn');
                 totalLateIn.innerHTML = "0";
@@ -684,10 +706,10 @@
             selectedDepartment = ddlDepartment.value;
 
             if (selectedMonthYear != '' && selectedDepartment != '') {
-            
+
                 GetDepartmentUser(selectedMonthYear, selectedDepartment);
             }
-            
+
         };
 
 
@@ -738,6 +760,27 @@
                     }
                     else {
                         customDatatable.clear().draw(false);
+                    }
+
+                    var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
+                    var data = customDatatable.row(0).data();
+                    attendanceCardStatus.innerHTML = data['AttendanceCardStatus'];
+
+                    var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
+
+
+                    switch (data['AttendanceCardStatus']) {
+                        case '@MyTime.Resource.Colour_Yellow':
+                            iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:block;';
+                            break;
+                        case '@MyTime.Resource.Colour_Green':
+                            iconAttendanceCardStatus.style = 'color: green ; font-size: 30px; display:block;';
+                            break;
+                        case '@MyTime.Resource.Colour_Red':
+                            iconAttendanceCardStatus.style = 'color: red ; font-size: 30px; display:block;';
+                            break;
+                        default:
+                            break;
                     }
 
                     $('#ddlMonthYear').prop('disabled', true);
