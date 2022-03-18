@@ -66,6 +66,9 @@ namespace MyTime.Models
         // to store Approver details    
         public string ApproverName { get; set; }
 
+        // to store Attendance Card Status
+        public string AttendanceCardStatus { get; set; }
+
         public bool SetPageBreak { get; set; }
 
     }

@@ -54,6 +54,7 @@
                         </div>
 
                         <div class="form-group row pt-0">
+                            
                             <div class="col-md-12 d-flex justify-content-end">
 
                                 @if (!Model.UserApproverList.Count.Equals(0))
@@ -86,7 +87,9 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-12 d-flex justify-content-end">
+
+
+                              <div class="col-md-12 d-flex justify-content-end">
                                 @Html.Label(MyTime.Resource.TotalLateIn, htmlAttributes: new { @class = "control-label pr-1" })
                                 <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0 text-center", @id = "TotalLateIn" }) </span>
 
@@ -106,7 +109,18 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-12 d-flex justify-content-end">
+                            <div class="col-md-4 d-flex justify-content-start">
+
+                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
+
+                                <span id="divAttendanceCardStatus" style="display:none;">
+                                    <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
+                                </span>
+
+                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center" })
+
+                            </div>
+                            <div class="col-md-8 d-flex justify-content-end">
 
                                 @Html.Label(MyTime.Resource.TotalAttend, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
                                 <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalAttend" }) </span>
@@ -199,7 +213,7 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*@Scripts.Render("~/bundles/custom-js")*@
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
 
         var customDatatable;
@@ -338,7 +352,7 @@
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E') {
-                              
+
                                 if (row.OvertimeExtraStart != null) {
 
                                     if (data != null) {
@@ -356,9 +370,9 @@
 
                             }
                             else {
-                              
+
                                 if (attendanceStatusID == 'ICP') {
-                                    
+
                                     var today = new Date(Date.now());
 
                                     var dd = String(today.getDate());
@@ -386,7 +400,7 @@
 
                                     }
                                     else {
-                                       
+
                                          // No need change color
 
                                         if (row.OvertimeExtraStart != null) {
@@ -435,7 +449,7 @@
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                              
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -453,7 +467,7 @@
 
                             }
                             else {
-                                
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -484,7 +498,7 @@
                                     return "<br/>" + row.OvertimeExtra;
 
                                 }
-                               
+
                             }
                             else {
                                 return data;
@@ -503,7 +517,7 @@
                                 else {
                                     return "<br/>" + row.OvertimeExtra;
                                 }
-                             
+
                             }
                             else {
                                 return data;
@@ -934,7 +948,7 @@
             }
 
         };
-</script>
+    </script>
 }
 
 
