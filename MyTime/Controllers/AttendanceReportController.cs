@@ -62,63 +62,70 @@ namespace MyTime.Controllers
         public ActionResult PrintAttendanceReport()
         {
 
-            List<AttendanceModel> attendanceList = new List<AttendanceModel>();
-            AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
-
-            List<CRAttendanceDailyModel> crAttendanceDailyList = new List<CRAttendanceDailyModel>();
-            ApproverUserModel userApproverModel = new ApproverUserModel();
-
-            string reportType;
-
-            attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
-            attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
-
-            reportType = TempData["ReportType"] as string;
-
-            TempData.Keep("AttendanceList");
-            TempData.Keep("AttendanceSummary");
-            TempData.Keep("ReportType");
-
-            crAttendanceDailyList = crystalReportDBService.PrepareAttendanceReport(reportType, attendanceList.OrderBy(a=>a.AttendanceDate).ThenBy(a=>a.UserName).ToList(), attendanceSummaryModel);
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceRecordCR.rpt"));
-            report.SetDataSource(crAttendanceDailyList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
-
-
-            report.Close();
-            report.Dispose();
-
-
-            if ( reportType.Equals("Monthly"))
+            if (Session["OrganisationName"] != null)
             {
-                return File(stream, "application/pdf", "Laporan Kedatangan Bulanan.pdf");
+
+                List<AttendanceModel> attendanceList = new List<AttendanceModel>();
+                AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
+
+                List<CRAttendanceDailyModel> crAttendanceDailyList = new List<CRAttendanceDailyModel>();
+                ApproverUserModel userApproverModel = new ApproverUserModel();
+
+                string reportType;
+
+                attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
+                attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
+
+                reportType = TempData["ReportType"] as string;
+
+                TempData.Keep("AttendanceList");
+                TempData.Keep("AttendanceSummary");
+                TempData.Keep("ReportType");
+
+                crAttendanceDailyList = crystalReportDBService.PrepareAttendanceReport(reportType, attendanceList.OrderBy(a => a.AttendanceDate).ThenBy(a => a.UserName).ToList(), attendanceSummaryModel);
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceRecordCR.rpt"));
+                report.SetDataSource(crAttendanceDailyList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+                report.Close();
+                report.Dispose();
+
+
+                if (reportType.Equals("Monthly"))
+                {
+                    return File(stream, "application/pdf", "Laporan Kedatangan Bulanan.pdf");
+                }
+                else
+                {
+                    return File(stream, "application/pdf", "Laporan Kedatangan Tahunan.pdf");
+                }
             }
             else
             {
-                return File(stream, "application/pdf", "Laporan Kedatangan Tahunan.pdf");
-            }         
-
+                return RedirectToAction("Index", "Auth");
+            }
         }
 
         private IEnumerable<SelectListItem> PrepareSelectYearList(DateTime dataStartDate)
@@ -379,7 +386,7 @@ namespace MyTime.Controllers
         public ActionResult GenerateAttendanceList(string reportType, string selectedDate, string selectedDepartmentID, string selectedNRIC)
         {
             List<UserModel> userList = new List<UserModel>();
-           
+
             // Get Month Start and End Date
             DateTime startOn;
             DateTime endOn;
@@ -394,11 +401,11 @@ namespace MyTime.Controllers
             List<AttendanceModel> attendanceList = new List<AttendanceModel>();
 
             string approverName;
-            
+
             userList = TempData["UserList"] as List<UserModel>;
             TempData.Keep("UserList");
 
-            TempData["ReportType"] = reportType; 
+            TempData["ReportType"] = reportType;
 
             switch (reportType)
             {
@@ -455,7 +462,7 @@ namespace MyTime.Controllers
 
                         tempList = new List<AttendanceModel>();
 
-                        tempList = attendanceDBService.GetMonthlyAttendance(row.NRIC, row.USRID, row.UserName, row.DepartmentID, row.DepartmentName, startOn, endOn,  row.AccessRoleID, approverName).Where(t => t.AttendanceStatus != "").ToList(); 
+                        tempList = attendanceDBService.GetMonthlyAttendance(row.NRIC, row.USRID, row.UserName, row.DepartmentID, row.DepartmentName, startOn, endOn, row.AccessRoleID, approverName).Where(t => t.AttendanceStatus != "").ToList();
 
                         attendanceList.AddRange(tempList);
                     }
@@ -470,7 +477,7 @@ namespace MyTime.Controllers
                     attendanceList = new List<AttendanceModel>();
 
                     // 12 months or until current month
-                    for (int i=0; i< 12; i++)
+                    for (int i = 0; i < 12; i++)
                     {
 
                         if (startOn.ToString("yyyyMM") != DateTime.Now.ToString("yyyyMM"))
@@ -494,7 +501,7 @@ namespace MyTime.Controllers
                             // By Department
                             selectedUser = userList.ToList();
                         }
-                     
+
                         foreach (var row in selectedUser)
                         {
                             approverName = "";
@@ -522,10 +529,10 @@ namespace MyTime.Controllers
                             startOn = startOn.AddMonths(1);
                         }
                         else
-                        {                    
+                        {
                             break;
                         }
-                     
+
                     }
 
                     break;
@@ -533,7 +540,7 @@ namespace MyTime.Controllers
 
             TempData["AttendanceList"] = attendanceList;
 
-            return Json(attendanceList.OrderBy(a=>a.AttendanceDate).ThenBy(a=>a.UserName).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(attendanceList.OrderBy(a => a.AttendanceDate).ThenBy(a => a.UserName).ToList(), JsonRequestBehavior.AllowGet);
 
         }
 

@@ -159,51 +159,61 @@ namespace MyTime.Controllers
 
         public ActionResult PrintAttendanceMonthlyReport()
         {
-
-            List<AttendanceModel> attendanceList = new List<AttendanceModel>();
-            UserModel userModel = new UserModel();
-            AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
-
-            List<CRAttendanceMonthlyModel> crAttendanceMonthlyList = new List<CRAttendanceMonthlyModel>();
-
-            attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
-            attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
-
-            TempData.Keep("UserApproverList");
-            TempData.Keep("AttendanceList");
-            TempData.Keep("AttendanceSummary");
-
-            crAttendanceMonthlyList = crystalReportDBService.PrepareAttendanceMonthlyReport(attendanceList, attendanceSummaryModel);
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceHistoryMonthlyCR.rpt"));
-            report.SetDataSource(crAttendanceMonthlyList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            report.Close();
-            report.Dispose();
+            if (Session["OrganisationName"] != null)
+            {
 
 
-            return File(stream, "application/pdf", "Laporan Perakam Waktu.pdf");
+
+
+                List<AttendanceModel> attendanceList = new List<AttendanceModel>();
+                UserModel userModel = new UserModel();
+                AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
+
+                List<CRAttendanceMonthlyModel> crAttendanceMonthlyList = new List<CRAttendanceMonthlyModel>();
+
+                attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
+                attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
+
+                TempData.Keep("UserApproverList");
+                TempData.Keep("AttendanceList");
+                TempData.Keep("AttendanceSummary");
+
+                crAttendanceMonthlyList = crystalReportDBService.PrepareAttendanceMonthlyReport(attendanceList, attendanceSummaryModel);
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceHistoryMonthlyCR.rpt"));
+                report.SetDataSource(crAttendanceMonthlyList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                report.Close();
+                report.Dispose();
+
+                return File(stream, "application/pdf", "Laporan Perakam Waktu.pdf");
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
 

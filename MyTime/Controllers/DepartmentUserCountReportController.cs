@@ -47,7 +47,7 @@ namespace MyTime.Controllers
 
         [HttpPost]
         public ActionResult GetData()
-        {  
+        {
             List<DepartmentModel> departmentList = new List<DepartmentModel>();
             DepartmentModel departmentModel = new DepartmentModel();
 
@@ -61,8 +61,8 @@ namespace MyTime.Controllers
 
             departmentList = departmentDBService.ListDepartment();
             userList = userDBService.ListUser();
-          
-            if (departmentList.Count > 0 )
+
+            if (departmentList.Count > 0)
             {
                 for (int i = 0; i < departmentList.Count; i++)
                 {
@@ -98,7 +98,7 @@ namespace MyTime.Controllers
 
             departmentUserCountList = TempData["DepartmentUserCountList"] as List<DepartmentUserCountModel>;
 
-            if ( !departmentUserCountList.Equals(null))
+            if (!departmentUserCountList.Equals(null))
             {
                 totalUserCount = departmentUserCountList.Select(s => s.UserCount).Sum();
 
@@ -111,43 +111,52 @@ namespace MyTime.Controllers
 
         public ActionResult PrintDepartmentUserCountReport()
         {
-            List<DepartmentUserCountModel> departmentUserCountList = new List<DepartmentUserCountModel>();
-            departmentUserCountList = TempData["DepartmentUserCountList"] as List<DepartmentUserCountModel>;
-            TempData.Keep("DepartmentUserCountList");
-
-            List<CRDepartmentUserCountModel> crDepartmentUserCountList = new List<CRDepartmentUserCountModel>();
-
-            crDepartmentUserCountList = crystalReportDBService.PrepareDepartmentUserCountReport(departmentUserCountList);
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "DepartmentUserCountCR.rpt"));
-            report.SetDataSource(crDepartmentUserCountList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            report.Close();
-            report.Dispose();
+            if (Session["OrganisationName"] != null)
+            {
 
 
-            return File(stream, "application/pdf", "Laporan Bilangan Pegawai Bahagian.pdf");
+                List<DepartmentUserCountModel> departmentUserCountList = new List<DepartmentUserCountModel>();
+                departmentUserCountList = TempData["DepartmentUserCountList"] as List<DepartmentUserCountModel>;
+                TempData.Keep("DepartmentUserCountList");
+
+                List<CRDepartmentUserCountModel> crDepartmentUserCountList = new List<CRDepartmentUserCountModel>();
+
+                crDepartmentUserCountList = crystalReportDBService.PrepareDepartmentUserCountReport(departmentUserCountList);
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "DepartmentUserCountCR.rpt"));
+                report.SetDataSource(crDepartmentUserCountList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                report.Close();
+                report.Dispose();
+
+
+                return File(stream, "application/pdf", "Laporan Bilangan Pegawai Bahagian.pdf");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
     }

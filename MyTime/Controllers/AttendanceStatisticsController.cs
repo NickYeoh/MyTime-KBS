@@ -61,57 +61,67 @@ namespace MyTime.Controllers
 
         public ActionResult PrintAttendanceStatistics()
         {
-            List<AttendanceStatisticsModel> attendanceStatisticsList = new List<AttendanceStatisticsModel>();
-         
-            List<CRAttendanceStatisticsModel> crAttendanceStatisticsList = new List<CRAttendanceStatisticsModel>();
 
-            string reportType;
-
-            attendanceStatisticsList = TempData["AttendanceStatisticsList"] as List<AttendanceStatisticsModel>;
-           
-            reportType = TempData["ReportType"] as string;
-
-            TempData.Keep("AttendanceStatisticsList");           
-            TempData.Keep("ReportType");
-
-            crAttendanceStatisticsList = crystalReportDBService.PrepareAttendanceStatistics(reportType, attendanceStatisticsList.OrderBy(a => a.UserName).ToList());
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceStatisticsCR.rpt"));
-            report.SetDataSource(crAttendanceStatisticsList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
-
-
-            report.Close();
-            report.Dispose();
-
-
-            if (reportType.Equals("Monthly"))
+            if (Session["OrganisationName"] != null)
             {
-                return File(stream, "application/pdf", "Laporan Statistik Kedatangan Bulanan.pdf");
+
+
+                List<AttendanceStatisticsModel> attendanceStatisticsList = new List<AttendanceStatisticsModel>();
+
+                List<CRAttendanceStatisticsModel> crAttendanceStatisticsList = new List<CRAttendanceStatisticsModel>();
+
+                string reportType;
+
+                attendanceStatisticsList = TempData["AttendanceStatisticsList"] as List<AttendanceStatisticsModel>;
+
+                reportType = TempData["ReportType"] as string;
+
+                TempData.Keep("AttendanceStatisticsList");
+                TempData.Keep("ReportType");
+
+                crAttendanceStatisticsList = crystalReportDBService.PrepareAttendanceStatistics(reportType, attendanceStatisticsList.OrderBy(a => a.UserName).ToList());
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceStatisticsCR.rpt"));
+                report.SetDataSource(crAttendanceStatisticsList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+                report.Close();
+                report.Dispose();
+
+
+                if (reportType.Equals("Monthly"))
+                {
+                    return File(stream, "application/pdf", "Laporan Statistik Kedatangan Bulanan.pdf");
+                }
+                else
+                {
+                    return File(stream, "application/pdf", "Laporan Statistik Kedatangan Tahunan.pdf");
+                }
             }
             else
             {
-                return File(stream, "application/pdf", "Laporan Statistik Kedatangan Tahunan.pdf");
+                return RedirectToAction("Index", "Auth");
             }
 
         }
@@ -545,7 +555,7 @@ namespace MyTime.Controllers
             {
                 userName = userList.Select(u => u.UserName).FirstOrDefault();
                 NRIC = userList.Select(u => u.NRIC).FirstOrDefault();
-            }  
+            }
             else
             {
                 userName = "";
@@ -553,7 +563,7 @@ namespace MyTime.Controllers
             }
 
 
-            for (int i=0; i <= 6; i++)
+            for (int i = 0; i <= 6; i++)
             {
 
                 switch (i)
@@ -562,15 +572,15 @@ namespace MyTime.Controllers
 
                         attendanceStatus = MyTime.Resource.LateIn;
 
-                        totalCount = attendanceList.Where(a => a.AttendanceStatusID == "LIN" && a.IsApproved == false ).Count();
-                       
+                        totalCount = attendanceList.Where(a => a.AttendanceStatusID == "LIN" && a.IsApproved == false).Count();
+
                         break;
 
                     case 1:
 
                         attendanceStatus = MyTime.Resource.EarlyOut;
 
-                        totalCount = attendanceList.Where(a => a.AttendanceStatusID == "EOT" && a.IsApproved == false ).Count();
+                        totalCount = attendanceList.Where(a => a.AttendanceStatusID == "EOT" && a.IsApproved == false).Count();
 
                         break;
 
@@ -587,7 +597,7 @@ namespace MyTime.Controllers
                         attendanceStatus = MyTime.Resource.Incomplete;
 
                         totalCount = attendanceList.Where(a => a.AttendanceStatusID == "ICP" && a.IsApproved == false).Count();
-                         break;
+                        break;
 
                     case 4:
 
@@ -630,7 +640,7 @@ namespace MyTime.Controllers
 
             TempData["AttendanceStatisticsList"] = attendanceStatisticsList;
 
-            return Json(attendanceStatisticsList.OrderBy(a=>a.No).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(attendanceStatisticsList.OrderBy(a => a.No).ToList(), JsonRequestBehavior.AllowGet);
 
         }
 

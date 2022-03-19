@@ -81,7 +81,7 @@ namespace MyTime.Controllers
 
             // include those resigned after attendance date
             userList = userDBService.ListUser().Where(u => u.DepartmentID == selectedDepartment && ((u.IsResigned == true && u.ResignedOn > startOn.Date) || u.IsResigned == false) && u.IsAttendanceExcluded == false).OrderBy(u => u.UserName).ToList();
-          
+
             return Json(userList, JsonRequestBehavior.AllowGet);
 
         }
@@ -129,7 +129,7 @@ namespace MyTime.Controllers
                 // Attendance
                 attendanceList = new List<AttendanceModel>();
                 attendanceList = attendanceDBService.GetMonthlyAttendance(NRIC[i], usrID, userName, departmentID, departmentName, startOn, endOn, accessRoleID, approverName);
-                
+
                 // Summary
                 attendanceSummaryModel = new AttendanceSummaryModel();
 
@@ -177,55 +177,64 @@ namespace MyTime.Controllers
 
         public ActionResult PrintAttendanceMonthlyReport()
         {
-
-            //List<AttendanceModel> attendanceList = new List<AttendanceModel>();
-            //UserModel userModel = new UserModel();
-            //AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
-
-            List<CRAttendanceMonthlyModel> crAttendanceMonthlyList = new List<CRAttendanceMonthlyModel>();
-
-            //attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
-            //attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
-
-            //TempData.Keep("UserApproverList");
-            //TempData.Keep("AttendanceList");
-            //TempData.Keep("AttendanceSummary");
-
-            //crAttendanceMonthlyList = crystalReportDBService.PrepareAttendanceMonthlyReport(attendanceList, attendanceSummaryModel);
-
-            crAttendanceMonthlyList = TempData["crAttendanceMonthlyList"] as List<CRAttendanceMonthlyModel>;
-            TempData.Keep("crAttendanceMonthlyList");
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceHistoryMonthlyCR.rpt"));
-            report.SetDataSource(crAttendanceMonthlyList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
+            if (Session["OrganisationName"] != null)
+            {
 
 
-            report.Close();
-            report.Dispose();
+
+                //List<AttendanceModel> attendanceList = new List<AttendanceModel>();
+                //UserModel userModel = new UserModel();
+                //AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
+
+                List<CRAttendanceMonthlyModel> crAttendanceMonthlyList = new List<CRAttendanceMonthlyModel>();
+
+                //attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
+                //attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
+
+                //TempData.Keep("UserApproverList");
+                //TempData.Keep("AttendanceList");
+                //TempData.Keep("AttendanceSummary");
+
+                //crAttendanceMonthlyList = crystalReportDBService.PrepareAttendanceMonthlyReport(attendanceList, attendanceSummaryModel);
+
+                crAttendanceMonthlyList = TempData["crAttendanceMonthlyList"] as List<CRAttendanceMonthlyModel>;
+                TempData.Keep("crAttendanceMonthlyList");
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceHistoryMonthlyCR.rpt"));
+                report.SetDataSource(crAttendanceMonthlyList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
 
 
-            return File(stream, "application/pdf", "Laporan Perakam Waktu.pdf");
+                report.Close();
+                report.Dispose();
+
+
+                return File(stream, "application/pdf", "Laporan Perakam Waktu.pdf");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
 
@@ -289,11 +298,11 @@ namespace MyTime.Controllers
             {
                 approverName = userApproverModel.UserName;
             }
-          
+
 
             return approverName;
         }
 
-     
+
     }
 }

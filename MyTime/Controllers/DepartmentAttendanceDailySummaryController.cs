@@ -13,11 +13,11 @@ using CrystalDecisions.CrystalReports.Engine;
 namespace MyTime.Controllers
 {
     public class DepartmentAttendanceDailySummaryController : EnvironmentController
-    {  
+    {
         UserDBService userDBService = new UserDBService();
         UserAccessControlDBService userAccessControlDBService = new UserAccessControlDBService();
-    
-        AttendanceDBService attendanceDBService = new AttendanceDBService();       
+
+        AttendanceDBService attendanceDBService = new AttendanceDBService();
         DepartmentAttendanceDailySummaryViewModel departmentAttendanceDailySummaryViewModel = new DepartmentAttendanceDailySummaryViewModel();
         CrystalReportDBService crystalReportDBService = new CrystalReportDBService();
 
@@ -37,7 +37,7 @@ namespace MyTime.Controllers
 
                 departmentAttendanceDailySummaryViewModel.UserAccessControlModel = userAccessControlDBService.IsAccessAllowed(userModel.RoleID);
                 departmentAttendanceDailySummaryViewModel.AttendanceDate = DateTime.Now;
-  
+
             }
 
             return View(departmentAttendanceDailySummaryViewModel);
@@ -85,7 +85,7 @@ namespace MyTime.Controllers
             string totalAttendPercentage;
 
 
-        departmentAttendanceDailyList = TempData["DepartmentAttendanceDailyList"] as List<DepartmentAttendanceDailyModel>;
+            departmentAttendanceDailyList = TempData["DepartmentAttendanceDailyList"] as List<DepartmentAttendanceDailyModel>;
 
             DepartmentAttendanceDailySummaryModel departmentAttendanceDailySummaryModel = new DepartmentAttendanceDailySummaryModel();
 
@@ -110,46 +110,55 @@ namespace MyTime.Controllers
 
         public ActionResult PrintDepartmentAttendanceDailySummary()
         {
-
-            List<DepartmentAttendanceDailyModel> departmentAttendanceDailyList = new List<DepartmentAttendanceDailyModel>();
-            departmentAttendanceDailyList = TempData["DepartmentAttendanceDailyList"] as List<DepartmentAttendanceDailyModel>;
-
-            List<CRDepartmentAttendanceDailyModel> crDepartmentAttendanceDailyList = new List<CRDepartmentAttendanceDailyModel>();
-
-            TempData.Keep("DepartmentAttendanceDailyList");
-
-            crDepartmentAttendanceDailyList = crystalReportDBService.PrepareDepartmentAttendanceDailySummary(departmentAttendanceDailyList.OrderBy(s=>s.DepartmentName).ToList());
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "DepartmentAttendanceDailySummaryCR.rpt"));
-            report.SetDataSource(crDepartmentAttendanceDailyList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
+            if (Session["OrganisationName"] != null)
+            {
 
 
-            report.Close();
-            report.Dispose();
+
+                List<DepartmentAttendanceDailyModel> departmentAttendanceDailyList = new List<DepartmentAttendanceDailyModel>();
+                departmentAttendanceDailyList = TempData["DepartmentAttendanceDailyList"] as List<DepartmentAttendanceDailyModel>;
+
+                List<CRDepartmentAttendanceDailyModel> crDepartmentAttendanceDailyList = new List<CRDepartmentAttendanceDailyModel>();
+
+                TempData.Keep("DepartmentAttendanceDailyList");
+
+                crDepartmentAttendanceDailyList = crystalReportDBService.PrepareDepartmentAttendanceDailySummary(departmentAttendanceDailyList.OrderBy(s => s.DepartmentName).ToList());
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "DepartmentAttendanceDailySummaryCR.rpt"));
+                report.SetDataSource(crDepartmentAttendanceDailyList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
 
 
-            return File(stream, "application/pdf", "Rumusan Kedatangan Harian Bahagian.pdf");
+                report.Close();
+                report.Dispose();
+
+
+                return File(stream, "application/pdf", "Rumusan Kedatangan Harian Bahagian.pdf");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
 

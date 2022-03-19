@@ -224,7 +224,7 @@ namespace MyTime.Controllers
 
             string departmentID;
             string departmentName;
-                        
+
             //userList = TempData["UserList"] as List<UserModel>;
             //TempData.Keep("UserList");
 
@@ -244,7 +244,7 @@ namespace MyTime.Controllers
                 case "Monthly":
 
                     DateTime.TryParse(selectedDate, out startOn);
-                  
+
                     days = DateTime.DaysInMonth(startOn.Year, startOn.Month);
 
                     if (startOn.ToString("yyyyMM") != DateTime.Now.ToString("yyyyMM"))
@@ -255,7 +255,7 @@ namespace MyTime.Controllers
                     {
                         endOn = DateTime.Now.Date;
                     }
-                                        // include those resigned after attendance date
+                    // include those resigned after attendance date
                     userList = userDBService.ListUser().Where(u => ((u.IsResigned == true && u.ResignedOn > startOn.Date) || u.IsResigned == false) && u.IsAttendanceExcluded == false).OrderBy(u => u.UserName).ToList();
 
                     if (!selectedDepartmentID.Equals(""))
@@ -266,7 +266,7 @@ namespace MyTime.Controllers
                     else
                     {
                         // By All Department
-                        selectedUser = userList.ToList();                  
+                        selectedUser = userList.ToList();
                     }
 
                     // Get Attendance
@@ -298,7 +298,7 @@ namespace MyTime.Controllers
                 case "Yearly":
 
                     DateTime.TryParse(selectedDate, out startOn);
-                 
+
                     // Get Attendance
                     attendanceList = new List<AttendanceModel>();
 
@@ -328,7 +328,7 @@ namespace MyTime.Controllers
                         else
                         {
                             // By All Department
-                            selectedUser = userList.ToList();                         
+                            selectedUser = userList.ToList();
                         }
 
                         foreach (var row in selectedUser)
@@ -384,7 +384,7 @@ namespace MyTime.Controllers
             if (!selectedDepartmentID.Equals(""))
             {
                 // By Single Department
-                            
+
 
                 departmentID = selectedDepartmentID;
 
@@ -403,7 +403,7 @@ namespace MyTime.Controllers
 
                 attendanceSummaryReport = new AttendanceSummaryReportModel();
 
-                attendanceSummaryReport.ReportDate= reportDate;
+                attendanceSummaryReport.ReportDate = reportDate;
                 attendanceSummaryReport.DepartmentName = departmentName;
                 attendanceSummaryReport.UserCount = userCount;
                 attendanceSummaryReport.TotalLateIn = totalLateIn;
@@ -467,7 +467,7 @@ namespace MyTime.Controllers
             AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
 
             List<AttendanceSummaryReportModel> attendanceSummaryReportList = new List<AttendanceSummaryReportModel>();
-                       
+
             attendanceSummaryReportList = TempData["AttendanceSummaryReportList"] as List<AttendanceSummaryReportModel>;
 
             int totalLateIn = 0;
@@ -478,7 +478,7 @@ namespace MyTime.Controllers
             int totalAttend = 0;
             int totalOnLeave = 0;
 
-            totalLateIn = attendanceSummaryReportList.Select(a=> a.TotalLateIn).Sum();
+            totalLateIn = attendanceSummaryReportList.Select(a => a.TotalLateIn).Sum();
             totalEarlyOut = attendanceSummaryReportList.Select(a => a.TotalEarlyOut).Sum();
             totalLateInEarlyOut = attendanceSummaryReportList.Select(a => a.TotalLateInEarlyOut).Sum();
             totalIncomplete = attendanceSummaryReportList.Select(a => a.TotalIncomplete).Sum();
@@ -503,56 +503,66 @@ namespace MyTime.Controllers
 
         public ActionResult PrintAttendanceSummaryReport()
         {
-            string selectedDepartmentID;
-            string reportType;
-            List<AttendanceSummaryReportModel> attendanceSummaryReportList = new List<AttendanceSummaryReportModel>();
-            AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
 
-            List<CRAttendanceSummaryReportModel> crAttendanceSummaryReportList = new List<CRAttendanceSummaryReportModel>();
-
-            selectedDepartmentID = TempData["SelectedDepartmentID"] as string;
-            reportType = TempData["ReportType"] as string;
-
-            attendanceSummaryReportList = TempData["AttendanceSummaryReportList"] as List<AttendanceSummaryReportModel>;
-            attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
-
-            TempData.Keep("SelectedDepartmentID");
-
-            TempData.Keep("ReportType");
-            TempData.Keep("AttendanceSummaryReportList");
-            TempData.Keep("AttendanceSummary");
-
-            crAttendanceSummaryReportList = crystalReportDBService.PrepareAttendanceSummaryReport(selectedDepartmentID, reportType, attendanceSummaryReportList, attendanceSummaryModel);
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceSummaryCR.rpt"));
-            report.SetDataSource(crAttendanceSummaryReportList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            report.Close();
-            report.Dispose();
+            if (Session["OrganisationName"] != null)
+            {
 
 
-            return File(stream, "application/pdf", "Rumusan Laporan Kedatangan.pdf");
+                string selectedDepartmentID;
+                string reportType;
+                List<AttendanceSummaryReportModel> attendanceSummaryReportList = new List<AttendanceSummaryReportModel>();
+                AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
+
+                List<CRAttendanceSummaryReportModel> crAttendanceSummaryReportList = new List<CRAttendanceSummaryReportModel>();
+
+                selectedDepartmentID = TempData["SelectedDepartmentID"] as string;
+                reportType = TempData["ReportType"] as string;
+
+                attendanceSummaryReportList = TempData["AttendanceSummaryReportList"] as List<AttendanceSummaryReportModel>;
+                attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
+
+                TempData.Keep("SelectedDepartmentID");
+
+                TempData.Keep("ReportType");
+                TempData.Keep("AttendanceSummaryReportList");
+                TempData.Keep("AttendanceSummary");
+
+                crAttendanceSummaryReportList = crystalReportDBService.PrepareAttendanceSummaryReport(selectedDepartmentID, reportType, attendanceSummaryReportList, attendanceSummaryModel);
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceSummaryCR.rpt"));
+                report.SetDataSource(crAttendanceSummaryReportList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                report.Close();
+                report.Dispose();
+
+
+                return File(stream, "application/pdf", "Rumusan Laporan Kedatangan.pdf");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
 

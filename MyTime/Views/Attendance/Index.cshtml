@@ -53,9 +53,21 @@
 
                         </div>
 
-                        <div class="form-group row pt-0">
+                        <div class="form-group row pt-1">
 
-                            <div class="col-md-12 d-flex justify-content-end">
+                            <div class="col-md-4 d-flex justify-content-start">
+
+                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
+
+
+                                <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px; display:none;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
+
+
+                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
+
+                            </div>
+
+                            <div class="col-md-8 d-flex justify-content-end">
 
                                 @if (!Model.UserApproverList.Count.Equals(0))
                                 {
@@ -109,18 +121,8 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-4 d-flex justify-content-start">
-
-                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
-
-                                
-                                    <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px; display:none;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
-                              
-
-                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
-
-                            </div>
-                            <div class="col-md-8 d-flex justify-content-end">
+                          
+                            <div class="col-md-12 d-flex justify-content-end">
 
                                 @Html.Label(MyTime.Resource.TotalAttend, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
                                 <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalAttend" }) </span>

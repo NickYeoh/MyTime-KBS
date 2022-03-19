@@ -83,8 +83,6 @@
 
                         </div>
 
-
-
                         <div class="form-group row">
                             <div class="col-md-12 d-flex justify-content-end">
                                 @Html.Label(MyTime.Resource.TotalLateIn, htmlAttributes: new { @class = "control-label pr-1" })
@@ -107,19 +105,7 @@
 
                         <div class="form-group row">
 
-                            <div class="col-md-4 d-flex justify-content-start">
-
-                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
-
-
-                                <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px; display:none;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
-
-
-                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
-
-                            </div>
-
-                            <div class="col-md-8 d-flex justify-content-end">
+                            <div class="col-md-12 d-flex justify-content-end">
 
                                 @Html.Label(MyTime.Resource.TotalAttend, htmlAttributes: new { @class = "control-label pl-2 pr-1" })
                                 <span class="badge badge-secondary" style="font-size:12pt;"> @Html.Label("0", htmlAttributes: new { @class = "control-label p-0", @id = "TotalAttend" }) </span>
@@ -130,7 +116,18 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-12 d-flex justify-content-end">
+
+                            <div class="col-md-4 d-flex justify-content-start">
+
+                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
+
+                                <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px; display:none;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
+
+                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
+
+                            </div>
+
+                            <div class="col-md-8 d-flex justify-content-end">
 
                                 <span class="fa fa-circle pl-2 pr-1" style="color:orange"> @MyTime.Resource.StatusSubmitted </span>
                                 <span class="fa fa-check pl-2 pr-1" style="color:green"> @MyTime.Resource.StatusApproved </span>

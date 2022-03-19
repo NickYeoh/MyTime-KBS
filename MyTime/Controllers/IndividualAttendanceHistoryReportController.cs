@@ -65,7 +65,7 @@ namespace MyTime.Controllers
             return View(individualAttendanceHistoryReportViewModel);
 
         }
-              
+
         [HttpPost]
         public ActionResult GetDepartmentUser(string selectedMonthYear, string selectedDepartment)
         {
@@ -149,7 +149,7 @@ namespace MyTime.Controllers
 
 
         public ActionResult GenerateAttendanceList(string startDate, string NRIC)
-        {        
+        {
             string approverName;
 
             UserModel userModel = new UserModel();
@@ -157,7 +157,7 @@ namespace MyTime.Controllers
 
             approverName = GetFirstUserApproverName(NRIC);
 
-            userModel = userDBService.GetDataByID(NRIC);           
+            userModel = userDBService.GetDataByID(NRIC);
             string usrID = userModel.USRID;
             string userName = userModel.UserName;
             string departmentID = userModel.DepartmentID;
@@ -226,49 +226,58 @@ namespace MyTime.Controllers
         public ActionResult PrintAttendanceMonthlyReport()
         {
 
-            List<AttendanceModel> attendanceList = new List<AttendanceModel>();
-            UserModel userModel = new UserModel();
-            AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
+            if (Session["OrganisationName"] != null)
+            {
 
-            List<CRAttendanceMonthlyModel> crAttendanceMonthlyList = new List<CRAttendanceMonthlyModel>();
 
-            attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
-            attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
+                List<AttendanceModel> attendanceList = new List<AttendanceModel>();
+                UserModel userModel = new UserModel();
+                AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
 
-            TempData.Keep("UserApproverList");
-            TempData.Keep("AttendanceList");
-            TempData.Keep("AttendanceSummary");
+                List<CRAttendanceMonthlyModel> crAttendanceMonthlyList = new List<CRAttendanceMonthlyModel>();
 
-            crAttendanceMonthlyList = crystalReportDBService.PrepareAttendanceMonthlyReport(attendanceList, attendanceSummaryModel);
+                attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
+                attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
 
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceHistoryMonthlyCR.rpt"));
-            report.SetDataSource(crAttendanceMonthlyList);
+                TempData.Keep("UserApproverList");
+                TempData.Keep("AttendanceList");
+                TempData.Keep("AttendanceSummary");
 
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+                crAttendanceMonthlyList = crystalReportDBService.PrepareAttendanceMonthlyReport(attendanceList, attendanceSummaryModel);
 
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceHistoryMonthlyCR.rpt"));
+                report.SetDataSource(crAttendanceMonthlyList);
 
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
 
-            Response.Buffer = false;
-            Response.ClearContent();
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
 
-            Response.ClearHeaders();
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
 
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
+                Response.Buffer = false;
+                Response.ClearContent();
 
-            report.Close();
-            report.Dispose();
+                Response.ClearHeaders();
 
-            return File(stream, "application/pdf", "Laporan Perakam Waktu.pdf");
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                report.Close();
+                report.Dispose();
+
+                return File(stream, "application/pdf", "Laporan Perakam Waktu.pdf");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
 
@@ -278,8 +287,8 @@ namespace MyTime.Controllers
             List<ApproverUserModel> userApproverList = new List<ApproverUserModel>();
             ApproverUserModel userApproverModel = new ApproverUserModel();
             userApproverList = approverDBService.GetUserApprover(NRIC).OrderBy(a => a.UserName).ToList();
-            
-            string approverName= "";
+
+            string approverName = "";
 
             userApproverModel = userApproverList.Select(ua => ua).FirstOrDefault();
 

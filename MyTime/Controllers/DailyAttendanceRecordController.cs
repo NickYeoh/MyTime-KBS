@@ -14,7 +14,7 @@ namespace MyTime.Controllers
     public class DailyAttendanceRecordController : EnvironmentController
     {
         UserDBService userDBService = new UserDBService();
-    
+
         ReportAdminDBService reportAdminDBService = new ReportAdminDBService();
         AttendanceDBService attendanceDBService = new AttendanceDBService();
         CrystalReportDBService crystalReportDBService = new CrystalReportDBService();
@@ -24,7 +24,7 @@ namespace MyTime.Controllers
         {
             UserModel userModel = new UserModel();
             UserAccessControlDBService userAccessControlDBService = new UserAccessControlDBService();
-        
+
             DailyAttendanceRecordViewModel dailyAttendanceRecordViewModel = new DailyAttendanceRecordViewModel();
             List<ReportAdminDepartmentModel> reportAdminDepartmentList = new List<ReportAdminDepartmentModel>();
 
@@ -56,7 +56,7 @@ namespace MyTime.Controllers
             List<UserModel> userList = new List<UserModel>();
             List<AttendanceModel> tempList = new List<AttendanceModel>();
             List<AttendanceModel> attendanceList = new List<AttendanceModel>();
-                      
+
             string tempDate;
             DateTime attendanceDate;
 
@@ -74,17 +74,17 @@ namespace MyTime.Controllers
             endOn = startOn.AddDays((days - 1));
 
             // include those resigned after attendance date
-            userList = userDBService.ListUser().Where(u => u.DepartmentID == selectedDepartmentID && ((u.IsResigned == true && u.ResignedOn > attendanceDate) || u.IsResigned== false) && u.IsAttendanceExcluded== false).OrderBy(u=>u.UserName).ToList();
+            userList = userDBService.ListUser().Where(u => u.DepartmentID == selectedDepartmentID && ((u.IsResigned == true && u.ResignedOn > attendanceDate) || u.IsResigned == false) && u.IsAttendanceExcluded == false).OrderBy(u => u.UserName).ToList();
 
             if (!userList.Equals(0))
-            {               
-                foreach ( UserModel userModel in userList)
+            {
+                foreach (UserModel userModel in userList)
                 {
                     // Get 1 Month Then Filter
                     tempList = attendanceDBService.GetMonthlyAttendance(userModel.NRIC, userModel.USRID, userModel.UserName, userModel.DepartmentID, userModel.DepartmentName, startOn, endOn, userModel.AccessRoleID, "");
 
                     // Filter and combine the data into Attendance List
-                    attendanceList.AddRange(tempList.Where(t=>t.AttendanceDate == attendanceDate.Date).ToList());
+                    attendanceList.AddRange(tempList.Where(t => t.AttendanceDate == attendanceDate.Date).ToList());
                 }
 
             }
@@ -138,52 +138,60 @@ namespace MyTime.Controllers
 
         public ActionResult PrintDailyAttendanceRecordReport()
         {
-
-            List<AttendanceModel> attendanceList = new List<AttendanceModel>();
-            AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
-
-            List<CRAttendanceDailyModel> crAttendanceDailyList = new List<CRAttendanceDailyModel>();
-            ApproverUserModel userApproverModel = new ApproverUserModel();
-
-          
-            attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
-            attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
-                    
-            TempData.Keep("AttendanceList");
-            TempData.Keep("AttendanceSummary");
-
-            crAttendanceDailyList = crystalReportDBService.PrepareAttendanceReport("Daily", attendanceList, attendanceSummaryModel);
-
-            ReportDocument report = new ReportDocument();
-            report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceRecordCR.rpt"));
-            report.SetDataSource(crAttendanceDailyList);
-
-            //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
-            //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
-            //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
-
-            string organisationName = Session["OrganisationName"].ToString();
-            string organisationLogo = Session["OrganisationLogo"].ToString();
-            string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
-
-            report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
-            report.SetParameterValue("OrganisationName", organisationName);
-            report.SetParameterValue("OrganisationLogo", organisationLogoPath);
-          
-            Response.Buffer = false;
-            Response.ClearContent();
-
-            Response.ClearHeaders();
-
-            Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
+            if (Session["OrganisationName"] != null)
+            {
 
 
-            report.Close();
-            report.Dispose();
+                List<AttendanceModel> attendanceList = new List<AttendanceModel>();
+                AttendanceSummaryModel attendanceSummaryModel = new AttendanceSummaryModel();
+
+                List<CRAttendanceDailyModel> crAttendanceDailyList = new List<CRAttendanceDailyModel>();
+                ApproverUserModel userApproverModel = new ApproverUserModel();
 
 
-            return File(stream, "application/pdf", "Laporan Kedatangan Harian.pdf");
+                attendanceList = TempData["AttendanceList"] as List<AttendanceModel>;
+                attendanceSummaryModel = TempData["AttendanceSummary"] as AttendanceSummaryModel;
+
+                TempData.Keep("AttendanceList");
+                TempData.Keep("AttendanceSummary");
+
+                crAttendanceDailyList = crystalReportDBService.PrepareAttendanceReport("Daily", attendanceList, attendanceSummaryModel);
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceRecordCR.rpt"));
+                report.SetDataSource(crAttendanceDailyList);
+
+                //report.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Portrait;
+                //report.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+                //report.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA4;
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+                report.Close();
+                report.Dispose();
+
+
+                return File(stream, "application/pdf", "Laporan Kedatangan Harian.pdf");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
 
         }
 
