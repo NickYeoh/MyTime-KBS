@@ -16,7 +16,7 @@
             </div>
             <div class="card-body">
 
-                @using (Ajax.BeginForm(null, null, new AjaxOptions
+                @*@using (Ajax.BeginForm(null, null, new AjaxOptions
                 {
                     InsertionMode = InsertionMode.Replace,
                     AllowCache = false,
@@ -31,7 +31,7 @@
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="form-horizontal">
+                    <div class="form-horizontal">*@
 
                         <div class="form-group row">
                             @Html.LabelFor(model => model.UserModel.UserName, htmlAttributes: new { @class = "control-label col-md-12" })
@@ -128,7 +128,7 @@
 
                     </div>
 
-                }
+                @*  *@}
 
             </div>
 
