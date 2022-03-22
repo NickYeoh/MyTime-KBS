@@ -376,7 +376,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Status.
+        ///   Looks up a localized string similar to Attendance Card Colour.
         /// </summary>
         public static string AttendanceCardStatus {
             get {

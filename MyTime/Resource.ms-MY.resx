@@ -1033,7 +1033,7 @@
     <value>Kad Kedatangan</value>
   </data>
   <data name="AttendanceCardStatus" xml:space="preserve">
-    <value>Status Kad Kedatangan</value>
+    <value>Warna Kad Kedatangan</value>
   </data>
   <data name="Month.Apr" xml:space="preserve">
     <value>Apr</value>
