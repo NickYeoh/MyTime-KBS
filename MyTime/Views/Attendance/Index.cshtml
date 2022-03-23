@@ -30,7 +30,11 @@
 
                         <div class="form-group row text-center">
                             <div class="col-md-12">
-                                <h5>@MyTime.Resource.AttendanceIndividual</h5>
+                                <div id="divAttendanceCardStatus" style="width: 100%; height:30px; line-height:20px; padding-top:5px; display: block; background-color:white; text-align: center; ">
+                                    <h6>@MyTime.Resource.AttendanceIndividual</h6>
+                                </div>
+
+                                @*<h5>@MyTime.Resource.AttendanceIndividual</h5>*@
                             </div>
                         </div>
 
@@ -55,7 +59,7 @@
 
                         <div class="form-group row pt-1">
 
-                            <div class="col-md-4 d-flex justify-content-start">
+                            @*<div class="col-md-4 d-flex justify-content-start">
 
                                 @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
 
@@ -65,9 +69,9 @@
 
                                 @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
 
-                            </div>
+                            </div>*@
 
-                            <div class="col-md-8 d-flex justify-content-end">
+                            <div class="col-md-12 d-flex justify-content-end">
 
                                 @if (!Model.UserApproverList.Count.Equals(0))
                                 {
@@ -705,11 +709,13 @@
 
         $('#btnReset').click(function () {
 
-                var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
-                attendanceCardStatus.innerHTML = '-';
+                //var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
+                //attendanceCardStatus.innerHTML = '-';
 
-                 var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
-                 iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:none;';
+                // var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
+                // iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:none;';
+
+               $('#divAttendanceCardStatus').css({ "background-color": "white" });
 
 
                 var submissionDueDate = document.getElementById('SubmissionDueDate');
@@ -771,14 +777,14 @@
                         customDatatable.clear().draw(false);
                     }
 
-                    var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
+                    //var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
                     var data = customDatatable.row(0).data();
-                    attendanceCardStatus.innerHTML = data['AttendanceCardStatus'];
+                    //attendanceCardStatus.innerHTML = data['AttendanceCardStatus'];
 
-                    var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
+                    //var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
 
-                
-                    switch (data['AttendanceCardStatus']) {
+
+                    @*switch (data['AttendanceCardStatus']) {
                         case '@MyTime.Resource.Colour_Yellow':
                             iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:block;';
                             break;
@@ -790,7 +796,25 @@
                             break;
                         default:
                             break;
+                    }*@
+
+                     switch (data['AttendanceCardStatus']) {
+                        case '@MyTime.Resource.Colour_Yellow':
+                            $('#divAttendanceCardStatus').css({ "background-color": "gold" });
+                            break;
+                        case '@MyTime.Resource.Colour_Green':
+                             $('#divAttendanceCardStatus').css({ "background-color": "green" });
+                            break;
+                        case '@MyTime.Resource.Colour_Red':
+                            $('#divAttendanceCardStatus').css({ "background-color": "red" });
+                            break;
+                        default:
+                            $('#divAttendanceCardStatus').css({ "background-color": "white" });
+                            break;
                     }
+
+                    $('#divAttendanceCardStatus').fadeIn(4000);
+
 
                     var submissionDueDate = document.getElementById('SubmissionDueDate');
                     submissionDueDate.innerHTML =  '@MyTime.Resource.SubmissionDueDate' + ' : ' + convertToDate(customDatatable.cell(0, 12).data());

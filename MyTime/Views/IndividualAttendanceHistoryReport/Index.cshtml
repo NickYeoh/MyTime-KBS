@@ -31,7 +31,9 @@
 
                         <div class="form-group row text-center">
                             <div class="col-md-12">
-                                <h5> @ViewBag.Title</h5>
+
+                                <h6> @ViewBag.Title</h6>
+
                             </div>
                         </div>
 
@@ -117,17 +119,8 @@
 
                         <div class="form-group row">
 
-                            <div class="col-md-4 d-flex justify-content-start">
 
-                                @Html.Label(@MyTime.Resource.AttendanceCardStatus + " : ", htmlAttributes: new { @class = "control-label p-0 text-center" })
-
-                                <i id="iconAttendanceCardStatus" class='icofont-address-book pr-1' style='color: gold ; font-size: 30px; display:none;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>
-
-                                @Html.Label("-", htmlAttributes: new { @class = "control-label pl-1 text-center", @id = "AttendanceCardStatus" })
-
-                            </div>
-
-                            <div class="col-md-8 d-flex justify-content-end">
+                            <div class="col-md-12 d-flex justify-content-end">
 
                                 <span class="fa fa-circle pl-2 pr-1" style="color:orange"> @MyTime.Resource.StatusSubmitted </span>
                                 <span class="fa fa-check pl-2 pr-1" style="color:green"> @MyTime.Resource.StatusApproved </span>
@@ -644,12 +637,7 @@
 
         $('#btnReset').click(function () {
 
-                var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
-                attendanceCardStatus.innerHTML = '-';
-
-                var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
-                iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:none;';
-
+              
                 var totalLateIn = document.getElementById('TotalLateIn');
                 totalLateIn.innerHTML = "0";
 
@@ -680,6 +668,8 @@
                 $('#btnGenerate').prop('disabled', false);
                 $('#btnReset').prop('disabled', true);
                 $('#btnPrint').prop('disabled', true);
+
+
             });
 
     });
@@ -759,27 +749,7 @@
                         customDatatable.clear().draw(false);
                     }
 
-                    var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
-                    var data = customDatatable.row(0).data();
-                    attendanceCardStatus.innerHTML = data['AttendanceCardStatus'];
-
-                    var iconAttendanceCardStatus = document.getElementById('iconAttendanceCardStatus');
-
-
-                    switch (data['AttendanceCardStatus']) {
-                        case '@MyTime.Resource.Colour_Yellow':
-                            iconAttendanceCardStatus.style = 'color: gold ; font-size: 30px; display:block;';
-                            break;
-                        case '@MyTime.Resource.Colour_Green':
-                            iconAttendanceCardStatus.style = 'color: green ; font-size: 30px; display:block;';
-                            break;
-                        case '@MyTime.Resource.Colour_Red':
-                            iconAttendanceCardStatus.style = 'color: red ; font-size: 30px; display:block;';
-                            break;
-                        default:
-                            break;
-                    }
-
+                  
                     $('#ddlMonthYear').prop('disabled', true);
                     $('#ddlDepartment').prop('disabled', true);
                     $('#ddlUser').prop('disabled', true);
