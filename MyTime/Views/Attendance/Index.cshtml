@@ -34,7 +34,6 @@
                                     <h6>@MyTime.Resource.AttendanceIndividual</h6>
                                 </div>
 
-                                @*<h5>@MyTime.Resource.AttendanceIndividual</h5>*@
                             </div>
                         </div>
 
@@ -717,7 +716,7 @@
 
                $('#divAttendanceCardStatus').css({ "background-color": "white" });
 
-
+          
                 var submissionDueDate = document.getElementById('SubmissionDueDate');
                 submissionDueDate.innerHTML = '@MyTime.Resource.SubmissionDueDate' + ' : -';
 
@@ -754,8 +753,8 @@
 
         function GenerateAttendanceList() {
 
-
             loadSpinner();
+                    
 
             var startDate = $("#ddlMonthYear option:selected").val();
 
@@ -770,12 +769,16 @@
 
                     unloadSpinner();
 
+                  
+
                     if (data != null) {
                         customDatatable.clear().rows.add(data).draw(false);
                     }
                     else {
                         customDatatable.clear().draw(false);
                     }
+
+                    $("#divAttendanceCardStatus").css("display", "none");
 
                     //var attendanceCardStatus = document.getElementById('AttendanceCardStatus');
                     var data = customDatatable.row(0).data();
@@ -800,22 +803,21 @@
 
                      switch (data['AttendanceCardStatus']) {
                         case '@MyTime.Resource.Colour_Yellow':
-                            $('#divAttendanceCardStatus').css({ "background-color": "gold" });
+                             $('#divAttendanceCardStatus').css({ "background-color": "gold" });                           
                             break;
                         case '@MyTime.Resource.Colour_Green':
-                             $('#divAttendanceCardStatus').css({ "background-color": "green" });
+                             $('#divAttendanceCardStatus').css({ "background-color": "green" });                           
                             break;
                         case '@MyTime.Resource.Colour_Red':
-                            $('#divAttendanceCardStatus').css({ "background-color": "red" });
+                             $('#divAttendanceCardStatus').css({ "background-color": "red" });                           
                             break;
                         default:
-                            $('#divAttendanceCardStatus').css({ "background-color": "white" });
+                             $('#divAttendanceCardStatus').css({ "background-color": "white" });                          
                             break;
                     }
 
-                    $('#divAttendanceCardStatus').fadeIn(4000);
-
-
+                    $('#divAttendanceCardStatus').fadeIn(2000);
+                    
                     var submissionDueDate = document.getElementById('SubmissionDueDate');
                     submissionDueDate.innerHTML =  '@MyTime.Resource.SubmissionDueDate' + ' : ' + convertToDate(customDatatable.cell(0, 12).data());
 
