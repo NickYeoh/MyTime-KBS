@@ -220,6 +220,8 @@ namespace MyTime.Services
                     firstIn = null;
                     lastOut = null;
 
+                    workTime = TimeSpan.Zero;
+
                     overTime = TimeSpan.Zero;
 
                     overTimeExtra = TimeSpan.Zero;
@@ -500,7 +502,17 @@ namespace MyTime.Services
                                     {
                                         //workTime = lastOut.Value.Subtract(shiftStart);
 
-                                        workTime = (TimeSpan)(lastOut?.TimeOfDay.Subtract(shiftStart.TimeOfDay));
+                                        if (lastOut?.TimeOfDay > shiftStart.TimeOfDay)
+                                        {
+                                            workTime = (TimeSpan)(lastOut?.TimeOfDay.Subtract(shiftStart.TimeOfDay));
+                                        }
+                                        else
+                                        {
+                                            workTime = TimeSpan.Zero;
+                                        }
+                                        
+
+
                                     }
                                     else
                                     {

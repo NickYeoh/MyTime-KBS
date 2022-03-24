@@ -17,12 +17,13 @@ namespace MyTime.Controllers
         // version : 1.0.5 : Enable the email notification function based on IsEmailNotificationEnabled column value in Setting Table
         // to solve the email server offline caused user unable to submit reason
 
-        // version : 1.0.6 (20220309 ~ 20200320) :
+        // version : 1.0.6 (20220309 ~ 20200324) :
         // 1. Rectified the UserAccessControl jquery. The checkbox value for User is not same as data.
         // 2. Recfified the datetime conversion issue for Submit Reason / Approve Reason / Reject Reason / Request Amend Reason / Log Avtivity functions 
         // 3. Suspected the CR issue caused by the limit of runtime version (max 3). However, added the close and dispose statement after exported report to stream.
         // 4. Amended the Print Report Function in all related modules to check the Session, direct user to login screen if null value is detected.
         // 5. Added the Attendance Card Status Module and show the status on Monthly Attendance screen and report
+        // 6. Rectified the negative value work hour issue for Last Out Time is before Time-In Start.
 
         UserDBService userDBService = new UserDBService();
         UserAccessControlDBService userAccessControlDBService = new UserAccessControlDBService();
