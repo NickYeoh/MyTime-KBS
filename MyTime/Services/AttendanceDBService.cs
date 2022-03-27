@@ -143,6 +143,7 @@ namespace MyTime.Services
                 // Check User Status
                 userModel = userDBService.GetDataByID(NRIC);
 
+                // Get Attendance Card Status - Warna Kad Kedatangan
                 attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDandMonth(NRIC, startOn);
 
                 isResigned = Convert.ToBoolean(userModel.IsResigned);
@@ -155,12 +156,13 @@ namespace MyTime.Services
                 // Check and Get Submitted Attendance Reason
                 string tableName = "AttendanceReason_" + startOn.ToString("yyyyMM");
 
-                isTableFound = CheckAttendanceReasonTableExist(tableName);
+                isTableFound = CheckServerTableExist(tableName);
 
                 if (isTableFound == true)
                 {
                     attendanceReasonList = GetSubmittedReasonList(tableName, NRIC);
                 }
+              
 
                 // Get Device Transaction
 
@@ -688,7 +690,16 @@ namespace MyTime.Services
                                     if (isEarlyIn == true)
                                     {
                                         //workTime = lastOut.Value.Subtract(shiftStart);
-                                        workTime = (TimeSpan)(lastOut?.TimeOfDay.Subtract(shiftStart.TimeOfDay));
+                                        //workTime = (TimeSpan)(lastOut?.TimeOfDay.Subtract(shiftStart.TimeOfDay));
+
+                                        if (lastOut?.TimeOfDay > shiftStart.TimeOfDay)
+                                        {
+                                            workTime = (TimeSpan)(lastOut?.TimeOfDay.Subtract(shiftStart.TimeOfDay));
+                                        }
+                                        else
+                                        {
+                                            workTime = TimeSpan.Zero;
+                                        }
                                     }
                                     else
                                     {
@@ -896,9 +907,10 @@ namespace MyTime.Services
             try
             {
 
+                // Create Attendance Reason Table
                 string tableName = "AttendanceReason_" + attendanceReasonModel.AttendanceDate.ToString("yyyyMM");
 
-                isTableFound = CheckAttendanceReasonTableExist(tableName);
+                isTableFound = CheckServerTableExist(tableName);
 
                 if (!isTableFound == true)
                 {
@@ -1196,7 +1208,7 @@ namespace MyTime.Services
             int inCount;
             int outCount;
             int attendCount;
-            decimal attendPercentage;
+            //decimal attendPercentage;
 
             departmentList = departmentDBService.ListDepartment();
 
@@ -1214,10 +1226,11 @@ namespace MyTime.Services
 
                     userCount = userList.Count();
                     inCount = 0;
+
                     outCount = 0;
                     attendCount = 0;
 
-                    attendPercentage = 0;
+                    //attendPercentage = 0;
 
                     if (userCount > 0)
                     {
@@ -1303,9 +1316,11 @@ namespace MyTime.Services
         }
 
 
-        public bool CheckAttendanceReasonTableExist(string tableName)
+        public bool CheckServerTableExist(string tableName)
         {
             bool isTableFound = false;
+
+            // 2022-03-27 : To check is the Table existed in SQL Server Database
 
             try
             {
@@ -1335,7 +1350,7 @@ namespace MyTime.Services
             {
                 if (conn.State == ConnectionState.Open)
                 {
-                    conn.Close();
+                    conn.Close();                   
                 }
             }
 
