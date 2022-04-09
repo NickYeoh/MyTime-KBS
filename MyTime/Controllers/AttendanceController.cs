@@ -241,7 +241,7 @@ namespace MyTime.Controllers
 
         }
 
-
+        // Get
         public ActionResult _SubmitReason(string rowData)
         {
 
@@ -436,10 +436,6 @@ namespace MyTime.Controllers
 
 
             var reg = new Regex(@"([a-zA-Z0-9\s_\\.\-:\(\)])+(.pdf|.png|.jpg|.gif)$");
-
-            //string fn = attendanceReasonViewModel.AttendanceReasonModel.PostedProof.FileName;
-
-            //fn += " ";
 
             if (attendanceReasonViewModel.AttendanceReasonModel.PostedProof != null && !reg.IsMatch(attendanceReasonViewModel.AttendanceReasonModel.PostedProof.FileName))//model.File is public HttpPostedFileBase File { get; set; }
             {
