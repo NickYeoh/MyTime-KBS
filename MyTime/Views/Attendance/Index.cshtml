@@ -234,6 +234,8 @@
 
     $(document).ready(function () {
 
+            setInactivityTime();
+
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
@@ -716,7 +718,7 @@
 
                $('#divAttendanceCardStatus').css({ "background-color": "white" });
 
-          
+
                 var submissionDueDate = document.getElementById('SubmissionDueDate');
                 submissionDueDate.innerHTML = '@MyTime.Resource.SubmissionDueDate' + ' : -';
 
@@ -754,7 +756,7 @@
         function GenerateAttendanceList() {
 
             loadSpinner();
-                    
+
 
             var startDate = $("#ddlMonthYear option:selected").val();
 
@@ -769,7 +771,7 @@
 
                     unloadSpinner();
 
-                  
+
 
                     if (data != null) {
                         customDatatable.clear().rows.add(data).draw(false);
@@ -803,21 +805,21 @@
 
                      switch (data['AttendanceCardStatus']) {
                         case '@MyTime.Resource.Colour_Yellow':
-                             $('#divAttendanceCardStatus').css({ "background-color": "gold" });                           
+                             $('#divAttendanceCardStatus').css({ "background-color": "gold" });
                             break;
                         case '@MyTime.Resource.Colour_Green':
-                             $('#divAttendanceCardStatus').css({ "background-color": "green" });                           
+                             $('#divAttendanceCardStatus').css({ "background-color": "green" });
                             break;
                         case '@MyTime.Resource.Colour_Red':
-                             $('#divAttendanceCardStatus').css({ "background-color": "red" });                           
+                             $('#divAttendanceCardStatus').css({ "background-color": "red" });
                             break;
                         default:
-                             $('#divAttendanceCardStatus').css({ "background-color": "white" });                          
+                             $('#divAttendanceCardStatus').css({ "background-color": "white" });
                             break;
                     }
 
                     $('#divAttendanceCardStatus').fadeIn(2000);
-                    
+
                     var submissionDueDate = document.getElementById('SubmissionDueDate');
                     submissionDueDate.innerHTML =  '@MyTime.Resource.SubmissionDueDate' + ' : ' + convertToDate(customDatatable.cell(0, 12).data());
 
@@ -1006,7 +1008,50 @@
                 });
             }
 
-        };
+    };
+
+       let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
+
 </script>
 }
 

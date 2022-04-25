@@ -188,7 +188,7 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*@Scripts.Render("~/bundles/custom-js")*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
 
         var customDatatable;
@@ -203,6 +203,8 @@
 
     $(document).ready(function () {
 
+            setInactivityTime();
+
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
@@ -211,9 +213,9 @@
             $('.datepicker').datepicker(setDateTimePickerLocale(culture));*@
 
             var ddlMonth = $('#ddlMonth');
-          
+
             ddlMonth.empty().append('<option selected="selected" value="">@MyTime.Resource.PleaseSelect</option>');
-          
+
             $('#btnGenerate').prop('disabled', true);
             $('#btnReset').prop('disabled', true);
             $('#btnPrint').prop('disabled', true);
@@ -328,7 +330,7 @@
                 },
                 data: '',
                 rowId: 'DepartmentName',
-                    columns: [                   
+                    columns: [
                     { "data": "DepartmentName" },
                     { "data": "UserCount" },
                     { "data": "TotalLateIn" },
@@ -337,7 +339,7 @@
                     { "data": "TotalIncomplete" },
                     { "data": "TotalAbsent" },
                     { "data": "TotalAttend" },
-                    { "data": "TotalOnLeave" }                    
+                    { "data": "TotalOnLeave" }
                 ],
                     columnDefs: [
                     { targets: 0, className: 'text-left', width: '250px', orderable: true },
@@ -389,7 +391,7 @@
                 $('#ddlMonth').prop('disabled', false);
                 $('#ddWeek').prop('disabled', false);
                 $('#ddlDepartment').prop('disabled', false);
-              
+
                 $('#btnGenerate').prop('disabled', false);
                 $('#btnReset').prop('disabled', true);
                 $('#btnPrint').prop('disabled', true);
@@ -407,12 +409,12 @@
             var ddlMonth = document.getElementById('ddlMonth');
 
             var ddlDepartment = document.getElementById('ddlDepartment');
-         
+
             var selectedYear = ddlYear.value;
             var selectedMonth = ddlMonth.value;
 
             var selectedDepartmentID = ddlDepartment.value;
-       
+
 
             if (selectedMonth != '') {
                 reportType = "Monthly";
@@ -445,7 +447,7 @@
                     $('#ddlYear').prop('disabled', true);
                     $('#ddlMonth').prop('disabled', true);
                     $('#ddlDepartment').prop('disabled', true);
-                
+
                     $('#btnGenerate').prop('disabled', true);
                     $('#btnReset').prop('disabled', false);
                     $('#btnPrint').prop('disabled', false);
@@ -467,7 +469,7 @@
                 ddlYear = document.getElementById('ddlYear');
                 selectedYear = ddlYear.value;
 
-           
+
                 if (selectedYear != '' ) {
                     $('#btnGenerate').prop('disabled', false);
                     $('#btnReset').prop('disabled', true);
@@ -502,7 +504,7 @@
         });
 
     }
-           
+
 
     function GetAttendanceSummary() {
 
@@ -537,9 +539,51 @@
 
             }
         });
-    };
+        };
 
-    </script>
+           let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
+
+</script>
 }
 
 

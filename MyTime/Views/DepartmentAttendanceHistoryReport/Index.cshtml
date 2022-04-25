@@ -125,11 +125,11 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*@Scripts.Render("~/bundles/custom-js")*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         var customDatatable;
         var dataList;
-      
+
         function convertToDate(data) {
 
                 var dte = new Date(parseInt(data.substr(6)));
@@ -139,11 +139,13 @@
 
     $(document).ready(function () {
 
+        setInactivityTime();
+
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
 
-       
+
             document.getElementById("selectAll").checked = false;
             document.getElementById("selectAll").disabled = true;
 
@@ -208,7 +210,7 @@
 
         };
 
-        
+
             customDatatable = $('#listDatatable').DataTable(
                 {
                     //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-12 text-right"p>><"row pt-2"<"col-md-12 text-right"l>>>>',
@@ -337,10 +339,10 @@
                                 window.location = '/DepartmentAttendanceHistoryReport/PrintAttendanceMonthlyReport';
                             }
 
-                          
+
                         }
                     });
-                }    
+                }
 
                 unloadSpinner();
             });
@@ -355,7 +357,7 @@
             var ddlDepartment;
             var selectedDepartment;
 
-                  
+
             ddlMonthYear = document.getElementById('ddlMonthYear');
             selectedMonthYear = ddlMonthYear.value;
 
@@ -363,8 +365,8 @@
             selectedDepartment = ddlDepartment.value;
 
             if (selectedMonthYear != '' && selectedDepartment != '') {
-              
-              
+
+
                 $('#btnGenerate').prop('disabled', false);
                 $('#btnReset').prop('disabled', true);
                 $('#btnPrint').prop('disabled', true);
@@ -403,7 +405,7 @@
                 success: function (data) {
 
                     if (data != '') {
-                        
+
                         customDatatable.clear().rows.add(data).draw(false);
 
                     }
@@ -415,7 +417,7 @@
                     $('#ddlDepartment').prop('disabled', true);
 
                     document.getElementById("selectAll").disabled = false;
-                
+
                     $('#btnGenerate').prop('disabled', true);
                     $('#btnReset').prop('disabled', false);
                     $('#btnPrint').prop('disabled', false);
@@ -458,10 +460,52 @@
 
             //    }
             //});
-    };
+        };
+
+           let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
 
 
-    </script>
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
+
+
+</script>
 }
 
 

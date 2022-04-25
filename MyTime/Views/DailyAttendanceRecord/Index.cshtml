@@ -182,7 +182,7 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*@Scripts.Render("~/bundles/custom-js")*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
 
         var customDatatable;
@@ -196,6 +196,8 @@
         };
 
     $(document).ready(function () {
+
+            setInactivityTime();
 
             //toggleSidebar();
             unloadSpinner();
@@ -270,7 +272,7 @@
 
             };
 
-   
+
         customDatatable = $('#listDatatable').DataTable(
                 {
                 //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-2"B><"col-md-10 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-6 text-left"l><"col-md-6 text-right"p>>>>',
@@ -318,15 +320,15 @@
                         "data": "FirstIn", "render": function (data, type, row) {
 
                             var attendanceStatusID = row.AttendanceStatusID;
-                         
+
                             if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E') {
-                                                       
+
                                 if (row.OvertimeExtraStart != null) {
 
                                     if (data != null) {
 
                                         return '<span style="color:red">' + data + '</span>' + "<br/>" + row.OvertimeExtraStart;
-                                   
+
                                     }
                                     else {
 
@@ -334,12 +336,12 @@
                                     }
                                 }
                                 else {
-                                    return '<span style="color:red">' + data + '</span>';                                  
+                                    return '<span style="color:red">' + data + '</span>';
                                 }
 
                             }
                             else {
-                               
+
                                 if (attendanceStatusID == 'ICP') {
 
                                     var today = new Date(Date.now());
@@ -417,11 +419,11 @@
                     { "data": "Lateness" },
                     {
                         "data": "LastOut", "render": function (data, type, row) {
-                                                      
+
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                             
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -439,7 +441,7 @@
 
                             }
                             else {
-                              
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -694,9 +696,51 @@
 
             }
         });
-    };
+        };
 
-    </script>
+           let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
+
+</script>
 }
 
 

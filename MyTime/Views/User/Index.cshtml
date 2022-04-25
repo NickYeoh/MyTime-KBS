@@ -117,7 +117,7 @@
 
         $(document).ready(function () {
 
-
+            setInactivityTime();
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
@@ -361,7 +361,7 @@
                             },
                             { "data": 'NRIC' },
                             { "data": 'EffectiveOn' },
-                            { "data": 'YearMonth' },                           
+                            { "data": 'YearMonth' },
                             {
                                 "data": "AttendanceCardStatus",
                                 "className": "text-left",
@@ -637,7 +637,7 @@
 
             document.getElementById('pid').value = 'delete attendance card';
 
-            //var AttendanceDate = moment(dte).format('YYYY-MM-DD');        
+            //var AttendanceDate = moment(dte).format('YYYY-MM-DD');
 
             loadDivCRUD();
 
@@ -978,7 +978,49 @@
                 });
             }
 
-        };
+    };
+
+       let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
 </script>
 }
 

@@ -255,7 +255,9 @@
                 return dteWrapper.format("DD/MM/YYYY");
         };
 
-        $(document).ready(function () {
+    $(document).ready(function () {
+
+            setInactivityTime();
 
             //toggleSidebar();
             unloadSpinner();
@@ -489,14 +491,14 @@
                             return data;
                         }
                     },
-                    { "data": "AttendanceStatus" },                  
+                    { "data": "AttendanceStatus" },
                     {
                         "data": "FirstIn", "render": function (data, type, row) {
 
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E') {
-                            
+
                                 if (row.OvertimeExtraStart != null) {
 
                                     if (data != null) {
@@ -596,7 +598,7 @@
                                     }
 
                                 }
-                               
+
                             }
                         }
                     },
@@ -607,7 +609,7 @@
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                             
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -625,7 +627,7 @@
 
                             }
                             else {
-                              
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -807,7 +809,7 @@
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E') {
-                           
+
                                 if (row.OvertimeExtraStart != null) {
 
                                     if (data != null) {
@@ -828,7 +830,7 @@
 
                                 if (attendanceStatusID == 'ICP') {
 
-                                  
+
                                     var today = new Date(Date.now());
 
                                     var dd = String(today.getDate());
@@ -902,11 +904,11 @@
                     { "data": "Lateness" },
                     {
                         "data": "LastOut", "render": function (data, type, row) {
-                            
+
                             var attendanceStatusID = row.AttendanceStatusID;
 
                             if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                          
+
 
                                 if (row.OvertimeExtraEnd != null) {
 
@@ -925,7 +927,7 @@
 
                             }
                             else {
-                               
+
                                 if (row.OvertimeExtraEnd != null) {
 
                                     if (data != null) {
@@ -1064,11 +1066,11 @@
                 {
                     "data": "FirstIn", "render": function (data, type, row) {
 
-                      
+
                         var attendanceStatusID = row.AttendanceStatusID;
 
                         if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E') {
-                           
+
                             if (row.OvertimeExtraStart != null) {
 
                                 if (data != null) {
@@ -1177,11 +1179,11 @@
                 {
                     "data": "LastOut", "render": function (data, type, row) {
 
-                       
+
                         var attendanceStatusID = row.AttendanceStatusID;
 
                         if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                       
+
                             if (row.OvertimeExtraEnd != null) {
 
                                 if (data != null) {
@@ -1199,7 +1201,7 @@
 
                         }
                         else {
-                          
+
                             if (row.OvertimeExtraEnd != null) {
 
                                 if (data != null) {
@@ -1368,7 +1370,7 @@
                         var attendanceStatusID = row.AttendanceStatusID;
 
                         if (attendanceStatusID == 'LIN' || attendanceStatusID == 'L/E') {
-                           
+
                             if (row.OvertimeExtraStart != null) {
 
                                 if (data != null) {
@@ -1389,7 +1391,7 @@
 
                             if (attendanceStatusID == 'ICP') {
 
-                              
+
                                 var today = new Date(Date.now());
 
                                 var dd = String(today.getDate());
@@ -1467,7 +1469,7 @@
                         var attendanceStatusID = row.AttendanceStatusID;
 
                         if (attendanceStatusID == 'EOT' || attendanceStatusID == 'L/E') {
-                          
+
                             if (row.OvertimeExtraEnd != null) {
 
                                 if (data != null) {
@@ -1485,7 +1487,7 @@
 
                         }
                         else {
-                          
+
                             if (row.OvertimeExtraEnd != null) {
 
                                 if (data != null) {
@@ -2004,7 +2006,49 @@
                 });
             }
 
-        };
+    };
+
+       let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
 </script>
 }
 
