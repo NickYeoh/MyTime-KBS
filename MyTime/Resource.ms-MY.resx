@@ -1071,4 +1071,7 @@
   <data name="Month.Sep" xml:space="preserve">
     <value>Sep</value>
   </data>
+  <data name="MessageSessionExpired" xml:space="preserve">
+    <value>Anda telah dilog keluar oleh sistem kerana tiada aktiviti dalam masa {0} minit</value>
+  </data>
 </root>

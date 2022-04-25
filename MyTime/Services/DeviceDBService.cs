@@ -68,7 +68,7 @@ namespace MyTime.Services
             DeviceModel deviceModel;
 
             string sql = $@"SELECT * FROM T_Dev";
-            sql += " " + $@"WHERE Del = '0'";
+            sql += " " + $@"WHERE Del = 'N'";
 
             conn.Open();
 

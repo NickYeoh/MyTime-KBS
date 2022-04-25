@@ -1447,6 +1447,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are logged out by system due to no activity in {0} minutes.
+        /// </summary>
+        public static string MessageSessionExpired {
+            get {
+                return ResourceManager.GetString("MessageSessionExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Device is successfully assigned.
         /// </summary>
         public static string MessageSuccessAssignDevice {

@@ -300,11 +300,11 @@
                     columns: [
                         {
                             "render": function (data, type, full, meta) {
-                                return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.AccessRoleID + '", "' + full.DeviceID + '", "' + full.DeviceName + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+                                return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.AccessRoleID + '", "' + full.DeviceID + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
                             }
                         },
                         { "data": 'DeviceID' },
-                        { "data": 'DeviceName' }
+                        { "data": 'DeviceID' }
                     ],
                     columnDefs: [
                         { targets: 0, className: 'text-center', width: '15px', orderable: false },
@@ -359,11 +359,11 @@
                     columns: [
                         {
                             "render": function (data, type, full, meta) {
-                                return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.AccessRoleID + '", "' + full.DeviceID + '", "' + full.DeviceName + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
+                                return "<a href='#'  onclick='ShowConfirmDialog(" + '"' + full.AccessRoleID + '", "' + full.DeviceID  + '"' + ");'> <i class='icofont-trash' style='color: red; font-size:14px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Delete'></i> </a>";
                             }
                         },
                         { "data": 'DeviceID' },
-                        { "data": 'DeviceName' }
+                        { "data": 'DeviceID' }
                     ],
                     columnDefs: [
                         { targets: 0, className: 'text-center', width: '15px', orderable: false },
@@ -574,7 +574,7 @@
                                 }
                             },
                             { "data": 'DeviceID' },
-                            { "data": 'DeviceName' }
+                            { "data": 'DeviceID' }
 
                         ],
                         columnDefs: [
@@ -747,7 +747,7 @@
         };
 
 
-        function ShowConfirmDialog(p1, p2, p3) {
+        function ShowConfirmDialog(p1, p2) {
 
             // p1 : AccessRoleID
             // p2 : DeviceID
@@ -759,7 +759,7 @@
             messageString += "<div class='form-group'>";
 
             messageString += "<div class='label-control col-md-12 pl-0'>@MyTime.Resource.DeviceName</div>";
-            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p3 + "</div>";
+            messageString += "<div class='form-control col-md-12' readonly='readonly'>" + p2 + "</div>";
 
             messageString += "</div>";
             messageString += "</div>";

@@ -448,6 +448,9 @@
 
 
                                 if (proof != '') {
+
+                                    proof = proof + "?var=" + Date.now();
+
                                     return "<a href='" + folder + proof + "' target='_blank'> <i class='icofont-attachment' style='color: black; font-size: 20px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Attachment'></i> </a>";
                                 }
                                 else {
@@ -778,6 +781,9 @@
 
 
                                 if (proof != '') {
+
+                                    proof = proof + "?var=" + Date.now();
+
                                     return "<a href='" + folder + proof + "' target='_blank'> <i class='icofont-attachment' style='color: black; font-size: 20px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Attachment'></i> </a>";
                                 }
                                 else {
@@ -1037,7 +1043,10 @@
                                 var proof = row.Proof;
 
 
-                                if (proof != '') {
+                                if (proof != '')
+
+                                    proof = proof + "?var=" + Date.now();
+
                                     return "<a href='" + folder + proof + "' target='_blank'> <i class='icofont-attachment' style='color: black; font-size: 20px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Attachment'></i> </a>";
                                 }
                                 else {
@@ -1339,6 +1348,9 @@
 
 
                                 if (proof != '') {
+
+                                    proof = proof + "?var=" + Date.now();
+
                                     return "<a href='" + folder + proof + "' target='_blank'> <i class='icofont-attachment' style='color: black; font-size: 20px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.Attachment'></i> </a>";
                                 }
                                 else {
