@@ -225,7 +225,7 @@ namespace MyTime.Services
         }
 
     
-        public List<DeviceTransactionModel> GetSupremaDeviceTrans(string usrID, DateTime startOn, DateTime endOn, int accessRoleID)
+        public List<DeviceTransactionModel> GetSupremaDeviceTrans(string usrID, DateTime startOn, DateTime endOn, int accessRoleID, bool isFromOvertimeDevice)
         {
             List<DeviceTransactionModel> deviceTrans = new List<DeviceTransactionModel>();
             DeviceTransactionModel deviceTransactionModel;
@@ -240,8 +240,36 @@ namespace MyTime.Services
             SqlCommand cmd;
             SqlDataReader dr;
 
+            DeviceModel deviceModel;
+            List<DeviceModel> deviceList = new List<DeviceModel>();
+
             try
             {
+                // From normal device
+                sql = "SELECT DeviceID FROM AccessRoleDevice WHERE AccessRoleID='" + accessRoleID.ToString() + "'";
+                sql += " " + $@"AND IsOvertimeExtraDevice='{isFromOvertimeDevice}'";
+
+                connMT.Open();
+
+                cmd = new SqlCommand(sql, connMT);
+                dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+
+                        deviceModel = new DeviceModel();
+
+                        deviceModel.DeviceID = Convert.ToInt32(dr["DeviceID"]);
+
+                        deviceList.Add(deviceModel);
+
+                    }
+
+                }
+                connMT.Close();
+
 
                 for (int i = 0; i <= 1; i++)
                 {
@@ -302,7 +330,15 @@ namespace MyTime.Services
                 {
                     //sql = "(SELECT CONVERT(DATE, [SRVDT]) AS TRDate";
                     //sql += " " + $@", CONVERT(TIME,[SRVDT]) AS TRTIME";
-                    sql = "(SELECT [SRVDT] AS TRDateTime";
+
+                    //sql = "(SELECT [SRVDT] AS TRDateTime";
+                    //sql += " " + $@",[USRID], EVTLGUID";
+                    //sql += " " + $@"FROM {previousMonthTableName}";
+                    //sql += " " + $@"WHERE USRID='{usrID}'";
+
+                   
+
+                    sql = "(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
                     sql += " " + $@",[USRID], EVTLGUID";
                     sql += " " + $@"FROM {previousMonthTableName}";
                     sql += " " + $@"WHERE USRID='{usrID}'";
@@ -317,12 +353,29 @@ namespace MyTime.Services
                         sql += " " + $@"AND '{endOn.ToString("yyyyMMdd")}')";
                     }
 
-                    sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097'))";
+                    //sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097'))";
+
+                    sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097')";
+
+                    sql += " " + $@"AND  DEVUID IN (";
+                  
+                    foreach (var row in deviceList)
+                    {
+                        sql += "'" + row.DeviceID.ToString() + "',";
+                    }
+
+                    sql += "''))";
+
                     sql += " " + $@"UNION";
 
                     //sql += " " + $@"(SELECT CONVERT(DATE, [SRVDT]) AS TRDate";
                     //sql += " " + $@", CONVERT(TIME,[SRVDT]) AS TRTIME";
-                    sql += " " + $@"(SELECT [SRVDT] AS TRDateTime";
+                    //sql += " " + $@"(SELECT [SRVDT] AS TRDateTime";
+                    //sql += " " + $@",[USRID], EVTLGUID";
+                    //sql += " " + $@"FROM {currentMonthTableName}";
+                    //sql += " " + $@"WHERE USRID='{usrID}'";
+
+                    sql += " " + $@"(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
                     sql += " " + $@",[USRID], EVTLGUID";
                     sql += " " + $@"FROM {currentMonthTableName}";
                     sql += " " + $@"WHERE USRID='{usrID}'";
@@ -338,7 +391,18 @@ namespace MyTime.Services
 
                     }
 
-                    sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097'))";
+                    //sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097'))";
+
+                    sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097')";
+                    sql += " " + $@"AND  DEVUID IN (";
+
+                    foreach (var row in deviceList)
+                    {
+                        sql += "'" + row.DeviceID.ToString() + "',";
+                    }
+
+                    sql += "''))";
+
                     sql += " " + $@"ORDER BY TRDateTime";
                     //sql += " " + $@"ORDER BY TRDate, TRTIME";
 
@@ -347,14 +411,33 @@ namespace MyTime.Services
                 {
                     //sql += " " + $@"SELECT CONVERT(DATE, [SRVDT]) AS TRDate";
                     //sql += " " + $@", CONVERT(TIME,[SRVDT]) AS TRTIME";
-                    sql = "(SELECT [SRVDT] AS TRDateTime";
+                    //sql = "(SELECT [SRVDT] AS TRDateTime";
+                    //sql += " " + $@",[USRID], EVTLGUID";
+                    //sql += " " + $@"FROM {currentMonthTableName}";
+                    //sql += " " + $@"WHERE USRID='{usrID}'";
+                    //sql += " " + $@"AND (CONVERT(DATE, [SRVDT]) BETWEEN '{startOn.ToString("yyyyMMdd")}'";
+                    //sql += " " + $@"AND '{endOn.ToString("yyyyMMdd")}')";
+                    //sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097')";
+                    //sql += " " + $@"ORDER BY TRDateTime";
+
+                    sql = "(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
                     sql += " " + $@",[USRID], EVTLGUID";
                     sql += " " + $@"FROM {currentMonthTableName}";
                     sql += " " + $@"WHERE USRID='{usrID}'";
                     sql += " " + $@"AND (CONVERT(DATE, [SRVDT]) BETWEEN '{startOn.ToString("yyyyMMdd")}'";
                     sql += " " + $@"AND '{endOn.ToString("yyyyMMdd")}')";
                     sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097')";
+                    sql += " " + $@"AND  DEVUID IN (";
+
+                    foreach (var row in deviceList)
+                    {
+                        sql += "'" + row.DeviceID.ToString() + "',";
+                    }
+
+                    sql += "''))";
+
                     sql += " " + $@"ORDER BY TRDateTime";
+
                     //sql += " " + $@"ORDER BY TRDate, TRTIME";
 
                 }

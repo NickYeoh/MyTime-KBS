@@ -174,8 +174,6 @@ namespace MyTime.Services
                 //Pegasys.dbo.terminal T ON T.tp_term_id = A.DeviceID
 
 
-
-
                 //sql = $@"SELECT A.AccessRoleID, A.DeviceID, T.tp_term_name AS DeviceName";
                 //sql += " " + $@"FROM AccessRoleDevice A INNER JOIN";
                 //sql += " " + $@"Pegasys.dbo.terminal T ON T.tp_term_id = A.DeviceID";
@@ -266,7 +264,13 @@ namespace MyTime.Services
                 sql += " " + $@"FROM AccessRoleDevice A INNER JOIN";
                 sql += " " + $@"BioStarAC.dbo.T_DEV B ON B.DEVID = A.DeviceID";
                 sql += " " + $@"WHERE A.AccessRoleID='{accessRoleID}'";
-                sql += " " + $@"AND A.IsOvertimeExtraDevice='{IsOvertimeExtraDevice}'";
+
+                if (isIncludedAll == false)
+                {
+                    sql += " " + $@"AND IsOvertimeExtraDevice='{IsOvertimeExtraDevice}'";
+                }
+
+            
                 sql += " " + $@"ORDER BY A.AccessRoleID ASC";
 
                 conn.Open();

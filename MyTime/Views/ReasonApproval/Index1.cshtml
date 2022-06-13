@@ -253,52 +253,11 @@
                 var dte = new Date(parseInt(data.substr(6)));
                 var dteWrapper = moment(dte);
                 return dteWrapper.format("DD/MM/YYYY");
-    };
-
-     let setInactivityTime = function () {
-
-            let time;
-            window.onload = resetTimer;
-
-            document.onmousemove = resetTimer;
-            document.onkeypress = resetTimer;
-            document.onclick = resetTimer;
-
-            function logout() {
-
-                    var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
-
-                  bootbox.alert({
-                        title: '@MyTime.Resource.MessageInfo',
-                        message: messageString,
-
-                        backdrop: true,
-                        buttons: {
-                                    ok: {
-                                      className:'btn-primary',
-                                      label: ' @MyTime.Resource.Close'
-                            }
-                        },
-                      callback: function () {
-                        var url = '@Url.Action("Index","Auth")';
-                        window.location.href = url;
-                        }
-                    });
-
-
-            }
-            function resetTimer() {
-
-                let timeOut = parseInt('@Session.Timeout');
-
-                clearTimeout(time);
-                time = setTimeout(logout, timeOut * 60 * 1000)
-            }
         };
 
     $(document).ready(function () {
 
-        setInactivityTime();
+            //setInactivityTime();
 
             //toggleSidebar();
             unloadSpinner();
@@ -486,6 +445,7 @@
                             if (row.Proof != null) {
 
                                 var proof = row.Proof;
+
 
                                 if (proof != '') {
 
@@ -1083,7 +1043,7 @@
                                 var proof = row.Proof;
 
 
-                                if (proof != '') {
+                                if (proof != '')
 
                                     proof = proof + "?var=" + Date.now();
 
@@ -2058,7 +2018,49 @@
                 });
             }
 
-        };
+    };
+
+       @*let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+       };*@
+
 </script>
 }
 

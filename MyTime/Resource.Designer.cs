@@ -1447,7 +1447,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are logged out by system due to no activity in {0} minutes.
+        ///   Looks up a localized string similar to Your session has expired (no activity in {0} minutes). Please login again.
         /// </summary>
         public static string MessageSessionExpired {
             get {

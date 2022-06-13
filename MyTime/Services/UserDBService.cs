@@ -1105,7 +1105,7 @@ namespace MyTime.Services
             List<UserModel> deviceUserList = new List<UserModel>();
             UserModel userModel;
 
-            string sql = $@"SELECT * FROM T_USR WHERE DEL='N'";
+            string sql = $@"SELECT * FROM T_USR WHERE DEL='N' AND ISUSRGR='N' AND PH <> '' ";
 
             try
             {

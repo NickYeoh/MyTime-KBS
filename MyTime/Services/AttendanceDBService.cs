@@ -178,7 +178,7 @@ namespace MyTime.Services
 
                         // 2021-11-19 - changed to by NRIC to retrieve data
                    
-                        // Normal Transaction for JKSM
+                        // Normal Transaction
                         deviceTransactionList = deviceDBService.GetJohnsonControlDeviceTrans(NRIC, startOn, endOn, accessRoleID, false);
 
                         // Overtime Extra Transaction
@@ -186,7 +186,12 @@ namespace MyTime.Services
                         break;
 
                     case "Suprema":
-                        deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID);
+
+                        // Normal Transaction
+                        deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID, false);
+
+                        // Overtime Extra Transaction
+                        deviceOvertimeExtraTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID, true);
                         break;
                 }
 
@@ -563,9 +568,9 @@ namespace MyTime.Services
 
                                                 if (overTime > TimeSpan.Zero)
                                                 {
-                                                    //overTime = overTime.Minutes.a
-
-                                                    overTime = overTime.Subtract(new TimeSpan(0, 1, 0));
+                                                 
+                                                    // 2022-05-03 - For KBS, please ignore this
+                                                    //overTime = overTime.Subtract(new TimeSpan(0, 1, 0));
 
                                                     overtimeStart = new DateTime();
                                                     overtimeEnd = new DateTime();
@@ -883,6 +888,8 @@ namespace MyTime.Services
                     conn.Close();
                 }
             }
+
+          
 
             return attendanceList;
         }
@@ -1251,7 +1258,7 @@ namespace MyTime.Services
                                     break;
 
                                 case "Suprema":
-                                    deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, attendanceDate, attendanceDate, accessRoleID);
+                                    deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, attendanceDate, attendanceDate, accessRoleID, false);
                                     break;
                             }
 

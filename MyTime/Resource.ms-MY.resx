@@ -238,10 +238,10 @@
     <value>Bahasa</value>
   </data>
   <data name="LateIn" xml:space="preserve">
-    <value>Masuk Lewat</value>
+    <value>Lewat Masuk</value>
   </data>
   <data name="LateInEarlyOut" xml:space="preserve">
-    <value>Masuk Lewat / Balik Awal</value>
+    <value>Lewat Masuk / Balik Awal</value>
   </data>
   <data name="List" xml:space="preserve">
     <value>Senarai</value>
@@ -682,10 +682,10 @@
     <value>Tidak Lengkap</value>
   </data>
   <data name="AttendanceStatus.L/N" xml:space="preserve">
-    <value>Masuk Lewat / Balik Awal</value>
+    <value>Lewat Masuk / Balik Awal</value>
   </data>
   <data name="AttendanceStatus.LIN" xml:space="preserve">
-    <value>Masuk Lewat</value>
+    <value>Lewat Masuk</value>
   </data>
   <data name="AttendanceStatus.NOR" xml:space="preserve">
     <value>Hari Bekerja</value>
@@ -706,7 +706,7 @@
     <value>Balik Awal</value>
   </data>
   <data name="TotalLateIn" xml:space="preserve">
-    <value>Masuk Lewat</value>
+    <value>Lewat Masuk</value>
   </data>
   <data name="TotalLateInEarlyOut" xml:space="preserve">
     <value>Lewat Masuk / Balik Awal</value>
@@ -1072,6 +1072,6 @@
     <value>Sep</value>
   </data>
   <data name="MessageSessionExpired" xml:space="preserve">
-    <value>Anda telah dilog keluar oleh sistem kerana tiada aktiviti dalam masa {0} minit</value>
+    <value>Sesi anda telah tamat (tanpa aktiviti dalam {0} minit). Sila log masuk semula</value>
   </data>
 </root>

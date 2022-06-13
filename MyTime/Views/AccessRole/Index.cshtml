@@ -646,6 +646,9 @@
 
                                     //GenerateAccessRoleDeviceList();
 
+                                    listAccessRoleDeviceDatatable.ajax.reload();
+                                    listAccessRoleOvertimeDeviceDatatable.ajax.reload();
+
                                 }
                             });
 
@@ -675,8 +678,6 @@
                                  break;
                         }
 
-                        listAccessRoleDeviceDatatable.ajax.reload();
-                        listAccessRoleOvertimeDeviceDatatable.ajax.reload();
 
                         bootbox.alert({
                             title: '@MyTime.Resource.MessageInfo',
@@ -811,6 +812,10 @@
                          messageString  = '@MyTime.Resource.MessageSuccessDelete';
                         break;
                     case 'assign device':
+
+                        //listAccessRoleDeviceDatatable.ajax.reload();
+                        //listAccessRoleOvertimeDeviceDatatable.ajax.reload();
+
                          messageString  = '@MyTime.Resource.MessageSuccessAssignDevice';
                         break;
                     default:

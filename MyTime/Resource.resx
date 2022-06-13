@@ -1072,6 +1072,6 @@
     <value>Sep</value>
   </data>
   <data name="MessageSessionExpired" xml:space="preserve">
-    <value>You are logged out by system due to no activity in {0} minutes</value>
+    <value>Your session has expired (no activity in {0} minutes). Please login again</value>
   </data>
 </root>

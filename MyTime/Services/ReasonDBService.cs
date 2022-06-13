@@ -24,7 +24,9 @@ namespace MyTime.Services
             try
             {
 
-                string sql = $@"SELECT * FROM Reason ORDER BY ReasonID ASC";
+                //string sql = $@"SELECT * FROM Reason ORDER BY ReasonID ASC";
+
+                string sql = $@"SELECT * FROM Reason ORDER BY ReasonName ASC";
 
                 conn.Open();
 
