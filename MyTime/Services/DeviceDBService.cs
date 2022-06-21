@@ -335,8 +335,7 @@ namespace MyTime.Services
                     //sql += " " + $@",[USRID], EVTLGUID";
                     //sql += " " + $@"FROM {previousMonthTableName}";
                     //sql += " " + $@"WHERE USRID='{usrID}'";
-
-                   
+                                       
 
                     sql = "(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
                     sql += " " + $@",[USRID], EVTLGUID";
