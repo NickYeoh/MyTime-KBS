@@ -1182,10 +1182,16 @@ namespace MyTime.Services
         {
             string attendanceCardStatus = "";
 
-            string sql = " " + $@"SELECT TOP 1 IIF(AttendanceCardStatus IS NULL, 'YL', AttendanceCardStatus) AS AttendanceCardStatus FROM [AttendanceCard]";
-            sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
-            sql += " " + $@"AND FORMAT(EffectiveOn, 'yyyyMM') <= '{startOn.ToString("yyyyMM")}'";
-            sql += " " + $@"ORDER BY EffectiveOn DESC";
+            //string sql = " " + $@"SELECT TOP 1 IIF(AttendanceCardStatus IS NULL, 'YL', AttendanceCardStatus) AS AttendanceCardStatus FROM [AttendanceCard]";
+            //sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
+            //sql += " " + $@"AND FORMAT(EffectiveOn, 'yyyyMM') <= '{startOn.ToString("yyyyMM")}'";
+            //sql += " " + $@"ORDER BY EffectiveOn DESC";
+
+            string sql = " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCardTrans]";
+            sql += " " + $@"WHERE [AttendanceCardTrans].NRIC = {ID}";
+            sql += " " + $@"AND CONVERT(INT,AttendanceMonth) < 'CONVERT(INT, {startOn.ToString("yyyyMM")})'";
+            //sql += " " + $@"ORDER BY AttendanceMonth DESC";
+
 
             try
             {
