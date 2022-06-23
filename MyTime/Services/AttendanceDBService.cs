@@ -882,34 +882,7 @@ namespace MyTime.Services
                         //overtimeExtraStart = DateTime.Now;
                         //overtimeExtraEnd = overtimeExtraStart.Value.AddMinutes(20);
 
-
-                        //if (startOn.Month == 4)
-                        //{
-                        //    if (day == 12)
-                        //    {
-                        //        //overtimeExtraStart = DateTime.Now;
-
-
-                        //        //DateTime.TryParse("03/04/2021 18:32:00", out overtimeExtraStart);
-
-                        //        overtimeExtraStart = DateTime.ParseExact("2021-04-13", "yyyy-MM-dd", null);
-                        //        overtimeExtraStart = overtimeExtraStart.Value.AddHours(19);
-                        //        overtimeExtraEnd = overtimeExtraStart.Value.AddMinutes(95);
-                        //    }
-
-                        //    if (day == 6)
-                        //    {
-                        //        //overtimeExtraStart = DateTime.Now;
-
-
-                        //        //DateTime.TryParse("03/04/2021 18:32:00", out overtimeExtraStart);
-
-                        //        overtimeExtraStart = DateTime.ParseExact("2021-04-07", "yyyy-MM-dd", null);
-                        //        overtimeExtraStart = overtimeExtraStart.Value.AddHours(18);
-                        //        overtimeExtraEnd = overtimeExtraStart.Value.AddMinutes(61);
-                        //    }
-
-                        //}
+                      
 
                         // to store overtime extra
                         if (!overtimeExtraStart.Equals(null))
