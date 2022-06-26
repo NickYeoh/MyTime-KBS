@@ -1654,10 +1654,11 @@
                         success: function (data) {
 
                             if (data != '') {
+
                                 pendingDatatable.clear().rows.add(data).draw(false);
 
                                 var approvalDueDate = document.getElementById('ApprovalDueDate');
-                                approvalDueDate.innerHTML = '@MyTime.Resource.ApprovalDueDate' + ' : ' + convertToDate(pendingDatatable.cell(0, 17).data());
+                                approvalDueDate.innerHTML = '@MyTime.Resource.ApprovalDueDate' + ' : ' + convertToDate(pendingDatatable.cell(0, 18).data());
 
                             }
                             else {

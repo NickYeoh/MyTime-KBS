@@ -60,7 +60,7 @@ namespace MyTime.Models
         public string OvertimeExtraEnd { get; set; }
 
         [Display(Name = "OvertimeExtra", ResourceType = typeof(Resource))]
-        public string OvertimeExtra { get; set; }      
+        public string OvertimeExtra { get; set; }
 
         [Display(Name = "TotalOvertime", ResourceType = typeof(Resource))]
         public string TotalOvertime { get; set; }

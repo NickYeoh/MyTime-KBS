@@ -69,21 +69,31 @@ namespace MyTime.Services
                 sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded,";
 
                 // 2022-03-11 : Attendance Card Status
-                sql += " " + $@"AC.EffectiveOn, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
+                //sql += " " + $@"AC.EffectiveOn, IIF(AC.AttendanceCardStatus IS NULL, 'YL',AC.AttendanceCardStatus) AS AttendanceCardStatus";
+
+                // 2022-06-25 : Attendance Card Status
+                sql += " " + $@"IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
 
                 sql += " " + $@"FROM [User] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
                 sql += " " + $@"LEFT JOIN AccessRole A ON A.AccessRoleID = U.AccessRoleID";
+               
                 //sql += " " + $@"LEFT JOIN (SELECT TOP 1  * FROM [AttendanceCard]";
                 //sql += " " + $@"ORDER BY YearMonth DESC) AC ON AC.NRIC = U.NRIC";
-                sql += " " + $@"OUTER APPLY  (";
 
-                sql += " " + $@"SELECT TOP 1 * FROM [AttendanceCard]";
-                sql += " " + $@"WHERE [AttendanceCard].NRIC = u.NRIC";
-                sql += " " + $@"ORDER BY EffectiveOn DESC";
-                sql += " " + $@") AS AC";
+                //sql += " " + $@"OUTER APPLY  (";
+                //sql += " " + $@"SELECT TOP 1 * FROM [AttendanceCard]";
+                //sql += " " + $@"WHERE [AttendanceCard].NRIC = u.NRIC";
+                //sql += " " + $@"ORDER BY EffectiveOn DESC";
+                //sql += " " + $@") AS AC";
+
+                sql += " " + $@"OUTER APPLY (";
+                sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCardTrans]";
+                sql += " " + $@"WHERE [AttendanceCardTrans].NRIC = U.NRIC";
+                sql += " " + $@"AND CONVERT(INT,  [AttendanceCardTrans].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
+                sql += " " + $@"ORDER BY AttendanceMonth DESC) AS ACT";
 
                 sql += " " + $@"ORDER BY NRIC ASC";
 

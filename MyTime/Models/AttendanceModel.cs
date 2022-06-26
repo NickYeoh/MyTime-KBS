@@ -38,7 +38,7 @@ namespace MyTime.Models
 
         public bool IsEarlyIn { get; set; }
           
-        public int DeviceIn { get; set; }
+        public string DeviceIn { get; set; }
 
         [Display(Name = "FirstIn", ResourceType = typeof(Resource))]
         public string FirstIn { get; set; }
@@ -46,7 +46,7 @@ namespace MyTime.Models
         [Display(Name = "Lateness", ResourceType = typeof(Resource))]
         public string Lateness { get; set; }
 
-        public int DeviceOut { get; set; }
+        public string DeviceOut { get; set; }
 
         [Display(Name = "LastOut", ResourceType = typeof(Resource))]
         public string LastOut { get; set; }

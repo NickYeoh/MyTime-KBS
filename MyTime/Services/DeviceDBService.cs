@@ -344,7 +344,7 @@ namespace MyTime.Services
 
                     if (startOn.Date.Equals(endOn.Date))
                     {
-                        sql += " " + $@"(convert(varchar, [SRVDT] , 112) = '{startOn.ToString("yyyyMMdd")}')";
+                        sql += " " + $@"AND (convert(varchar, [SRVDT] , 112) = '{startOn.ToString("yyyyMMdd")}')";
                     }
                     else
                     {
@@ -381,7 +381,7 @@ namespace MyTime.Services
 
                     if (startOn.Date.Equals(endOn.Date))
                     {
-                        sql += " " + $@"(convert(varchar, [SRVDT] , 112) = '{startOn.ToString("yyyyMMdd")}')";
+                        sql += " " + $@"AND (convert(varchar, [SRVDT] , 112) = '{startOn.ToString("yyyyMMdd")}')";
                     }
                     else
                     {

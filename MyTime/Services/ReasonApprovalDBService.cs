@@ -114,6 +114,21 @@ namespace MyTime.Services
                     sql += " " + $@"AND u.DepartmentID ='{departmentID}'";
                     sql += " " + $@"ORDER BY AttendanceDate, u.UserName";
 
+                    //string sql = $@"SELECT u.UserName, ap.UserNRIC, ar.AttendanceDate, ar.AttendanceDay,";
+                    //sql += " " + $@"ar.AttendanceStatusID, ar.AttendanceStatus, ar.FirstIn, ar.Lateness, ar.LastOut,";
+                    //sql += " " + $@"ar.WorkTime, ar.OvertimeStart, ar.OvertimeEnd, ar.Overtime,";
+                    //sql += " " + $@"ar.OvertimeExtraStart, ar.OvertimeExtraEnd, ar.OvertimeExtra, ar.TotalOvertime,";
+                    //sql += " " + $@"ar.ReasonID, r.ReasonName, ar.Remark, ar.Proof,";
+                    //sql += " " + $@"ar.IsApproved, ar.IsRejected, ar.IsRequestedToAmend, ar.ApproverComment, ar.SubmittedOn";
+                    //sql += " " + $@"FROM ApproverUser ap";
+                    //sql += " " + $@"INNER JOIN {attendanceReasonTableName} ar";
+                    //sql += " " + $@"ON ar.NRIC = ap.UserNRIC";
+                    //sql += " " + $@"LEFT JOIN [User] u on u.NRIC = ap.UserNRIC";
+                    //sql += " " + $@"LEFT JOIN Reason r on r.ReasonID = ar.ReasonID";
+                    //sql += " " + $@"WHERE ap.ApproverNRIC='{approverNRIC}'";
+                    //sql += " " + $@"AND u.DepartmentID ='{departmentID}'";
+                    //sql += " " + $@"ORDER BY AttendanceDate, u.UserName";
+
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(sql, conn);
@@ -130,6 +145,7 @@ namespace MyTime.Services
                             reasonApprovalModel.UserName = dr["UserName"].ToString();
                             reasonApprovalModel.NRIC = dr["UserNRIC"].ToString();
                             reasonApprovalModel.AttendanceDate = Convert.ToDateTime(dr["AttendanceDate"]);
+                        
                             reasonApprovalModel.AttendanceDay = dr["AttendanceDay"].ToString();
                             reasonApprovalModel.AttendanceStatusID = dr["AttendanceStatusID"].ToString();
                             reasonApprovalModel.AttendanceStatus = dr["AttendanceStatus"].ToString();
@@ -144,8 +160,10 @@ namespace MyTime.Services
                             reasonApprovalModel.OvertimeExtraEnd = dr["OvertimeExtraEnd"].ToString();
                             reasonApprovalModel.OvertimeExtra = dr["OvertimeExtra"].ToString();
                             reasonApprovalModel.TotalOvertime = dr["TotalOvertime"].ToString();
-                            reasonApprovalModel.ReasonID = dr["ReasonID"].ToString();
+
+                            reasonApprovalModel.ReasonID = dr["ReasonID"].ToString();                            
                             reasonApprovalModel.ReasonName = dr["ReasonName"].ToString();
+
                             reasonApprovalModel.Remark = dr["Remark"].ToString();
                             reasonApprovalModel.Proof = dr["Proof"].ToString();
                             reasonApprovalModel.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
