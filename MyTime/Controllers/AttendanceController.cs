@@ -251,7 +251,7 @@ namespace MyTime.Controllers
 
             string[] data = rowData.Split('#');
 
-            for (int i = 0; i < 21; i++)
+            for (int i = 0; i < 18; i++)
             {
                 switch (i)
                 {
@@ -301,21 +301,21 @@ namespace MyTime.Controllers
                         }
 
                         break;
+                    //case 10:
+                    //    if (data[i].ToString() != "null")
+                    //    {
+                    //        attendanceReasonModel.OvertimeStart = data[i].ToString();
+                    //    }
+
+                    //    break;
+                    //case 11:
+                    //    if (data[i].ToString() != "null")
+                    //    {
+                    //        attendanceReasonModel.OvertimeEnd = data[i].ToString();
+                    //    }
+
+                    //    break;
                     case 10:
-                        if (data[i].ToString() != "null")
-                        {
-                            attendanceReasonModel.OvertimeStart = data[i].ToString();
-                        }
-
-                        break;
-                    case 11:
-                        if (data[i].ToString() != "null")
-                        {
-                            attendanceReasonModel.OvertimeEnd = data[i].ToString();
-                        }
-
-                        break;
-                    case 12:
                         if (data[i].ToString() != "null")
                         {
                             attendanceReasonModel.Overtime = data[i].ToString();
@@ -323,35 +323,35 @@ namespace MyTime.Controllers
 
                         break;
 
-                    case 13:
+                    case 11:
                         if (data[i].ToString() != "null")
                         {
                             attendanceReasonModel.OvertimeExtraStart = data[i].ToString();
                         }
 
                         break;
-                    case 14:
+                    case 12:
                         if (data[i].ToString() != "null")
                         {
                             attendanceReasonModel.OvertimeExtraEnd = data[i].ToString();
                         }
 
                         break;
-                    case 15:
+                    case 13:
                         if (data[i].ToString() != "null")
                         {
                             attendanceReasonModel.OvertimeExtra = data[i].ToString();
                         }
 
                         break;
-                    case 16:
-                        if (data[i].ToString() != "null")
-                        {
-                            attendanceReasonModel.TotalOvertime = data[i].ToString();
-                        }
+                    //case 16:
+                    //    if (data[i].ToString() != "null")
+                    //    {
+                    //        attendanceReasonModel.TotalOvertime = data[i].ToString();
+                    //    }
 
-                        break;
-                    case 17:
+                    //    break;
+                    case 14:
 
                         if (data[i].ToString() != "null")
                         {
@@ -360,7 +360,7 @@ namespace MyTime.Controllers
 
                         break;
 
-                    case 18:
+                    case 15:
 
                         if (data[i].ToString() != "null")
                         {
@@ -369,7 +369,7 @@ namespace MyTime.Controllers
 
                         break;
 
-                    case 19:
+                    case 16:
 
                         if (data[i].ToString() != "null")
                         {
@@ -378,7 +378,7 @@ namespace MyTime.Controllers
 
                         break;
 
-                    case 20:
+                    case 17:
 
                         if (data[i].ToString() != "null")
                         {

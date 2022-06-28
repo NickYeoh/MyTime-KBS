@@ -57,11 +57,11 @@ namespace MyTime.Models
         //[Display(Name = "TotalOvertime", ResourceType = typeof(Resource))]
         //public string TotalOvertime { get; set; }
 
-        [Display(Name = "OvertimeStart", ResourceType = typeof(Resource))]
-        public string OvertimeStart { get; set; }
+        //[Display(Name = "OvertimeStart", ResourceType = typeof(Resource))]
+        //public string OvertimeStart { get; set; }
 
-        [Display(Name = "OvertimeEnd", ResourceType = typeof(Resource))]
-        public string OvertimeEnd { get; set; }
+        //[Display(Name = "OvertimeEnd", ResourceType = typeof(Resource))]
+        //public string OvertimeEnd { get; set; }
 
         [Display(Name = "Overtime", ResourceType = typeof(Resource))]
         public string Overtime { get; set; }
@@ -76,8 +76,8 @@ namespace MyTime.Models
         [Display(Name = "OvertimeExtra", ResourceType = typeof(Resource))]
         public string OvertimeExtra { get; set; }
 
-        [Display(Name = "TotalOvertime", ResourceType = typeof(Resource))]
-        public string TotalOvertime { get; set; }
+        //[Display(Name = "TotalOvertime", ResourceType = typeof(Resource))]
+        //public string TotalOvertime { get; set; }
 
 
         [Display(Name = "Reason", ResourceType = typeof(Resource))]

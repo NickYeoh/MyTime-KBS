@@ -98,11 +98,25 @@ namespace MyTime.Services
                     {
                         isSubmissionDue = true;
                     }
+                    //string.Format("{0} {1} {2} {3}", lateness.Hours, MyTime.Resource.Hour, lateness.Minutes, MyTime.Resource.Minute);
+                    string sql = $@"SELECT u.UserName, ap.UserNRIC, ar.AttendanceDate,";
+                    sql += " " + $@"ar.AttendanceStatusID,";
+                    sql += " " + $@"CASE AR.AttendanceStatusID";
+                    sql += " " + $@"WHEN 'NOR' THEN '{MyTime.Resource.AttendanceStatus_NOR}'";
+                    sql += " " + $@"WHEN 'ABS' THEN '{MyTime.Resource.AttendanceStatus_ABS}'";
+                    sql += " " + $@"WHEN 'ICP' THEN '{MyTime.Resource.AttendanceStatus_ICP}'";
+                    sql += " " + $@"WHEN 'L/E' THEN '{MyTime.Resource.AttendanceStatus_L_N}'";
+                    sql += " " + $@"WHEN 'LIN' THEN '{MyTime.Resource.AttendanceStatus_LIN}'";
+                    sql += " " + $@"WHEN 'EOT' THEN '{MyTime.Resource.AttendanceStatus_EOT}'";
+                    sql += " " + $@"WHEN 'NWK' THEN '{MyTime.Resource.AttendanceStatus_NWK}'";
+                    sql += " " + $@"WHEN 'L/E' THEN '{MyTime.Resource.AttendanceStatus_HLY}'";
+                    sql += " " + $@"ELSE ''";
+                    sql += " " + $@"END AS AttendanceStatus,";
 
-                    string sql = $@"SELECT u.UserName, ap.UserNRIC, ar.AttendanceDate, ar.AttendanceDay,";
-                    sql += " " + $@"ar.AttendanceStatusID, ar.AttendanceStatus, ar.FirstIn, ar.Lateness, ar.LastOut,";
-                    sql += " " + $@"ar.WorkTime, ar.OvertimeStart, ar.OvertimeEnd, ar.Overtime,";
-                    sql += " " + $@"ar.OvertimeExtraStart, ar.OvertimeExtraEnd, ar.OvertimeExtra, ar.TotalOvertime,";
+                    sql += " " + $@"IIF(ar.FirstIn IS NOT NULL, FORMAT(ar.FirstIn, 'HH:mm'), null) AS FirstIn , ar.Lateness, IIF(ar.LastOut IS NOT NULL, FORMAT(ar.LastOut, 'HH:mm'), null) AS LastOut,";
+                    sql += " " + $@"IIF(ar.WorkTime IS NOT NULL, FORMAT(CAST(ar.WorkTime AS DATETIME), 'HH {MyTime.Resource.Hour} mm {MyTime.Resource.Minute}'), null) AS WorkTime,";
+                    sql += " " + $@"IIF(ar.OverTime IS NOT NULL, FORMAT(CAST(ar.OverTime AS DATETIME), 'HH {MyTime.Resource.Hour} mm {MyTime.Resource.Minute}'), null) AS OverTime,";
+                     sql += " " + $@"ar.OvertimeExtraStart, ar.OvertimeExtraEnd, ar.OvertimeExtra,";
                     sql += " " + $@"ar.ReasonID, r.ReasonName, ar.Remark, ar.Proof,";
                     sql += " " + $@"ar.IsApproved, ar.IsRejected, ar.IsRequestedToAmend, ar.ApproverComment, ar.SubmittedOn";
                     sql += " " + $@"FROM ApproverUser ap";
@@ -146,20 +160,22 @@ namespace MyTime.Services
                             reasonApprovalModel.NRIC = dr["UserNRIC"].ToString();
                             reasonApprovalModel.AttendanceDate = Convert.ToDateTime(dr["AttendanceDate"]);
                         
-                            reasonApprovalModel.AttendanceDay = dr["AttendanceDay"].ToString();
+                            reasonApprovalModel.AttendanceDay = Convert.ToDateTime(dr["AttendanceDate"]).ToString("ddd", new System.Globalization.CultureInfo("ms-MY"));
                             reasonApprovalModel.AttendanceStatusID = dr["AttendanceStatusID"].ToString();
                             reasonApprovalModel.AttendanceStatus = dr["AttendanceStatus"].ToString();
+                           
+                            
                             reasonApprovalModel.FirstIn = dr["FirstIn"].ToString();
                             reasonApprovalModel.Lateness = dr["Lateness"].ToString();
                             reasonApprovalModel.LastOut = dr["LastOut"].ToString();
                             reasonApprovalModel.WorkTime = dr["WorkTime"].ToString();
-                            reasonApprovalModel.OvertimeStart = dr["OvertimeStart"].ToString();
-                            reasonApprovalModel.OvertimeEnd = dr["OvertimeEnd"].ToString();
+                            //reasonApprovalModel.OvertimeStart = dr["OvertimeStart"].ToString();
+                            //reasonApprovalModel.OvertimeEnd = dr["OvertimeEnd"].ToString();
                             reasonApprovalModel.Overtime = dr["Overtime"].ToString();
                             reasonApprovalModel.OvertimeExtraStart = dr["OvertimeExtraStart"].ToString();
                             reasonApprovalModel.OvertimeExtraEnd = dr["OvertimeExtraEnd"].ToString();
                             reasonApprovalModel.OvertimeExtra = dr["OvertimeExtra"].ToString();
-                            reasonApprovalModel.TotalOvertime = dr["TotalOvertime"].ToString();
+                            //reasonApprovalModel.TotalOvertime = dr["TotalOvertime"].ToString();
 
                             reasonApprovalModel.ReasonID = dr["ReasonID"].ToString();                            
                             reasonApprovalModel.ReasonName = dr["ReasonName"].ToString();
