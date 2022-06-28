@@ -192,9 +192,9 @@ namespace MyTime.Services
                 attendanceReasonTableName = "AttendanceReason_" + startOn.ToString("yyyyMM");
                 isAttendanceReasonTableFound = CheckServerTableExist(attendanceReasonTableName);
 
-                if (isAttendanceReasonTableFound == true)
+                if ( isAttendanceReasonTableFound == true)
                 {
-                    attendanceReasonList = GetSubmittedReasonList(attendanceReasonTableName, NRIC);
+                    attendanceReasonList = GetSubmittedReasonList(attendanceTransTableName, attendanceReasonTableName, NRIC);
                 }
 
 
@@ -1182,12 +1182,21 @@ namespace MyTime.Services
                 {
                     // Create New Attendance Reason
 
+                    //sql = "CREATE TABLE " + tableName;
+                    //sql += " " + "(NRIC NVARCHAR(20) NOT NULL, AttendanceDate DATETIME NOT NULL, AttendanceDay NVARCHAR(10) NOT NULL,";
+                    //sql += " " + "AttendanceStatusID NVARCHAR(3), AttendanceStatus NVARCHAR(25),";
+                    //sql += " " + "FirstIn NVARCHAR(20), Lateness NVARCHAR(20), LastOut NVARCHAR(20),";
+                    //sql += " " + "WorkTime NVARCHAR(20), OvertimeStart NVARCHAR(20), OvertimeEnd NVARCHAR(20), Overtime NVARCHAR(20),";
+                    //sql += " " + "OvertimeExtraStart NVARCHAR(20), OvertimeExtraEnd NVARCHAR(20), OvertimeExtra NVARCHAR(20), TotalOvertime NVARCHAR(20),";
+                    //sql += " " + "ReasonID NVARCHAR(20) NOT NULL, Remark NVARCHAR(100), SubmittedOn DATETIME NOT NULL,";
+                    //sql += " " + "IsApproved BIT, IsRejected BIT, IsRequestedToAmend BIT,";
+                    //sql += " " + "Proof NVARCHAR(100), ApproverComment NVARCHAR(100),";
+                    //sql += " " + "ProcessedBy NVARCHAR(20), ProcessedOn DATETIME";
+                    //sql += " " + "PRIMARY KEY (NRIC, AttendanceDate))";
+
+                    // 2022-06-27
                     sql = "CREATE TABLE " + tableName;
-                    sql += " " + "(NRIC NVARCHAR(20) NOT NULL, AttendanceDate DATETIME NOT NULL, AttendanceDay NVARCHAR(10) NOT NULL,";
-                    sql += " " + "AttendanceStatusID NVARCHAR(3), AttendanceStatus NVARCHAR(25),";
-                    sql += " " + "FirstIn NVARCHAR(20), Lateness NVARCHAR(20), LastOut NVARCHAR(20),";
-                    sql += " " + "WorkTime NVARCHAR(20), OvertimeStart NVARCHAR(20), OvertimeEnd NVARCHAR(20), Overtime NVARCHAR(20),";
-                    sql += " " + "OvertimeExtraStart NVARCHAR(20), OvertimeExtraEnd NVARCHAR(20), OvertimeExtra NVARCHAR(20), TotalOvertime NVARCHAR(20),";
+                    sql += " " + "(NRIC NVARCHAR(20) NOT NULL, AttendanceDate DATETIME NOT NULL, ";
                     sql += " " + "ReasonID NVARCHAR(20) NOT NULL, Remark NVARCHAR(100), SubmittedOn DATETIME NOT NULL,";
                     sql += " " + "IsApproved BIT, IsRejected BIT, IsRequestedToAmend BIT,";
                     sql += " " + "Proof NVARCHAR(100), ApproverComment NVARCHAR(100),";
@@ -1236,23 +1245,38 @@ namespace MyTime.Services
                 //string totalOvertime = attendanceReasonModel.TotalOvertime;
                 //totalOvertime += " #";
 
+                //// Insert 
+                //sql = $@"INSERT INTO {tableName} (NRIC, AttendanceDate, AttendanceDay,";
+                //sql += " " + $@"AttendanceStatusID, AttendanceStatus,";
+                //sql += " " + $@"FirstIn, Lateness, LastOut, WorkTime,";
+                //sql += " " + $@"OvertimeStart, OvertimeEnd, Overtime,";
+                //sql += " " + $@"OvertimeExtraStart, OvertimeExtraEnd, OvertimeExtra, TotalOvertime,";
+                //sql += " " + $@"ReasonID, Remark, Proof, SubmittedOn,";
+                //sql += " " + $@"IsApproved, IsRejected, IsRequestedToAmend) VALUES";
+                ////sql += " " + $@"ProcessedBy, ProcessedOn) VALUES";
+                //sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}', '{attendanceReasonModel.AttendanceDay}',";
+                //sql += " " + $@"'{attendanceReasonModel.AttendanceStatusID}', '{attendanceReasonModel.AttendanceStatus}',";
+                //sql += " " + $@"'{attendanceReasonModel.FirstIn}', '{attendanceReasonModel.Lateness}', '{attendanceReasonModel.LastOut}', '{attendanceReasonModel.WorkTime}',";
+                //sql += " " + $@"'{attendanceReasonModel.OvertimeStart}','{attendanceReasonModel.OvertimeEnd}' ,  '{attendanceReasonModel.Overtime}',";
+                //sql += " " + $@"'{attendanceReasonModel.OvertimeExtraStart}','{attendanceReasonModel.OvertimeExtraEnd}' , '{attendanceReasonModel.OvertimeExtra}', '{attendanceReasonModel.TotalOvertime}',";
+                //sql += " " + $@"'{attendanceReasonModel.ReasonID}', '{attendanceReasonModel.Remark}', '{proof}', '{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}',";
+                //sql += " " + $@"'False', 'False', 'False')";
+                ////sql += " " + $@"'{SqlString.Null}', '{DBNull.Value}')";
+                ///
+
+
+                // 2022-06-27
+
                 // Insert 
-                sql = $@"INSERT INTO {tableName} (NRIC, AttendanceDate, AttendanceDay,";
-                sql += " " + $@"AttendanceStatusID, AttendanceStatus,";
-                sql += " " + $@"FirstIn, Lateness, LastOut, WorkTime,";
-                sql += " " + $@"OvertimeStart, OvertimeEnd, Overtime,";
-                sql += " " + $@"OvertimeExtraStart, OvertimeExtraEnd, OvertimeExtra, TotalOvertime,";
+                sql = $@"INSERT INTO {tableName} (NRIC, AttendanceDate, ";            
                 sql += " " + $@"ReasonID, Remark, Proof, SubmittedOn,";
                 sql += " " + $@"IsApproved, IsRejected, IsRequestedToAmend) VALUES";
                 //sql += " " + $@"ProcessedBy, ProcessedOn) VALUES";
-                sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}', '{attendanceReasonModel.AttendanceDay}',";
-                sql += " " + $@"'{attendanceReasonModel.AttendanceStatusID}', '{attendanceReasonModel.AttendanceStatus}',";
-                sql += " " + $@"'{attendanceReasonModel.FirstIn}', '{attendanceReasonModel.Lateness}', '{attendanceReasonModel.LastOut}', '{attendanceReasonModel.WorkTime}',";
-                sql += " " + $@"'{attendanceReasonModel.OvertimeStart}','{attendanceReasonModel.OvertimeEnd}' ,  '{attendanceReasonModel.Overtime}',";
-                sql += " " + $@"'{attendanceReasonModel.OvertimeExtraStart}','{attendanceReasonModel.OvertimeExtraEnd}' , '{attendanceReasonModel.OvertimeExtra}', '{attendanceReasonModel.TotalOvertime}',";
+                sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}', ";
                 sql += " " + $@"'{attendanceReasonModel.ReasonID}', '{attendanceReasonModel.Remark}', '{proof}', '{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}',";
                 sql += " " + $@"'False', 'False', 'False')";
                 //sql += " " + $@"'{SqlString.Null}', '{DBNull.Value}')";
+
 
                 conn.Open();
 
@@ -1346,7 +1370,7 @@ namespace MyTime.Services
 
         }
 
-        public List<AttendanceReasonModel> GetSubmittedReasonList( string attendanceReasonTableName, string NRIC)
+        public List<AttendanceReasonModel> GetSubmittedReasonList(string attendanceTransTableName, string attendanceReasonTableName, string NRIC)
         {
 
             List<AttendanceReasonModel> attendanceReasonList = new List<AttendanceReasonModel>();
@@ -1355,10 +1379,32 @@ namespace MyTime.Services
             try
             {
 
-                string sql = $@"SELECT *";
+                string sql = $@"SELECT AR.NRIC, AR.AttendanceDate, AT.AttendanceDay,";
+                sql += " " + $@"AT.AttendanceStatusID,";
+
+                sql += " " + $@"CASE [AttendanceStatusID]";
+                sql += " " + $@"WHEN 'NOR' THEN '{MyTime.Resource.AttendanceStatus_NOR}'";
+                sql += " " + $@"WHEN 'ABS' THEN '{MyTime.Resource.AttendanceStatus_ABS}'";
+                sql += " " + $@"WHEN 'ICP' THEN '{MyTime.Resource.AttendanceStatus_ICP}'";
+                sql += " " + $@"WHEN 'L/E' THEN '{MyTime.Resource.AttendanceStatus_L_N}'";
+                sql += " " + $@"WHEN 'LIN' THEN '{MyTime.Resource.AttendanceStatus_LIN}'";
+                sql += " " + $@"WHEN 'EOT' THEN '{MyTime.Resource.AttendanceStatus_EOT}'";
+                sql += " " + $@"WHEN 'NWK' THEN '{MyTime.Resource.AttendanceStatus_NWK}'";
+                sql += " " + $@"WHEN 'L/E' THEN '{MyTime.Resource.AttendanceStatus_HLY}'";
+                sql += " " + $@"ELSE ''";
+                sql += " " + $@"END AS AttendanceStatus,";
+           
+                sql += " " + $@"AT.FirstIn, AT.Lateness, AT.LastOut,";
+                sql += " " + $@"AT.WorkTime, AT.OverTime,";
+                sql += " " + $@"AR.ReasonID, R.ReasonName, R.IsForOnLeave,";
+                sql += " " + $@"AR.Remark, AR.Proof,";
+                sql += " " + $@"AR.IsApproved, AR.IsRejected, AR.IsRequestedToAmend,";
+                sql += " " + $@"AR.ApproverComment, AR.ProcessedOn, AR.ProcessedBy";
+
                 sql += " " + $@"FROM {attendanceReasonTableName} AR";
-                sql += " " + $@"LEFT JOIN Reason R ON R.ReasonID = AR.ReasonID";           
-                sql += " " + $@"WHERE NRIC='{NRIC}'";
+                sql += " " + $@"LEFT JOIN {attendanceTransTableName} AT ON AT.NRIC = AR.NRIC AND AT.AttendanceDate = AR.AttendanceDate";
+                sql += " " + $@"LEFT JOIN Reason R ON R.ReasonID = AR.ReasonID";                
+                sql += " " + $@"WHERE AR.NRIC='{NRIC}'";
 
                 conn.Open();
 
