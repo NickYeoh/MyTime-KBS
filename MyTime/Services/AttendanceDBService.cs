@@ -1272,85 +1272,86 @@ namespace MyTime.Services
                 ///
 
                              
-                DateTime? firstIn, lastOut, overTimeExtraStart, overTimeExtraEnd;
-                TimeSpan? lateness, workTime, overTime, overTimeExtra;
+                //DateTime? firstIn, lastOut, overTimeExtraStart, overTimeExtraEnd;
+                //TimeSpan? lateness, workTime, overTime, overTimeExtra;
 
-                if (attendanceReasonModel.FirstIn != null && attendanceReasonModel.FirstIn != "")
-                {
-                    firstIn = attendanceReasonModel.AttendanceDate.Add(TimeSpan.Parse( attendanceReasonModel.FirstIn));
-                }
-                else
-                {
-                    firstIn = null;
-                }
+                //if (attendanceReasonModel.FirstIn != null && attendanceReasonModel.FirstIn != "")
+                //{
+                //    firstIn = attendanceReasonModel.AttendanceDate.Add(TimeSpan.Parse( attendanceReasonModel.FirstIn));
+                //}
+                //else
+                //{
+                //    firstIn = null;
+                //}
 
-                if (attendanceReasonModel.Lateness !=  null && attendanceReasonModel.Lateness != "")
-                {
-                    lateness = TimeSpan.Parse(attendanceReasonModel.Lateness.Replace("j", ":").Replace("m", "").Replace("h", ":"));
-                }
-                else
-                {
-                    lateness = null;
-                }
+                //if (attendanceReasonModel.Lateness !=  null && attendanceReasonModel.Lateness != "")
+                //{
+                //    lateness = TimeSpan.Parse(attendanceReasonModel.Lateness.Replace("j", ":").Replace("m", "").Replace("h", ":"));
+                //}
+                //else
+                //{
+                //    lateness = null;
+                //}
 
-                if (attendanceReasonModel.LastOut !=  null && attendanceReasonModel.LastOut != "")
-                {
-                    lastOut = attendanceReasonModel.AttendanceDate.Add(TimeSpan.Parse( attendanceReasonModel.LastOut));
-                }
-                else
-                {
-                    lastOut = null;
-                }
-
-
-                if (attendanceReasonModel.WorkTime !=  null && attendanceReasonModel.WorkTime != "")
-                {
-
-                    workTime = TimeSpan.Parse(attendanceReasonModel.WorkTime.Replace("j",":").Replace("m","").Replace("h", ":"));
-                }
-                else
-                {
-                    workTime = null;
-                }
+                //if (attendanceReasonModel.LastOut !=  null && attendanceReasonModel.LastOut != "")
+                //{
+                //    lastOut = attendanceReasonModel.AttendanceDate.Add(TimeSpan.Parse( attendanceReasonModel.LastOut));
+                //}
+                //else
+                //{
+                //    lastOut = null;
+                //}
 
 
-                if (attendanceReasonModel.Overtime != null && attendanceReasonModel.Overtime != "")
-                {
-                    overTime = TimeSpan.Parse(attendanceReasonModel.Overtime.Replace("j", ":").Replace("m", "").Replace("h", ":"));
-                }
-                else
-                {
-                    overTime = null;
-                }
+                //if (attendanceReasonModel.WorkTime !=  null && attendanceReasonModel.WorkTime != "")
+                //{
 
-                if (attendanceReasonModel.OvertimeExtraStart != null && attendanceReasonModel.OvertimeExtraStart != "")
-                {
-                    overTimeExtraStart = Convert.ToDateTime(attendanceReasonModel.AttendanceDate).Add(TimeSpan.Parse(attendanceReasonModel.OvertimeExtraStart));
-                }
-                else
-                {
-                    overTimeExtraStart = null;
-                }
-
-                if (attendanceReasonModel.OvertimeExtraEnd != null && attendanceReasonModel.OvertimeExtraEnd != "")
-                {
-                    overTimeExtraEnd = Convert.ToDateTime(attendanceReasonModel.AttendanceDate).Add(TimeSpan.Parse(attendanceReasonModel.OvertimeExtraEnd));
-                }
-                else
-                {
-                    overTimeExtraEnd = null;
-                }
+                //    workTime = TimeSpan.Parse(attendanceReasonModel.WorkTime.Replace("j",":").Replace("m","").Replace("h", ":").Replace(" ", ""));
+                //}
+                //else
+                //{
+                //    workTime = null;
+                //}
 
 
+                //if (attendanceReasonModel.Overtime != null && attendanceReasonModel.Overtime != "")
+                //{
+                
+                //    overTime = TimeSpan.Parse(attendanceReasonModel.Overtime.Replace("j", ":").Replace("m", "").Replace("h", ":").Replace(" ", ""));
+                //}
+                //else
+                //{
+                //    overTime = null;
+                //}
 
-                if (attendanceReasonModel.OvertimeExtra != null && attendanceReasonModel.OvertimeExtra != "")
-                {
-                    overTimeExtra = TimeSpan.Parse(attendanceReasonModel.OvertimeExtra.Replace("j", ":").Replace("m", "").Replace("h", ":"));
-                }
-                else
-                {
-                    overTimeExtra = null;
-                }
+                //if (attendanceReasonModel.OvertimeExtraStart != null && attendanceReasonModel.OvertimeExtraStart != "")
+                //{
+                //    overTimeExtraStart = Convert.ToDateTime(attendanceReasonModel.AttendanceDate).Add(TimeSpan.Parse(attendanceReasonModel.OvertimeExtraStart));
+                //}
+                //else
+                //{
+                //    overTimeExtraStart = null;
+                //}
+
+                //if (attendanceReasonModel.OvertimeExtraEnd != null && attendanceReasonModel.OvertimeExtraEnd != "")
+                //{
+                //    overTimeExtraEnd = Convert.ToDateTime(attendanceReasonModel.AttendanceDate).Add(TimeSpan.Parse(attendanceReasonModel.OvertimeExtraEnd));
+                //}
+                //else
+                //{
+                //    overTimeExtraEnd = null;
+                //}
+
+
+
+                //if (attendanceReasonModel.OvertimeExtra != null && attendanceReasonModel.OvertimeExtra != "")
+                //{
+                //    overTimeExtra = TimeSpan.Parse(attendanceReasonModel.OvertimeExtra.Replace("j", ":").Replace("m", "").Replace("h", ":").Replace(" ", ""));
+                //}
+                //else
+                //{
+                //    overTimeExtra = null;
+                //}
 
                 // 2022-06-29 : Insert
 
@@ -1372,14 +1373,98 @@ namespace MyTime.Services
                 sql += " " + $@"'{attendanceReasonModel.ShiftID}',";
                 sql += " " + $@"'{attendanceReasonModel.AttendanceStatusID}',";
 
-                sql += " " + $@"IIF('{firstIn}' <> '', '{firstIn.ToString()}', null),";
-                sql += " " + $@"IIF('{lateness}' <> '', '{lateness.ToString()}', null),";
-                sql += " " + $@"IIF('{lastOut}' <> '', '{lastOut.ToString()}', null),";
-                sql += " " + $@"IIF('{workTime}' <> '', '{workTime.ToString()}', null),";
-                sql += " " + $@"IIF('{overTime}' <> '', '{overTime.ToString()}', null),";
-                sql += " " + $@"IIF('{overTimeExtraStart}' <> '', '{overTimeExtraStart.ToString()}', null),";
-                sql += " " + $@"IIF('{overTimeExtraEnd}' <> '', '{overTimeExtraStart.ToString()}', null),";
-                sql += " " + $@"IIF('{overTimeExtra}' <> '', '{overTimeExtra.ToString()}', null),";
+                if (attendanceReasonModel.FirstIn != null && attendanceReasonModel.FirstIn != "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd")} {attendanceReasonModel.FirstIn}',";
+                }
+                else
+                {
+                
+                    sql += " " + $@"null,";
+                }
+
+
+                if (attendanceReasonModel.Lateness != null && attendanceReasonModel.Lateness != "")
+                {
+                    sql += " " + $@"{attendanceReasonModel.Lateness.Replace("j", ":").Replace("m", "").Replace("h", ":")},";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+                if (attendanceReasonModel.LastOut != null && attendanceReasonModel.LastOut != "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd")} {attendanceReasonModel.LastOut}',";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+
+                if (attendanceReasonModel.WorkTime != null && attendanceReasonModel.WorkTime!= "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.WorkTime.Replace("j", ":").Replace("m", "").Replace("h", ":").Replace(" ","")}',";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+                if (attendanceReasonModel.Overtime != null && attendanceReasonModel.Overtime!= "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.Overtime.Replace("j", ":").Replace("m", "").Replace("h", ":").Replace(" ", "")}',";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+
+                if (attendanceReasonModel.OvertimeExtraStart!= null && attendanceReasonModel.OvertimeExtraStart!= "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd")} {attendanceReasonModel.OvertimeExtraStart}',";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+
+                if (attendanceReasonModel.OvertimeExtraEnd != null && attendanceReasonModel.OvertimeExtraEnd != "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd")} {attendanceReasonModel.OvertimeExtraEnd}',";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+                if (attendanceReasonModel.OvertimeExtra != null && attendanceReasonModel.OvertimeExtra!= "")
+                {
+                    sql += " " + $@"'{attendanceReasonModel.OvertimeExtra.Replace("j", ":").Replace("m", "").Replace("h", ":").Replace(" ", "")}',";
+                }
+                else
+                {
+
+                    sql += " " + $@"null,";
+                }
+
+                //sql += " " + $@"IIF('{firstIn}' <> '', '{firstIn}.ToString('yyyyMMdd HH:mm:ss')', null),";
+                //sql += " " + $@"IIF('{lateness}' <> '', '{lateness.ToString()}', null),";
+                //sql += " " + $@"IIF('{lastOut}' <> '', '{lastOut}.ToString('yyyyMMdd HH:mm:ss')', null),";
+                //sql += " " + $@"IIF('{workTime}' <> '', '{workTime.ToString()}', null),";
+                //sql += " " + $@"IIF('{overTime}' <> '', '{overTime.ToString()}', null),";
+                //sql += " " + $@"IIF('{overTimeExtraStart}' <> '','{overTimeExtraStart}.ToString('yyyyMMdd HH:mm:ss')', null),";
+                //sql += " " + $@"IIF('{overTimeExtraEnd}' <> '', '{overTimeExtraEnd}.ToString('yyyyMMdd HH:mm:ss')', null),";
+                //sql += " " + $@"IIF('{overTimeExtra}' <> '', '{overTimeExtra.ToString()}', null),";
 
                 //sql += " " + $@"'{lateness.ToString()}',";
                 //sql += " " + $@"'{lastOut.ToString()}',";
