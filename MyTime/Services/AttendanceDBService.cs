@@ -1194,14 +1194,21 @@ namespace MyTime.Services
                     //sql += " " + "ProcessedBy NVARCHAR(20), ProcessedOn DATETIME";
                     //sql += " " + "PRIMARY KEY (NRIC, AttendanceDate))";
 
-                    // 2022-06-27
+
+                    // 2022-06-29 : Create New Attendance Reason
+
                     sql = "CREATE TABLE " + tableName;
                     sql += " " + "(NRIC NVARCHAR(20) NOT NULL, AttendanceDate DATETIME NOT NULL, ";
+                    sql += " " + "ShiftID NVARCHAR(20), AttendanceStatusID NVARCHAR(3),";
+                    sql += " " + "FirstIn DATETIME, Lateness TIME(0), LastOut DATETIME,";
+                    sql += " " + "WorkTime TIME(0), Overtime TIME(0),";
+                    sql += " " + "OvertimeExtraStart DATETIME, OvertimeExtraEnd DATETIME, OvertimeExtra TIME(0),";
                     sql += " " + "ReasonID NVARCHAR(20) NOT NULL, Remark NVARCHAR(100), SubmittedOn DATETIME NOT NULL,";
                     sql += " " + "IsApproved BIT, IsRejected BIT, IsRequestedToAmend BIT,";
                     sql += " " + "Proof NVARCHAR(100), ApproverComment NVARCHAR(100),";
                     sql += " " + "ProcessedBy NVARCHAR(20), ProcessedOn DATETIME";
                     sql += " " + "PRIMARY KEY (NRIC, AttendanceDate))";
+
 
                     conn.Open();
 
@@ -1264,18 +1271,128 @@ namespace MyTime.Services
                 ////sql += " " + $@"'{SqlString.Null}', '{DBNull.Value}')";
                 ///
 
+                             
+                DateTime? firstIn, lastOut, overTimeExtraStart, overTimeExtraEnd;
+                TimeSpan? lateness, workTime, overTime, overTimeExtra;
 
-                // 2022-06-27
+                if (attendanceReasonModel.FirstIn != null && attendanceReasonModel.FirstIn != "")
+                {
+                    firstIn = attendanceReasonModel.AttendanceDate.Add(TimeSpan.Parse( attendanceReasonModel.FirstIn));
+                }
+                else
+                {
+                    firstIn = null;
+                }
 
-                // Insert 
-                sql = $@"INSERT INTO {tableName} (NRIC, AttendanceDate, ";            
+                if (attendanceReasonModel.Lateness !=  null && attendanceReasonModel.Lateness != "")
+                {
+                    lateness = TimeSpan.Parse(attendanceReasonModel.Lateness.Replace("j", ":").Replace("m", "").Replace("h", ":"));
+                }
+                else
+                {
+                    lateness = null;
+                }
+
+                if (attendanceReasonModel.LastOut !=  null && attendanceReasonModel.LastOut != "")
+                {
+                    lastOut = attendanceReasonModel.AttendanceDate.Add(TimeSpan.Parse( attendanceReasonModel.LastOut));
+                }
+                else
+                {
+                    lastOut = null;
+                }
+
+
+                if (attendanceReasonModel.WorkTime !=  null && attendanceReasonModel.WorkTime != "")
+                {
+
+                    workTime = TimeSpan.Parse(attendanceReasonModel.WorkTime.Replace("j",":").Replace("m","").Replace("h", ":"));
+                }
+                else
+                {
+                    workTime = null;
+                }
+
+
+                if (attendanceReasonModel.Overtime != null && attendanceReasonModel.Overtime != "")
+                {
+                    overTime = TimeSpan.Parse(attendanceReasonModel.Overtime.Replace("j", ":").Replace("m", "").Replace("h", ":"));
+                }
+                else
+                {
+                    overTime = null;
+                }
+
+                if (attendanceReasonModel.OvertimeExtraStart != null && attendanceReasonModel.OvertimeExtraStart != "")
+                {
+                    overTimeExtraStart = Convert.ToDateTime(attendanceReasonModel.AttendanceDate).Add(TimeSpan.Parse(attendanceReasonModel.OvertimeExtraStart));
+                }
+                else
+                {
+                    overTimeExtraStart = null;
+                }
+
+                if (attendanceReasonModel.OvertimeExtraEnd != null && attendanceReasonModel.OvertimeExtraEnd != "")
+                {
+                    overTimeExtraEnd = Convert.ToDateTime(attendanceReasonModel.AttendanceDate).Add(TimeSpan.Parse(attendanceReasonModel.OvertimeExtraEnd));
+                }
+                else
+                {
+                    overTimeExtraEnd = null;
+                }
+
+
+
+                if (attendanceReasonModel.OvertimeExtra != null && attendanceReasonModel.OvertimeExtra != "")
+                {
+                    overTimeExtra = TimeSpan.Parse(attendanceReasonModel.OvertimeExtra.Replace("j", ":").Replace("m", "").Replace("h", ":"));
+                }
+                else
+                {
+                    overTimeExtra = null;
+                }
+
+                // 2022-06-29 : Insert
+
+                sql = $@"INSERT INTO {tableName} (NRIC, AttendanceDate, ";
+                sql += " " + $@"ShiftID,";
+                sql += " " + $@"AttendanceStatusID,";
+                sql += " " + $@"FirstIn,";
+                sql += " " + $@"Lateness,";
+                sql += " " + $@"LastOut,";
+                sql += " " + $@"WorkTime,";
+                sql += " " + $@"Overtime,";
+                sql += " " + $@"OvertimeExtraStart,";
+                sql += " " + $@"OvertimeExtraEnd,";
+                sql += " " + $@"OvertimeExtra,";
                 sql += " " + $@"ReasonID, Remark, Proof, SubmittedOn,";
                 sql += " " + $@"IsApproved, IsRejected, IsRequestedToAmend) VALUES";
                 //sql += " " + $@"ProcessedBy, ProcessedOn) VALUES";
-                sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}', ";
+                sql += " " + $@"('{attendanceReasonModel.NRIC}', '{attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}',";
+                sql += " " + $@"'{attendanceReasonModel.ShiftID}',";
+                sql += " " + $@"'{attendanceReasonModel.AttendanceStatusID}',";
+
+                sql += " " + $@"IIF('{firstIn}' <> '', '{firstIn.ToString()}', null),";
+                sql += " " + $@"IIF('{lateness}' <> '', '{lateness.ToString()}', null),";
+                sql += " " + $@"IIF('{lastOut}' <> '', '{lastOut.ToString()}', null),";
+                sql += " " + $@"IIF('{workTime}' <> '', '{workTime.ToString()}', null),";
+                sql += " " + $@"IIF('{overTime}' <> '', '{overTime.ToString()}', null),";
+                sql += " " + $@"IIF('{overTimeExtraStart}' <> '', '{overTimeExtraStart.ToString()}', null),";
+                sql += " " + $@"IIF('{overTimeExtraEnd}' <> '', '{overTimeExtraStart.ToString()}', null),";
+                sql += " " + $@"IIF('{overTimeExtra}' <> '', '{overTimeExtra.ToString()}', null),";
+
+                //sql += " " + $@"'{lateness.ToString()}',";
+                //sql += " " + $@"'{lastOut.ToString()}',";
+                //sql += " " + $@"'{workTime.ToString()}',";
+                //sql += " " + $@"'{overTime.ToString()}',";
+                //sql += " " + $@"'{overTimeExtraStart.ToString()}',";
+                //sql += " " + $@"'{overTimeExtraEnd.ToString()}',";
+                //sql += " " + $@"'{overTimeExtra.ToString()}',";     
+
                 sql += " " + $@"'{attendanceReasonModel.ReasonID}', '{attendanceReasonModel.Remark}', '{proof}', '{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")}',";
                 sql += " " + $@"'False', 'False', 'False')";
                 //sql += " " + $@"'{SqlString.Null}', '{DBNull.Value}')";
+                
 
 
                 conn.Open();
@@ -1287,7 +1404,7 @@ namespace MyTime.Services
                     status = true;
 
                     string logData = $@"{attendanceReasonModel.NRIC}, {attendanceReasonModel.AttendanceDate.ToString("yyyyMMdd HH:mm:ss")}, {attendanceReasonModel.AttendanceDay},";
-                    logData += " " + $@"{attendanceReasonModel.AttendanceStatusID}, {attendanceReasonModel.AttendanceStatus},";
+                    logData += " " + $@"{attendanceReasonModel.ShiftID}, {attendanceReasonModel.AttendanceStatusID}, {attendanceReasonModel.AttendanceStatus},";
                     logData += " " + $@"{attendanceReasonModel.FirstIn}, {attendanceReasonModel.Lateness}, {attendanceReasonModel.LastOut}, {attendanceReasonModel.WorkTime},";
                     logData += " " + $@"{attendanceReasonModel.Overtime},";
                     //logData += " " + $@"{attendanceReasonModel.OvertimeStart}, {attendanceReasonModel.OvertimeEnd}, {attendanceReasonModel.Overtime},";
