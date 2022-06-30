@@ -90,6 +90,10 @@ namespace MyTime.Services
                     DateTime submissionDueDate = endOn.AddDays(reasonSubmissionPeriod);
                     bool isSubmissionDue;
 
+                    TimeSpan workTime;
+                    TimeSpan overTime;
+                    TimeSpan overTimeExtra;
+
                     if (DateTime.Now.Date < submissionDueDate.Date)
                     {
                         isSubmissionDue = false;
@@ -113,10 +117,9 @@ namespace MyTime.Services
                     sql += " " + $@"ELSE ''";
                     sql += " " + $@"END AS AttendanceStatus,";
 
-                    sql += " " + $@"IIF(ar.FirstIn IS NOT NULL, FORMAT(ar.FirstIn, 'HH:mm'), null) AS FirstIn , ar.Lateness, IIF(ar.LastOut IS NOT NULL, FORMAT(ar.LastOut, 'HH:mm'), null) AS LastOut,";
-                    sql += " " + $@"IIF(ar.WorkTime IS NOT NULL, FORMAT(CAST(ar.WorkTime AS DATETIME), 'HH {MyTime.Resource.Hour} mm {MyTime.Resource.Minute}'), null) AS WorkTime,";
-                    sql += " " + $@"IIF(ar.OverTime IS NOT NULL, FORMAT(CAST(ar.OverTime AS DATETIME), 'HH {MyTime.Resource.Hour} mm {MyTime.Resource.Minute}'), null) AS OverTime,";
-                     sql += " " + $@"ar.OvertimeExtraStart, ar.OvertimeExtraEnd, ar.OvertimeExtra,";
+                    sql += " " + $@"ar.FirstIn, ar.Lateness, ar.LastOut,";
+                    sql += " " + $@"ar.WorkTime, ar.OverTime,";
+                    sql += " " + $@"ar.OvertimeExtraStart, ar.OvertimeExtraEnd, ar.OvertimeExtra,";
                     sql += " " + $@"ar.ReasonID, r.ReasonName, ar.Remark, ar.Proof,";
                     sql += " " + $@"ar.IsApproved, ar.IsRejected, ar.IsRequestedToAmend, ar.ApproverComment, ar.SubmittedOn";
                     sql += " " + $@"FROM ApproverUser ap";
@@ -164,17 +167,83 @@ namespace MyTime.Services
                             reasonApprovalModel.AttendanceStatusID = dr["AttendanceStatusID"].ToString();
                             reasonApprovalModel.AttendanceStatus = dr["AttendanceStatus"].ToString();
                            
+                            if (dr["FirstIn"] != DBNull.Value)
+                            {
+                                reasonApprovalModel.FirstIn = Convert.ToDateTime(dr["FirstIn"]).ToString("HH:mm");
+                            }
+                            else
+                            {
+                                reasonApprovalModel.FirstIn = "";
+                            }
                             
-                            reasonApprovalModel.FirstIn = dr["FirstIn"].ToString();
                             reasonApprovalModel.Lateness = dr["Lateness"].ToString();
-                            reasonApprovalModel.LastOut = dr["LastOut"].ToString();
-                            reasonApprovalModel.WorkTime = dr["WorkTime"].ToString();
+
+                            if (dr["LastOut"] != DBNull.Value)
+                            {
+                                reasonApprovalModel.LastOut = Convert.ToDateTime(dr["LastOut"]).ToString("HH:mm");
+                            }
+                            else
+                            {
+                                reasonApprovalModel.LastOut = "";
+                            }
+
+                           if (dr["WorkTime"] != DBNull.Value)
+                            {
+
+                                workTime = (TimeSpan)(dr["WorkTime"]);
+                                reasonApprovalModel.WorkTime = string.Format("{0} {1} {2} {3}", workTime.Hours, MyTime.Resource.Hour, workTime.Minutes, MyTime.Resource.Minute);
+                               
+                            }
+                           else
+                            {
+                                reasonApprovalModel.WorkTime = "";
+                            }
+
+
+                            if (dr["OverTime"] != DBNull.Value)
+                            {
+                                overTime = (TimeSpan)(dr["OverTime"]);
+                                reasonApprovalModel.Overtime = string.Format("{0} {1} {2} {3}", overTime.Hours, MyTime.Resource.Hour, overTime.Minutes, MyTime.Resource.Minute);
+                            }
+                            else
+                            {
+                                reasonApprovalModel.Overtime = "";
+                            }
+
                             //reasonApprovalModel.OvertimeStart = dr["OvertimeStart"].ToString();
                             //reasonApprovalModel.OvertimeEnd = dr["OvertimeEnd"].ToString();
-                            reasonApprovalModel.Overtime = dr["Overtime"].ToString();
-                            reasonApprovalModel.OvertimeExtraStart = dr["OvertimeExtraStart"].ToString();
-                            reasonApprovalModel.OvertimeExtraEnd = dr["OvertimeExtraEnd"].ToString();
-                            reasonApprovalModel.OvertimeExtra = dr["OvertimeExtra"].ToString();
+
+
+                            if (dr["OvertimeExtraStart"] != DBNull.Value)
+                            {
+                                reasonApprovalModel.OvertimeExtraStart = Convert.ToDateTime(dr["OvertimeExtraStart"]).ToString("HH:mm");
+                            }
+                            else
+                            {
+                                reasonApprovalModel.OvertimeExtraStart= "";
+                            }
+
+
+                            if (dr["OvertimeExtraEnd"] != DBNull.Value)
+                            {
+                                reasonApprovalModel.OvertimeExtraEnd = Convert.ToDateTime(dr["OvertimeExtraEnd"]).ToString("HH:mm");
+                            }
+                            else
+                            {
+                                reasonApprovalModel.OvertimeExtraEnd = "";
+                            }
+
+                            if (dr["OverTimeExtra"] != DBNull.Value)
+                            {
+                                overTimeExtra = (TimeSpan)(dr["OverTimeExtra"]);
+                                reasonApprovalModel.OvertimeExtra = string.Format("{0} {1} {2} {3}", overTimeExtra.Hours, MyTime.Resource.Hour, overTimeExtra.Minutes, MyTime.Resource.Minute);
+                            }
+                            else
+                            {
+                                reasonApprovalModel.OvertimeExtra = "";
+                            }
+
+
                             //reasonApprovalModel.TotalOvertime = dr["TotalOvertime"].ToString();
 
                             reasonApprovalModel.ReasonID = dr["ReasonID"].ToString();                            

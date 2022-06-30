@@ -194,12 +194,20 @@ namespace MyTime.Controllers
                         {
                             reasonApprovalModel.FirstIn = data[i].ToString();
                         }
+                        else
+                        {
+                            reasonApprovalModel.FirstIn = "";
+                        }
 
                         break;
                     case 7:
                         if (data[i].ToString() != "null")
                         {
                             reasonApprovalModel.Lateness = data[i].ToString();
+                        }
+                        else
+                        {
+                            reasonApprovalModel.Lateness = "";
                         }
 
                         break;
@@ -208,12 +216,20 @@ namespace MyTime.Controllers
                         {
                             reasonApprovalModel.LastOut = data[i].ToString();
                         }
+                        else
+                        {
+                            reasonApprovalModel.LastOut = "";
+                        }
 
                         break;
                     case 9:
                         if (data[i].ToString() != "null")
                         {
                             reasonApprovalModel.WorkTime = data[i].ToString();
+                        }
+                        else
+                        {
+                            reasonApprovalModel.WorkTime = "";
                         }
 
                         break;
@@ -236,12 +252,20 @@ namespace MyTime.Controllers
                         {
                             reasonApprovalModel.Overtime = data[i].ToString();
                         }
+                        else
+                        {
+                            reasonApprovalModel.Overtime = "";
+                        }
 
                         break;
                     case 11:
                         if (data[i].ToString() != "null")
                         {
                             reasonApprovalModel.OvertimeExtraStart = data[i].ToString();
+                        }
+                        else
+                        {
+                            reasonApprovalModel.OvertimeExtraStart = "";
                         }
 
                         break;
@@ -250,12 +274,20 @@ namespace MyTime.Controllers
                         {
                             reasonApprovalModel.OvertimeExtraEnd = data[i].ToString();
                         }
+                        else
+                        {
+                            reasonApprovalModel.OvertimeExtraEnd = "";
+                        }
 
                         break;
                     case 13:
                         if (data[i].ToString() != "null")
                         {
                             reasonApprovalModel.OvertimeExtra = data[i].ToString();
+                        }
+                        else
+                        {
+                            reasonApprovalModel.OvertimeExtra = "";
                         }
 
                         break;
@@ -291,6 +323,10 @@ namespace MyTime.Controllers
                         if (data[i].ToString() != "null")
                         {
                             reasonApprovalModel.Remark = data[i].ToString();
+                        }
+                        else
+                        {
+                            reasonApprovalModel.Remark = "";
                         }
 
                         break;
