@@ -175,8 +175,15 @@ namespace MyTime.Services
                             {
                                 reasonApprovalModel.FirstIn = "";
                             }
-                            
-                            reasonApprovalModel.Lateness = dr["Lateness"].ToString();
+
+                            if (dr["Lateness"] != DBNull.Value)
+                            {
+                                reasonApprovalModel.Lateness = dr["Lateness"].ToString();
+                            }
+                            else
+                            {
+                                reasonApprovalModel.Lateness = "";
+                            }
 
                             if (dr["LastOut"] != DBNull.Value)
                             {
