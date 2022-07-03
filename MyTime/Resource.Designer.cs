@@ -70,6 +70,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Absent.
+        /// </summary>
+        public static string AbsentCount {
+            get {
+                return ResourceManager.GetString("AbsentCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acess Role.
         /// </summary>
         public static string AccessRole {
@@ -376,6 +385,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance Card Report.
+        /// </summary>
+        public static string AttendanceCardReport {
+            get {
+                return ResourceManager.GetString("AttendanceCardReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attendance Card Colour.
         /// </summary>
         public static string AttendanceCardStatus {
@@ -543,6 +561,15 @@ namespace MyTime {
         public static string AttendanceSummaryReport {
             get {
                 return ResourceManager.GetString("AttendanceSummaryReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attend.
+        /// </summary>
+        public static string AttendCount {
+            get {
+                return ResourceManager.GetString("AttendCount", resourceCulture);
             }
         }
         
@@ -997,6 +1024,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Early Out.
+        /// </summary>
+        public static string EarlyOutCount {
+            get {
+                return ResourceManager.GetString("EarlyOutCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start On.
         /// </summary>
         public static string EffectiveOn {
@@ -1213,6 +1249,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string IncompleteCount {
+            get {
+                return ResourceManager.GetString("IncompleteCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Individual Attendance History Report.
         /// </summary>
         public static string IndividualAttendanceHistoryReport {
@@ -1339,11 +1384,29 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LateIn.
+        /// </summary>
+        public static string LateInCount {
+            get {
+                return ResourceManager.GetString("LateInCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Late In / Early Out.
         /// </summary>
         public static string LateInEarlyOut {
             get {
                 return ResourceManager.GetString("LateInEarlyOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Late In / Early Out.
+        /// </summary>
+        public static string LateInEarlyOutCount {
+            get {
+                return ResourceManager.GetString("LateInEarlyOutCount", resourceCulture);
             }
         }
         
@@ -1731,6 +1794,15 @@ namespace MyTime {
         public static string OnLeave {
             get {
                 return ResourceManager.GetString("OnLeave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Leave.
+        /// </summary>
+        public static string OnLeaveCount {
+            get {
+                return ResourceManager.GetString("OnLeaveCount", resourceCulture);
             }
         }
         
@@ -2577,6 +2649,15 @@ namespace MyTime {
         public static string TotalAttend {
             get {
                 return ResourceManager.GetString("TotalAttend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string TotalAttendanceIssue {
+            get {
+                return ResourceManager.GetString("TotalAttendanceIssue", resourceCulture);
             }
         }
         

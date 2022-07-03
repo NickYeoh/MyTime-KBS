@@ -163,7 +163,7 @@ namespace MyTime.Services
 
 
                 // Get Attendance Card Status - Warna Kad Kedatangan
-                attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDandMonth(NRIC, startOn);
+                attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDAndMonth(NRIC, startOn);
 
                 // Current Date
                 currentDate = DateTime.Now.Date;
@@ -451,7 +451,7 @@ namespace MyTime.Services
                     //userModel = userDBService.GetDataByID(NRIC);
 
                     //// Get Attendance Card Status - Warna Kad Kedatangan
-                    //attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDandMonth(NRIC, startOn);
+                    //attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDAndMonth(NRIC, startOn);
 
                     //isResigned = Convert.ToBoolean(userModel.IsResigned);                 
 

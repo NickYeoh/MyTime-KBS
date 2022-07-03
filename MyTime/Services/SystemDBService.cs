@@ -112,6 +112,15 @@ namespace MyTime.Services
                         systemSettingModel.IsEmailReminderEnabled = false;
                     }
 
+                    if (!dr["AttendanceCardStartDate"].Equals(DBNull.Value))
+                    {
+                        systemSettingModel.AttendanceCardStartDate= Convert.ToDateTime(dr["AttendanceCardStartDate"]);
+                    }
+                    else
+                    {
+                        systemSettingModel.AttendanceCardStartDate = DateTime.Now;
+                    }
+
                 }
 
 

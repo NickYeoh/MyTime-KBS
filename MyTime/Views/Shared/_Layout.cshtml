@@ -257,6 +257,12 @@
                                 </li>
 
                                 <li>
+                                    <a href="#" id="linkAttendanceCardReport">
+                                        @MyTime.Resource.AttendanceCardReport
+                                    </a>
+                                </li>
+
+                                <li>
                                     <a href="#" id="linkDepartmentAttendanceDailySummary">
                                         @MyTime.Resource.DepartmentAttendanceDailySummary
                                     </a>
@@ -376,7 +382,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/custom-js")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(document).ready(function () {
 
@@ -504,6 +510,12 @@
                       return false;
             });
 
+
+            $('#linkAttendanceCardReport').on('click', function () {
+                      window.location.href = '@Url.Action("Index", "AttendanceCardReport")';
+                      return false;
+            });
+
             $('#linkDepartmentAttendanceDailySummary').on('click', function () {
                       window.location.href = '@Url.Action("Index", "DepartmentAttendanceDailySummary")';
                       return false;
@@ -543,7 +555,7 @@
 
         });
 
-    </script>
+</script>
 
 
     @RenderSection("styles", required: false)

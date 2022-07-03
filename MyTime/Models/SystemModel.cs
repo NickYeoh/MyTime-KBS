@@ -52,5 +52,8 @@ namespace MyTime.Models
         [DataType(DataType.DateTime)]
         public DateTime DataStartDate { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime AttendanceCardStartDate { get; set; }
+
     }
 }

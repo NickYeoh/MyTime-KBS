@@ -145,6 +145,7 @@
     <Compile Include="Controllers\AnnouncementController.cs" />
     <Compile Include="Controllers\ApproverController.cs" />
     <Compile Include="Controllers\AttendanceAnalysisController.cs" />
+    <Compile Include="Controllers\AttendanceCardReportController.cs" />
     <Compile Include="Controllers\AttendanceReportController.cs" />
     <Compile Include="Controllers\AttendanceStatisticsController.cs" />
     <Compile Include="Controllers\AttendanceSummaryReportController.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="ViewModels\AccessRoleViewModel.cs" />
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\AttendanceAnalysisViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceCardReportViewModel.cs" />
     <Compile Include="ViewModels\AttendanceReportViewModel.cs" />
     <Compile Include="ViewModels\AttendanceStatisticsViewModel.cs" />
     <Compile Include="ViewModels\AttendanceSummaryReportViewModel.cs" />
@@ -829,6 +831,7 @@
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\User\_ListDeviceUser.cshtml" />
     <Content Include="Views\User\_ListAttendanceCard.cshtml" />
+    <Content Include="Views\AttendanceCardReport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

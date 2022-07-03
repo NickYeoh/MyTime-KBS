@@ -1074,4 +1074,31 @@
   <data name="MessageSessionExpired" xml:space="preserve">
     <value>Sesi anda telah tamat (tanpa aktiviti dalam {0} minit). Sila log masuk semula</value>
   </data>
+  <data name="AttendanceCardReport" xml:space="preserve">
+    <value>Laporan Kad Kedatangan</value>
+  </data>
+  <data name="AbsentCount" xml:space="preserve">
+    <value>Tidak Hadir</value>
+  </data>
+  <data name="AttendCount" xml:space="preserve">
+    <value>Hadir</value>
+  </data>
+  <data name="EarlyOutCount" xml:space="preserve">
+    <value>Balik Awal</value>
+  </data>
+  <data name="IncompleteCount" xml:space="preserve">
+    <value>Tidak Lengkap</value>
+  </data>
+  <data name="LateInCount" xml:space="preserve">
+    <value>Lewat Masuk</value>
+  </data>
+  <data name="LateInEarlyOutCount" xml:space="preserve">
+    <value>Lewat Masuk / Balik Awal</value>
+  </data>
+  <data name="OnLeaveCount" xml:space="preserve">
+    <value>Cuti</value>
+  </data>
+  <data name="TotalAttendanceIssue" xml:space="preserve">
+    <value>Jumlah</value>
+  </data>
 </root>

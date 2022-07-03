@@ -90,9 +90,9 @@ namespace MyTime.Services
                 //sql += " " + $@") AS AC";
 
                 sql += " " + $@"OUTER APPLY (";
-                sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCardTrans]";
-                sql += " " + $@"WHERE [AttendanceCardTrans].NRIC = U.NRIC";
-                sql += " " + $@"AND CONVERT(INT,  [AttendanceCardTrans].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
+                sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
+                sql += " " + $@"WHERE [AttendanceCard].NRIC = U.NRIC";
+                sql += " " + $@"AND CONVERT(INT,  [AttendanceCard].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
                 sql += " " + $@"ORDER BY AttendanceMonth DESC) AS ACT";
 
                 sql += " " + $@"ORDER BY NRIC ASC";
@@ -1188,7 +1188,7 @@ namespace MyTime.Services
 
         }
 
-        public string GetAttendanceCardStatusByIDandMonth(string ID, DateTime startOn)
+        public string GetAttendanceCardStatusByIDAndMonth(string ID, DateTime startOn)
         {
             string attendanceCardStatus = "";
 
@@ -1197,8 +1197,8 @@ namespace MyTime.Services
             //sql += " " + $@"AND FORMAT(EffectiveOn, 'yyyyMM') <= '{startOn.ToString("yyyyMM")}'";
             //sql += " " + $@"ORDER BY EffectiveOn DESC";
 
-            string sql =$@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCardTrans]";
-            sql += " " + $@"WHERE [AttendanceCardTrans].NRIC = {ID}";
+            string sql =$@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
+            sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
             sql += " " + $@"AND CONVERT(INT,AttendanceMonth) < CONVERT(INT, {startOn.ToString("yyyyMM")})";
             sql += " " + $@"ORDER BY AttendanceMonth DESC";
 
@@ -1288,9 +1288,9 @@ namespace MyTime.Services
             //sql += " " + $@") AS AC";
 
             sql += " " + $@"OUTER APPLY (";
-            sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCardTrans]";
-            sql += " " + $@"WHERE [AttendanceCardTrans].NRIC = U.NRIC";
-            sql += " " + $@"AND CONVERT(INT,  [AttendanceCardTrans].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
+            sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
+            sql += " " + $@"WHERE [AttendanceCard].NRIC = U.NRIC";
+            sql += " " + $@"AND CONVERT(INT,  [AttendanceCard].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
             sql += " " + $@"ORDER BY AttendanceMonth DESC) AS ACT";
 
             sql += " " + $@"WHERE U.NRIC = '{ID}'";
@@ -1454,10 +1454,18 @@ namespace MyTime.Services
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
             AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
 
-            string sql = $@"SELECT NRIC, EffectiveOn, Format(EffectiveOn, 'MMM, yyyy') AS YearMonth, AttendanceCardStatus";
+            string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
+            sql += " " + $@"AC.NRIC, U.UserName,";
+            sql += " " + $@"LateInCount, EarlyOutCount,";
+            sql += " " + $@"LateInEarlyOutCount, IncompleteCount,";
+            sql += " " + $@"AbsentCount, AttendCount,";
+            sql += " " + $@"OnLeaveCount, TotalAttendanceIssue,";
+            sql += " " + $@"AttendanceCardStatus AC";
+            sql += " " + $@"LEFT JOIN [User] U ON U.NRIC=AC.NRIC";
+            sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID=U.DepartmentID";
             sql += " " + $@"FROM AttendanceCard";
             sql += " " + $@"WHERE NRIC='{ID}'";
-            sql += " " + $@"ORDER BY NRIC, EffectiveOn";
+            sql += " " + $@"ORDER BY NRIC";
 
 
             try
@@ -1475,16 +1483,187 @@ namespace MyTime.Services
                     {
                         attendanceCardModel = new AttendanceCardModel();
 
-                        attendanceCardModel.NRIC = ID;
-
-                        if (!dr["EffectiveOn"].Equals(DBNull.Value))
+                        if (!dr["AttendanceMonth"].Equals(DBNull.Value))
                         {
-                            attendanceCardModel.EffectiveOn = Convert.ToDateTime(dr["EffectiveOn"]);
+                            attendanceCardModel.AttendanceMonth = dr["AttendanceMonth"].ToString();
                         }
 
-                        if (!dr["YearMonth"].Equals(DBNull.Value))
+                        if (!dr["DepartmentName"].Equals(DBNull.Value))
                         {
-                            attendanceCardModel.YearMonth = dr["YearMonth"].ToString();
+                            attendanceCardModel.DepartmentName = dr["DepartmentName"].ToString();
+                        }
+
+                        if (!dr["UserName"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.UserName = dr["UserName"].ToString();
+                        }
+
+                        if (!dr["NRIC"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.NRIC = dr["NRIC"].ToString();
+                        }
+
+                        if (!dr["LateInCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.LateInCount = Convert.ToInt32(dr["LateInCount"]);
+                        }
+
+                        if (!dr["EarlyOutCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.EarlyOutCount = Convert.ToInt32(dr["EarlyOutCount"]);
+                        }
+
+                        if (!dr["LateInEarlyOutCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.LateInEarlyOutCount = Convert.ToInt32(dr["LateInEarlyOutCount"]);
+                        }
+
+                        if (!dr["IncompleteCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.IncompleteCount = Convert.ToInt32(dr["IncompleteCount"]);
+                        }
+
+                        if (!dr["AbsentCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AbsentCount = Convert.ToInt32(dr["AbsentCount"]);
+                        }
+
+                        if (!dr["AttendCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AttendCount = Convert.ToInt32(dr["AttendCount"]);
+                        }
+
+                        if (!dr["OnLeaveCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.OnLeaveCount = Convert.ToInt32(dr["OnLeaveCount"]);
+                        }
+
+                        if (!dr["TotalAttendanceIssue"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.TotalAttendanceIssue= Convert.ToInt32(dr["TotalAttendanceIssue"]);
+                        }
+
+                        if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AttendanceCardStatus = dr["AttendanceCardStatus"].ToString();
+                        }
+
+                        attendanceCardList.Add(attendanceCardModel);
+
+                    }
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return attendanceCardList;
+        }
+
+        public List<AttendanceCardModel> GetAttendanceCardByAttendanceCardStatusAndMonth( string attendanceMonth, string attendanceCardStatus)
+        {
+            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
+            AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
+
+            string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
+            sql += " " + $@"AC.NRIC, U.UserName,";
+            sql += " " + $@"LateInCount, EarlyOutCount,";
+            sql += " " + $@"LateInEarlyOutCount, IncompleteCount,";
+            sql += " " + $@"AbsentCount, AttendCount,";
+            sql += " " + $@"OnLeaveCount, TotalAttendanceIssue,";
+            sql += " " + $@"AttendanceCardStatus AC";
+            sql += " " + $@"LEFT JOIN [User] U ON U.NRIC=AC.NRIC";
+            sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID=U.DepartmentID";
+            sql += " " + $@"FROM AttendanceCard";
+            sql += " " + $@"WHERE AttendanceMonth='{attendanceMonth}'";
+            sql += " " + $@"AND AttendanceCardStatus='{attendanceCardStatus}'";
+            sql += " " + $@"ORDER BY AttendanceMonth, DepartmentName, UserName";
+
+
+            try
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+
+                    while (dr.Read())
+                    {
+                        attendanceCardModel = new AttendanceCardModel();
+                                                                       
+
+                        if (!dr["AttendanceMonth"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AttendanceMonth = dr["AttendanceMonth"].ToString();
+                        }
+
+                        if (!dr["DepartmentName"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.DepartmentName = dr["DepartmentName"].ToString();
+                        }
+
+                        if (!dr["UserName"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.UserName = dr["UserName"].ToString();
+                        }
+
+                        if (!dr["NRIC"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.NRIC = dr["NRIC"].ToString();
+                        }
+
+                        if (!dr["LateInCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.LateInCount = Convert.ToInt32(dr["LateInCount"]);
+                        }
+
+                        if (!dr["EarlyOutCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.EarlyOutCount = Convert.ToInt32(dr["EarlyOutCount"]);
+                        }
+
+                        if (!dr["LateInEarlyOutCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.LateInEarlyOutCount = Convert.ToInt32(dr["LateInEarlyOutCount"]);
+                        }
+
+                        if (!dr["IncompleteCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.IncompleteCount = Convert.ToInt32(dr["IncompleteCount"]);
+                        }
+
+                        if (!dr["AbsentCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AbsentCount = Convert.ToInt32(dr["AbsentCount"]);
+                        }
+
+                        if (!dr["AttendCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.AttendCount = Convert.ToInt32(dr["AttendCount"]);
+                        }
+
+                        if (!dr["OnLeaveCount"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.OnLeaveCount = Convert.ToInt32(dr["OnLeaveCount"]);
+                        }
+
+                        if (!dr["TotalAttendanceIssue"].Equals(DBNull.Value))
+                        {
+                            attendanceCardModel.TotalAttendanceIssue = Convert.ToInt32(dr["TotalAttendanceIssue"]);
                         }
 
                         if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))

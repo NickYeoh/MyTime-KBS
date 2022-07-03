@@ -1074,4 +1074,31 @@
   <data name="MessageSessionExpired" xml:space="preserve">
     <value>Your session has expired (no activity in {0} minutes). Please login again</value>
   </data>
+  <data name="AttendanceCardReport" xml:space="preserve">
+    <value>Attendance Card Report</value>
+  </data>
+  <data name="AbsentCount" xml:space="preserve">
+    <value>Absent</value>
+  </data>
+  <data name="AttendCount" xml:space="preserve">
+    <value>Attend</value>
+  </data>
+  <data name="EarlyOutCount" xml:space="preserve">
+    <value>Early Out</value>
+  </data>
+  <data name="IncompleteCount" xml:space="preserve">
+    <value>Incomplete</value>
+  </data>
+  <data name="LateInCount" xml:space="preserve">
+    <value>LateIn</value>
+  </data>
+  <data name="LateInEarlyOutCount" xml:space="preserve">
+    <value>Late In / Early Out</value>
+  </data>
+  <data name="OnLeaveCount" xml:space="preserve">
+    <value>On Leave</value>
+  </data>
+  <data name="TotalAttendanceIssue" xml:space="preserve">
+    <value>Total</value>
+  </data>
 </root>
