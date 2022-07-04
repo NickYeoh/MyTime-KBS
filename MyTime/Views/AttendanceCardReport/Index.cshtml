@@ -73,39 +73,18 @@
 
                         <div class="form-group row text-left">
                             <div class="col-md-auto">
-                                <input type="checkbox" id="chkLateIn" checked="checked">
-                                @Html.Label(MyTime.Resource.LateIn, htmlAttributes: new { @class = "control-label" })
-                            </div>
+                                <div>
+                                    @Html.Label(MyTime.Resource.AttendanceCardStatus, htmlAttributes: new { @class = "control-label required" })
+                                    <span class="pl-4"></span>
+                                    <input type="radio" class="form-check-input" name="optAttendanceCardStatus" id="optAttendanceCardStatusYellow" value="YL"><i class="icofont-address-book pr-1" style="color: gold ; font-size:18px;" data-toggle="tooltip" data-placement="top" title="@MyTime.Resource.AttendanceCard"></i>@MyTime.Resource.Colour_Yellow
+                                    <span class="pl-4"></span>
+                                    <input type="radio" class="form-check-input" name="optAttendanceCardStatus" id="optAttendanceCardStatusGreen" value="GN"><i class="icofont-address-book pr-1" style="color: green ; font-size:18px;" data-toggle="tooltip" data-placement="top" title="@MyTime.Resource.AttendanceCard"></i>@MyTime.Resource.Colour_Green
+                                    <span class="pl-4"></span>
+                                    <input type="radio" class="form-check-input" name="optAttendanceCardStatus" id="optAttendanceCardStatusRed" value="RD" checked="checked"><i class="icofont-address-book pr-1" style="color: red ; font-size:18px;" data-toggle="tooltip" data-placement="top" title="@MyTime.Resource.AttendanceCard"></i>@MyTime.Resource.Colour_Red
 
-                            <div class="col-md-auto">
-                                <input type="checkbox" id="chkEarlyOut" checked="checked">
-                                @Html.Label(MyTime.Resource.EarlyOut, htmlAttributes: new { @class = "control-label" })
-                            </div>
-
-                            <div class="col-md-auto">
-                                <input type="checkbox" id="chkLateInEarlyOut" checked="checked">
-                                @Html.Label(MyTime.Resource.LateInEarlyOut, htmlAttributes: new { @class = "control-label" })
-                            </div>
-
-                            <div class="col-md-auto">
-                                <input type="checkbox" id="chkIncomplete" checked="checked">
-                                @Html.Label(MyTime.Resource.Incomplete, htmlAttributes: new { @class = "control-label" })
-                            </div>
-
-                            <div class="col-md-auto">
-                                <input type="checkbox" id="chkAbsent" checked="checked">
-                                @Html.Label(MyTime.Resource.Absent, htmlAttributes: new { @class = "control-label" })
-                            </div>
-
-                            <div class="col-md-auto">
-                                <input type="checkbox" id="chkAttend" checked="checked">
-                                @Html.Label(MyTime.Resource.Attend, htmlAttributes: new { @class = "control-label" })
-                            </div>
-
-                            <div class="col-md-auto">
-                                <input type="checkbox" id="chkOnLeave" checked="checked">
-                                @Html.Label(MyTime.Resource.OnLeave, htmlAttributes: new { @class = "control-label" })
-                            </div>
+                                </div>                               
+                              
+                            </div>                         
 
                         </div>
 
@@ -196,40 +175,11 @@
             $('#btnPrint').prop('disabled', true);
 
             $('#ddlMonthYear').change(function () {
-
-                var monthYear;
-                var department;
-
-                $('#ddlMonthYear option:selected').each(function () {
-
-                    monthYear = $(this)[0].value;
-
-                    if (monthYear != '') {
-                        $('#btnGenerate').prop('disabled', false);
-                    }
-                    else {
-                        $('#btnGenerate').prop('disabled', true);
-                    }
-                });
-
+                ValidateCriterion();
             });
 
             $('#ddlDepartment').change(function () {
-
-                var monthYear;
-
-                $('#ddlDepartment option:selected').each(function () {
-
-                    monthYear = $(this)[0].value;
-
-                    if (monthYear != '') {
-                        $('#btnGenerate').prop('disabled', false);
-                    }
-                    else {
-                        $('#btnGenerate').prop('disabled', true);
-                    }
-                });
-
+                ValidateCriterion();
             });
 
          
@@ -283,7 +233,7 @@
 
             customDatatable = $('#listDatatable').DataTable(
                 {
-                    dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12">>>t<"panel-footer"<"row pt-2"<"col-md-12">>>>',
+                    dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
                     buttons:
                         [
                         ],
@@ -329,7 +279,7 @@
                     { targets: 1, className: 'text-left', width: '350px', orderable: true },
                     { targets: 2, className: 'text-left', width: '250px', orderable: true },
                     { targets: 3, className: 'text-center', width: '150px', orderable: true },
-                    { targets: 4, className: 'text-left', width: '150px', orderable: true },
+                    { targets: 4, className: 'text-left', width: '150px', orderable: true, visible: false },
                     { targets: 5, className: 'text-center', width: '80px', orderable: true },
                     { targets: 6, className: 'text-center', width: '80px', orderable: true},
                     { targets: 7, className: 'text-center', width: '80px', orderable: true },
@@ -345,7 +295,7 @@
 
             $('#btnGenerate').click(function () {
 
-                GenerateAttendanceList();
+                GenerateAttendanceCardList();
 
             });
 
@@ -356,6 +306,11 @@
 
                 $('#ddlMonthYear').prop('disabled', false);
                 $('#ddlDepartment').prop('disabled', false);
+
+                document.getElementById("optAttendanceCardStatusYellow").disabled = false;
+                document.getElementById("optAttendanceCardStatusGreen").disabled = false;
+                document.getElementById("optAttendanceCardStatusRed").disabled = false;
+
                 $('#btnGenerate').prop('disabled', false);
                 $('#btnReset').prop('disabled', true);
                 $('#btnPrint').prop('disabled', true);
@@ -365,10 +320,88 @@
 
     function GenerateAttendanceCardList() {
 
+
+        var ddlMonthYear;
+        var selectedMonthYear;
+
+        var ddlDepartment;
+        var selectedDepartmentID;
+
+        var selectedAttendanceCardStatus;
+
         loadSpinner();
 
-  
+        ddlMonthYear = document.getElementById('ddlMonthYear');
+        selectedMonthYear = ddlMonthYear.value;
+                             
+        ddlDepartment = document.getElementById('ddlDepartment');
+        selectedDepartmentID = ddlDepartment.value;
 
+        selectedAttendanceCardStatus = $("input[type='radio'][name='optAttendanceCardStatus']:checked").val();
+       
+        $.ajax({
+            datatype: 'text/plain',
+            type: 'POST',
+            url: 'AttendanceCardReport/GenerateAttendanceCardList',
+            data: { selectedMonthYear: selectedMonthYear, selectedDepartmentID: selectedDepartmentID, selectedAttendanceCardStatus: selectedAttendanceCardStatus },
+            cache: false,
+            success: function (data) {
+
+                if (data != '') {
+
+                    customDatatable.clear().rows.add(data).draw(false);
+
+                }
+                else {
+                    customDatatable.clear().draw(false);
+                }
+
+                $('#ddlMonthYear').prop('disabled', true);
+                $('#ddlDepartment').prop('disabled', true);
+            
+                document.getElementById("optAttendanceCardStatusYellow").disabled = true;
+                document.getElementById("optAttendanceCardStatusGreen").disabled = true;
+                document.getElementById("optAttendanceCardStatusRed").disabled = true;
+
+                $('#btnGenerate').prop('disabled', true);
+                $('#btnReset').prop('disabled', false);
+                $('#btnPrint').prop('disabled', false);
+
+            }
+        });
+
+        unloadSpinner();
+
+
+    };
+
+    function ValidateCriterion() {
+
+         var ddlMonthYear;
+         var selectedMonthYear;
+
+         var ddlDepartment;
+         var selectedDepartment;
+
+         ddlMonthYear = document.getElementById('ddlMonthYear');
+         selectedMonthYear = ddlMonthYear.value;
+
+         ddlDepartment = document.getElementById('ddlDepartment');
+         selectedDepartment = ddlDepartment.value
+
+         if (selectedMonthYear != '' && selectedDepartment != '') {
+
+             $('#btnGenerate').prop('disabled', false);
+             $('#btnReset').prop('disabled', true);
+             $('#btnPrint').prop('disabled', true);
+
+         }
+         else {
+
+             $('#btnGenerate').prop('disabled', true);
+             $('#btnReset').prop('disabled', true);
+             $('#btnPrint').prop('disabled', true);
+         }
 
     };
 

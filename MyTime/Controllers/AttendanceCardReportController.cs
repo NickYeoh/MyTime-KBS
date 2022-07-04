@@ -19,6 +19,8 @@ namespace MyTime.Controllers
         UserAccessControlDBService userAccessControlDBService = new UserAccessControlDBService();
         ReportAdminDBService reportAdminDBService = new ReportAdminDBService();
         CrystalReportDBService crystalReportDBService = new CrystalReportDBService();
+        AttendanceCardDBService attendanceCardDBService = new AttendanceCardDBService();
+
 
         // GET: AttendanceCardReport
         public ActionResult Index()
@@ -53,6 +55,21 @@ namespace MyTime.Controllers
             }
 
             return View(attendanceCardReportViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult GenerateAttendanceCardList(string selectedMonthYear, string selectedDepartmentID, string selectedAttendanceCardStatus)
+        {
+
+            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
+
+            DateTime attendanceMonth = Convert.ToDateTime(selectedMonthYear);
+
+            attendanceCardList = attendanceCardDBService.GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(attendanceMonth.ToString("yyyyMM"), selectedDepartmentID, selectedAttendanceCardStatus);
+            
+            TempData["AttendanceCardList"] = attendanceCardList;
+
+            return Json(attendanceCardList, JsonRequestBehavior.AllowGet);
         }
 
         private IEnumerable<SelectListItem> PrepareSelectMonthYearList(DateTime attendanceCardStartDate)

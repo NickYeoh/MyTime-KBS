@@ -20,6 +20,8 @@ namespace MyTime.Controllers
         RoleDBService roleDBService = new RoleDBService();
         AccessRoleDBService accessRoleDBService = new AccessRoleDBService();
         ShiftDBService shiftDBService = new ShiftDBService();
+        AttendanceCardDBService attendanceCardDBService = new AttendanceCardDBService();
+
 
         // GET: User
         public ActionResult Index()
@@ -669,7 +671,7 @@ namespace MyTime.Controllers
         public ActionResult GetAttendanceCardData(string nric)
         {
             List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
-            attendanceCardList = userDBService.GetAttendanceCardByID(nric);
+            attendanceCardList = attendanceCardDBService.GetAttendanceCardByID(nric);
             
             return Json(attendanceCardList, JsonRequestBehavior.AllowGet);
         }

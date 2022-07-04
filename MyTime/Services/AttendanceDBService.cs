@@ -25,6 +25,7 @@ namespace MyTime.Services
         DeviceDBService deviceDBService = new DeviceDBService();
         DepartmentDBService departmentDBService = new DepartmentDBService();
         UserDBService userDBService = new UserDBService();
+        AttendanceCardDBService attendanceCardDBService = new AttendanceCardDBService();
 
         public AttendanceSummaryModel GetLatestAttendanceSummary(string NRIC, string usrID)
         {
@@ -163,7 +164,7 @@ namespace MyTime.Services
 
 
                 // Get Attendance Card Status - Warna Kad Kedatangan
-                attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDAndMonth(NRIC, startOn);
+                attendanceCardStatus = attendanceCardDBService.GetMonthlyAttendanceCardStatusByID(NRIC, startOn);
 
                 // Current Date
                 currentDate = DateTime.Now.Date;
@@ -451,7 +452,7 @@ namespace MyTime.Services
                     //userModel = userDBService.GetDataByID(NRIC);
 
                     //// Get Attendance Card Status - Warna Kad Kedatangan
-                    //attendanceCardStatus = userDBService.GetAttendanceCardStatusByIDAndMonth(NRIC, startOn);
+                    //attendanceCardStatus = userDBService.GetMonthlyAttendanceCardStatusByID(NRIC, startOn);
 
                     //isResigned = Convert.ToBoolean(userModel.IsResigned);                 
 

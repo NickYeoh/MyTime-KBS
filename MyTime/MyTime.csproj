@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Services\AccessRoleDBService.cs" />
     <Compile Include="Services\AnnouncementDBService.cs" />
+    <Compile Include="Services\AttendanceCardDBService.cs" />
     <Compile Include="Services\ReasonApprovalDBService.cs" />
     <Compile Include="Services\AttendanceDBService.cs" />
     <Compile Include="Services\CrystalReportDBService.cs" />
