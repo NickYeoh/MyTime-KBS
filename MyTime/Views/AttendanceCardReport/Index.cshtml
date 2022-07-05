@@ -103,7 +103,6 @@
                                     <th>@MyTime.Resource.UserName</th>
                                     <th>@MyTime.Resource.NRIC</th>
                                     <th>@MyTime.Resource.AttendanceCardStatus</th>
-                                    <th>@MyTime.Resource.TotalAttendanceIssue</th>
                                     <th>@MyTime.Resource.LateInCount</th>
                                     <th>@MyTime.Resource.EarlyOutCount</th>
                                     <th>@MyTime.Resource.LateInEarlyOutCount</th>
@@ -111,6 +110,7 @@
                                     <th>@MyTime.Resource.AbsentCount</th>
                                     <th>@MyTime.Resource.AttendCount</th>
                                     <th>@MyTime.Resource.OnLeaveCount</th>
+                                    <th>@MyTime.Resource.TotalAttendanceIssue</th>
 
 
                                 </tr>
@@ -264,15 +264,15 @@
                         { "data": "DepartmentName" },
                         { "data": "UserName" },
                         { "data": "NRIC" },
-                        { "data": "AttendanceCardStatus" },
-                        { "data": "TotalAttendanceIssue" },
+                        { "data": "AttendanceCardStatus" },                      
                         { "data": "LateInCount" },
                         { "data": "EarlyOutCount" },
                         { "data": "LateInEarlyOutCount" },
                         { "data": "IncompleteCount" },
                         { "data": "AbsentCount" },
                         { "data": "AttendCount" },
-                        { "data": "OnLeaveCount" }
+                        { "data": "OnLeaveCount" },
+                        { "data": "TotalAttendanceIssue" }
                                     
                      
                 ],
@@ -281,16 +281,15 @@
                     { targets: 1, className: 'text-left', width: '350px', orderable: true, visible: false  },
                     { targets: 2, className: 'text-left', width: '250px', orderable: true },
                     { targets: 3, className: 'text-center', width: '150px', orderable: true },
-                    { targets: 4, className: 'text-left', width: '150px', orderable: true, visible: false },
-                    { targets: 5, className: 'text-center', width: '80px', orderable: true, visible: false },
-                    { targets: 6, className: 'text-center', width: '80px', orderable: true },
-                    { targets: 7, className: 'text-center', width: '80px', orderable: true},
+                    { targets: 4, className: 'text-left', width: '150px', orderable: true, visible: false },                  
+                    { targets: 5, className: 'text-center', width: '80px', orderable: true },
+                    { targets: 6, className: 'text-center', width: '80px', orderable: true},
+                    { targets: 7, className: 'text-center', width: '80px', orderable: true },
                     { targets: 8, className: 'text-center', width: '80px', orderable: true },
                     { targets: 9, className: 'text-center', width: '80px', orderable: true },
-                    { targets: 10, className: 'text-center', width: '80px', orderable: true },
-                    { targets: 11, className: 'text-center', width: '80px', orderable: true, visible: false  },
-                    { targets: 12, className: 'text-center', width: '80px', orderable: true, visible: false  }
-              
+                    { targets: 10, className: 'text-center', width: '80px', orderable: true, visible: false  },
+                    { targets: 11, className: 'text-center', width: '80px', orderable: true, visible: false },
+                    { targets: 12, className: 'text-center', width: '80px', orderable: true }              
                    
                 ],
                 order: [[1, 'asc'], [2, 'asc']]
