@@ -7,7 +7,9 @@ namespace MyTime.Models
 {
     public class CRAttendanceMonthlyModel
     {
-        // For Crystal Report : Attendance Monthly    
+        // For Crystal Report : Attendance Monthly
+        // 
+        public string AttendanceMonth { get; set; }
                 
         public string NRIC { get; set; }
         public string UserName { get; set; }

@@ -670,7 +670,7 @@ namespace MyTime.Controllers
         [HttpPost]
         public ActionResult GetAttendanceCardData(string nric)
         {
-            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
+            List<AttendanceCardReportModel> attendanceCardList = new List<AttendanceCardReportModel>();
             attendanceCardList = attendanceCardDBService.GetAttendanceCardByID(nric);
             
             return Json(attendanceCardList, JsonRequestBehavior.AllowGet);

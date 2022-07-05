@@ -16,10 +16,10 @@ namespace MyTime.Services
         private readonly SqlConnection conn = new SqlConnection(connStr);
 
 
-        public List<AttendanceCardModel> GetAttendanceCardByID(string ID)
+        public List<AttendanceCardReportModel> GetAttendanceCardByID(string ID)
         {
-            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
-            AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
+            List<AttendanceCardReportModel> attendanceCardList = new List<AttendanceCardReportModel>();
+            AttendanceCardReportModel attendanceCardModel = new AttendanceCardReportModel();
 
             string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
             sql += " " + $@"AC.NRIC, U.UserName,";
@@ -48,7 +48,7 @@ namespace MyTime.Services
 
                     while (dr.Read())
                     {
-                        attendanceCardModel = new AttendanceCardModel();
+                        attendanceCardModel = new AttendanceCardReportModel();
 
                         if (!dr["AttendanceMonth"].Equals(DBNull.Value))
                         {
@@ -197,10 +197,10 @@ namespace MyTime.Services
         }
 
 
-        public List<AttendanceCardModel> GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(string attendanceMonth, string departmentID, string attendanceCardStatus)
+        public List<AttendanceCardReportModel> GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(string attendanceMonth, string departmentID, string attendanceCardStatus)
         {
-            List<AttendanceCardModel> attendanceCardList = new List<AttendanceCardModel>();
-            AttendanceCardModel attendanceCardModel = new AttendanceCardModel();
+            List<AttendanceCardReportModel> attendanceCardList = new List<AttendanceCardReportModel>();
+            AttendanceCardReportModel attendanceCardModel = new AttendanceCardReportModel();
 
 
             string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
@@ -232,7 +232,7 @@ namespace MyTime.Services
 
                     while (dr.Read())
                     {
-                        attendanceCardModel = new AttendanceCardModel();
+                        attendanceCardModel = new AttendanceCardReportModel();
 
 
                         if (!dr["AttendanceMonth"].Equals(DBNull.Value))

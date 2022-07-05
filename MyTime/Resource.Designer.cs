@@ -2653,7 +2653,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total.
+        ///   Looks up a localized string similar to Total Attendance Issue.
         /// </summary>
         public static string TotalAttendanceIssue {
             get {

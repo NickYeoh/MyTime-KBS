@@ -463,5 +463,59 @@ namespace MyTime.Services
             return cRDepartmentUserCountList;
 
         }
+
+        // 2022-07-05 : For Attendance Card Report (Monthly)
+
+        public List<CRAttendanceCardReportModel> PrepareAttendanceCardReport(List<AttendanceCardReportModel> attendanceCardReportList)
+        {
+            List<CRAttendanceCardReportModel> crAttendanceCardReportList = new List<CRAttendanceCardReportModel>();
+            CRAttendanceCardReportModel crAttendanceCardReportModel;
+
+            int rowCount = attendanceCardReportList.Count;
+            int rowNo = 0;
+
+            foreach (var row in attendanceCardReportList)
+            {
+                rowNo += 1;
+
+                crAttendanceCardReportModel = new CRAttendanceCardReportModel();
+
+                crAttendanceCardReportModel.AttendanceMonth = row.AttendanceMonth;
+                crAttendanceCardReportModel.NRIC = row.NRIC;
+                crAttendanceCardReportModel.UserName = row.UserName;
+                crAttendanceCardReportModel.DepartmentName = row.DepartmentName;
+                crAttendanceCardReportModel.AttendanceCardStatus = row.AttendanceCardStatus;
+                crAttendanceCardReportModel.TotalAttendanceIssue = row.TotalAttendanceIssue;
+
+                crAttendanceCardReportModel.LateInCount = row.LateInCount;
+                crAttendanceCardReportModel.EarlyOutCount = row.EarlyOutCount;
+                crAttendanceCardReportModel.LateInEarlyOutCount = row.LateInEarlyOutCount;
+                crAttendanceCardReportModel.IncompleteCount = row.IncompleteCount;
+                crAttendanceCardReportModel.AbsentCount = row.AbsentCount;
+
+                crAttendanceCardReportModel.AttendCount = row.AttendCount;
+                crAttendanceCardReportModel.OnLeaveCount = row.OnLeaveCount;
+
+                crAttendanceCardReportModel.ReportType = "Monthly";
+                //crAttendanceMonthlyModel.ReportDate = row.AttendanceDate.ToString("MMM, yyyy");
+
+                if (rowNo < rowCount)
+                {
+                    crAttendanceCardReportModel.SetPageBreak = false;
+                }
+                else
+                {
+                    crAttendanceCardReportModel.SetPageBreak = true;
+                }
+
+                crAttendanceCardReportList.Add(crAttendanceCardReportModel);
+
+
+
+            }
+
+            return crAttendanceCardReportList;
+
+        }
     }
 }

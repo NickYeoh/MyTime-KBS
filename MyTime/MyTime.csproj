@@ -182,10 +182,11 @@
     <Compile Include="Models\AccessRoleModel.cs" />
     <Compile Include="Models\AnnouncementModel.cs" />
     <Compile Include="Models\AttendanceAnalysisModel.cs" />
-    <Compile Include="Models\AttendanceCardModel.cs" />
+    <Compile Include="Models\AttendanceCardReportModel.cs" />
     <Compile Include="Models\AttendanceStatisticsModel.cs" />
     <Compile Include="Models\AttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceAnalysisModel.cs" />
+    <Compile Include="Models\CRAttendanceCardReportModel.cs" />
     <Compile Include="Models\CRAttendanceDailyModel.cs" />
     <Compile Include="Models\CRAttendanceStatisticsModel.cs" />
     <Compile Include="Models\CRAttendanceSummaryReportModel.cs" />
@@ -849,6 +850,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Function.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Reports\AttendanceCardCR.rpt" />
     <EmbeddedResource Include="Resource.ms-MY.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.ms-MY.Designer.cs</LastGenOutput>
