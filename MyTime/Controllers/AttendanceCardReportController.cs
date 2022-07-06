@@ -65,7 +65,7 @@ namespace MyTime.Controllers
 
             DateTime attendanceMonth = Convert.ToDateTime(selectedMonthYear);
 
-            attendanceCardReportList = attendanceCardDBService.GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(attendanceMonth.ToString("yyyyMM"), selectedDepartmentID, selectedAttendanceCardStatus);
+            attendanceCardReportList = attendanceCardDBService.GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(attendanceMonth, selectedDepartmentID, selectedAttendanceCardStatus);
             
             TempData["AttendanceCardReportList"] = attendanceCardReportList;
 
@@ -127,8 +127,9 @@ namespace MyTime.Controllers
                 List<AttendanceCardReportModel> AttendanceCardReportList = new List<AttendanceCardReportModel>();
                 List<CRAttendanceCardReportModel> crAttendanceCardReportList = new List<CRAttendanceCardReportModel>();
 
-                string reportType;
+                //string reportType;
 
+                //reportType = "Monthly";
                 AttendanceCardReportList = TempData["AttendanceCardReportList"] as List<AttendanceCardReportModel>;
                
                 //reportType = TempData["ReportType"] as string;

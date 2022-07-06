@@ -197,7 +197,7 @@ namespace MyTime.Services
         }
 
 
-        public List<AttendanceCardReportModel> GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(string attendanceMonth, string departmentID, string attendanceCardStatus)
+        public List<AttendanceCardReportModel> GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(DateTime attendanceMonth, string departmentID, string attendanceCardStatus)
         {
             List<AttendanceCardReportModel> attendanceCardList = new List<AttendanceCardReportModel>();
             AttendanceCardReportModel attendanceCardModel = new AttendanceCardReportModel();
@@ -213,7 +213,7 @@ namespace MyTime.Services
             sql += " " + $@"FROM AttendanceCard AC";
             sql += " " + $@"LEFT JOIN [User] U ON U.NRIC=AC.NRIC";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID=U.DepartmentID";           
-            sql += " " + $@"WHERE AttendanceMonth='{attendanceMonth}'";
+            sql += " " + $@"WHERE AttendanceMonth='{attendanceMonth.ToString("yyyyMM")}'";
             sql += " " + $@"AND AttendanceCardStatus='{attendanceCardStatus}'";
             sql += " " + $@"AND U.DepartmentID='{departmentID}'";
             sql += " " + $@"ORDER BY AttendanceMonth, DepartmentName, UserName";
@@ -237,7 +237,8 @@ namespace MyTime.Services
 
                         if (!dr["AttendanceMonth"].Equals(DBNull.Value))
                         {
-                            attendanceCardModel.AttendanceMonth = dr["AttendanceMonth"].ToString();
+                            //attendanceCardModel.AttendanceMonth = dr["AttendanceMonth"].ToString();
+                            attendanceCardModel.AttendanceMonth = attendanceMonth.ToString("MMM, yyyy");
                         }
 
                         if (!dr["DepartmentName"].Equals(DBNull.Value))
