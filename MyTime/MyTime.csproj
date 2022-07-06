@@ -146,6 +146,7 @@
     <Compile Include="Controllers\ApproverController.cs" />
     <Compile Include="Controllers\AttendanceAnalysisController.cs" />
     <Compile Include="Controllers\AttendanceCardReportController.cs" />
+    <Compile Include="Controllers\AttendanceCardSummaryReportController.cs" />
     <Compile Include="Controllers\AttendanceReportController.cs" />
     <Compile Include="Controllers\AttendanceStatisticsController.cs" />
     <Compile Include="Controllers\AttendanceSummaryReportController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Models\AnnouncementModel.cs" />
     <Compile Include="Models\AttendanceAnalysisModel.cs" />
     <Compile Include="Models\AttendanceCardReportModel.cs" />
+    <Compile Include="Models\AttendanceCardSummaryReportModel.cs" />
     <Compile Include="Models\AttendanceStatisticsModel.cs" />
     <Compile Include="Models\AttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceAnalysisModel.cs" />
@@ -834,6 +836,7 @@
     <Content Include="Views\User\_ListDeviceUser.cshtml" />
     <Content Include="Views\User\_ListAttendanceCard.cshtml" />
     <Content Include="Views\AttendanceCardReport\Index.cshtml" />
+    <Content Include="Views\AttendanceCardSummaryReport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

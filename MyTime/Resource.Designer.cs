@@ -304,6 +304,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apr.
+        /// </summary>
+        public static string Apr {
+            get {
+                return ResourceManager.GetString("Apr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assign.
         /// </summary>
         public static string Assign {
@@ -565,6 +574,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string AttendanceYear {
+            get {
+                return ResourceManager.GetString("AttendanceYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attend.
         /// </summary>
         public static string AttendCount {
@@ -579,6 +597,15 @@ namespace MyTime {
         public static string AttendPercentage {
             get {
                 return ResourceManager.GetString("AttendPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aug.
+        /// </summary>
+        public static string Aug {
+            get {
+                return ResourceManager.GetString("Aug", resourceCulture);
             }
         }
         
@@ -768,6 +795,15 @@ namespace MyTime {
         public static string Day_Wed {
             get {
                 return ResourceManager.GetString("Day.Wed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dec.
+        /// </summary>
+        public static string Dec {
+            get {
+                return ResourceManager.GetString("Dec", resourceCulture);
             }
         }
         
@@ -1069,6 +1105,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feb.
+        /// </summary>
+        public static string Feb {
+            get {
+                return ResourceManager.GetString("Feb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Female.
         /// </summary>
         public static string Female {
@@ -1357,6 +1402,33 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jan.
+        /// </summary>
+        public static string Jan {
+            get {
+                return ResourceManager.GetString("Jan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jul.
+        /// </summary>
+        public static string Jul {
+            get {
+                return ResourceManager.GetString("Jul", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jun.
+        /// </summary>
+        public static string Jun {
+            get {
+                return ResourceManager.GetString("Jun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -1456,6 +1528,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mar.
+        /// </summary>
+        public static string Mar {
+            get {
+                return ResourceManager.GetString("Mar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum File Size has exceeded .
         /// </summary>
         public static string MaxFileSizeExceeded {
@@ -1470,6 +1551,15 @@ namespace MyTime {
         public static string MaxLenExceeded {
             get {
                 return ResourceManager.GetString("MaxLenExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May.
+        /// </summary>
+        public static string May {
+            get {
+                return ResourceManager.GetString("May", resourceCulture);
             }
         }
         
@@ -1753,6 +1843,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nov.
+        /// </summary>
+        public static string Nov {
+            get {
+                return ResourceManager.GetString("Nov", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NRIC.
         /// </summary>
         public static string NRIC {
@@ -1776,6 +1875,15 @@ namespace MyTime {
         public static string NumberOfDay {
             get {
                 return ResourceManager.GetString("NumberOfDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oct.
+        /// </summary>
+        public static string Oct {
+            get {
+                return ResourceManager.GetString("Oct", resourceCulture);
             }
         }
         
@@ -2388,6 +2496,15 @@ namespace MyTime {
         public static string SelectUser {
             get {
                 return ResourceManager.GetString("SelectUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sep.
+        /// </summary>
+        public static string Sep {
+            get {
+                return ResourceManager.GetString("Sep", resourceCulture);
             }
         }
         
