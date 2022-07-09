@@ -189,6 +189,7 @@
     <Compile Include="Models\AttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceAnalysisModel.cs" />
     <Compile Include="Models\CRAttendanceCardReportModel.cs" />
+    <Compile Include="Models\CRAttendanceCardSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceDailyModel.cs" />
     <Compile Include="Models\CRAttendanceStatisticsModel.cs" />
     <Compile Include="Models\CRAttendanceSummaryReportModel.cs" />

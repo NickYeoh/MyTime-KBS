@@ -470,12 +470,13 @@ namespace MyTime.Services
                                 attendanceCardSummaryReportModel.DepartmentName = attendanceCardModel.DepartmentName;
                                 attendanceCardSummaryReportModel.UserName = attendanceCardModel.UserName;
                             }
+
+
                             //else
                             //{
                             //    attendanceCardSummaryReportModel.DepartmentName = "";
                             //    attendanceCardSummaryReportModel.UserName = "";
-                            //}
-                                                     
+                            //}                                                     
 
                             switch(i)
                             {
@@ -623,18 +624,11 @@ namespace MyTime.Services
                                         attendanceCardSummaryReportModel.TotalAttendanceIssue12 = 0;
                                     }
                                     break;
-                            }
-                              
+                            }                             
 
                         }
 
                         attendanceCardList.Add(attendanceCardSummaryReportModel);
-
-
-
-
-
-
 
                     }
 

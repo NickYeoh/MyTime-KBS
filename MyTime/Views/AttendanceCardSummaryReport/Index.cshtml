@@ -86,40 +86,40 @@
                                     <th>@MyTime.Resource.NRIC</th>
 
                                     <th>@MyTime.Resource.Month01</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month02</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month03</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month04</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month05</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month06</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month07</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month08</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month09</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month10</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month11</th>
-                                    <th></th>
+                                    <th>X</th>
 
                                     <th>@MyTime.Resource.Month12</th>
-                                    <th></th>
+                                    <th>X</th>
                                 </tr>
                             </thead>
                         </table>
@@ -157,7 +157,7 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*@Scripts.Render("~/bundles/custom-js")*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
 
         <!--var customDatatable;
@@ -271,61 +271,229 @@
                         { "data": "DepartmentName" },
                         { "data": "UserName" },
                         { "data": "NRIC" },
-                        { "data": "AttendanceCardStatus01" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus01) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue01" },
-                        { "data": "AttendanceCardStatus02" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus02) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue02" },
-                        { "data": "AttendanceCardStatus03" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus03) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue03" },
-                        { "data": "AttendanceCardStatus04" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus04) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue04" },
-                        { "data": "AttendanceCardStatus05" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus05) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue05" },
-                        { "data": "AttendanceCardStatus06" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus06) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue06" },
-                        { "data": "AttendanceCardStatus07" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus07) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue07" },
-                        { "data": "AttendanceCardStatus08" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus08) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue08" },
-                        { "data": "AttendanceCardStatus09" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus09) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue09" },
-                        { "data": "AttendanceCardStatus10" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus10) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue10" },
-                        { "data": "AttendanceCardStatus11" },
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus11) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
                         { "data": "TotalAttendanceIssue11" },
-                        { "data": "AttendanceCardStatus12" },
-                        { "data": "TotalAttendanceIssue12" }                     
+                        {
+                            "render": function (data, type, row) {
+
+                                switch (row.AttendanceCardStatus12) {
+                                    case 'YL':
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                    case 'GN':
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                    case 'RD':
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                    default:
+                                        return "";
+                                }
+                            }
+                        },
+                        { "data": "TotalAttendanceIssue12" }
 
                 ],
                     columnDefs: [
                         { targets: 0, className: 'text-center', width: '40px', orderable: true, visible: false },
                         { targets: 1, className: 'text-left', width: '350px', orderable: true, visible: false },
                         { targets: 2, className: 'text-left', width: '250px', orderable: true },
-                        { targets: 3, className: 'text-center', width: '150px', orderable: true },                        
+                        { targets: 3, className: 'text-center', width: '150px', orderable: true },
                         { targets: 4, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 5, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 5, className: 'text-center', width: '20px', orderable: true},
                         { targets: 6, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 7, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 7, className: 'text-center', width: '20px', orderable: true},
                         { targets: 8, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 9, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 9, className: 'text-center', width: '20px', orderable: true},
                         { targets: 10, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 11, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 11, className: 'text-center', width: '20px', orderable: true},
                         { targets: 12, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 13, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 13, className: 'text-center', width: '20px', orderable: true },
                         { targets: 14, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 15, className: 'text-center', width: '60px', orderable: true, visible: false},
+                        { targets: 15, className: 'text-center', width: '20px', orderable: true},
                         { targets: 16, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 17, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 17, className: 'text-center', width: '20px', orderable: true },
                         { targets: 18, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 19, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 19, className: 'text-center', width: '20px', orderable: true },
                         { targets: 20, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 21, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 21, className: 'text-center', width: '20px', orderable: true },
                         { targets: 22, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 23, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 23, className: 'text-center', width: '20px', orderable: true},
                         { targets: 24, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 25, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 25, className: 'text-center', width: '20px', orderable: true},
                         { targets: 26, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 27, className: 'text-center', width: '60px', orderable: true, visible: false }
+                        { targets: 27, className: 'text-center', width: '20px', orderable: true}
 
                 ],
                 order: [[1, 'asc'], [2, 'asc']]
@@ -478,7 +646,7 @@
             };
 
 
-    </script>
+</script>
 }
 
 

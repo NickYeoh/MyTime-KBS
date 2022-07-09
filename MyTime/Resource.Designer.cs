@@ -439,6 +439,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Isu.
+        /// </summary>
+        public static string AttendanceIssue {
+            get {
+                return ResourceManager.GetString("AttendanceIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month.
         /// </summary>
         public static string AttendanceMonth {
