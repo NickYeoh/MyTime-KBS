@@ -263,6 +263,12 @@
                                 </li>
 
                                 <li>
+                                    <a href="#" id="linkAttendanceCardSummaryReport">
+                                        @MyTime.Resource.AttendanceCardSummaryReport
+                                    </a>
+                                </li>
+
+                                <li>
                                     <a href="#" id="linkDepartmentAttendanceDailySummary">
                                         @MyTime.Resource.DepartmentAttendanceDailySummary
                                     </a>
@@ -513,6 +519,11 @@
 
             $('#linkAttendanceCardReport').on('click', function () {
                       window.location.href = '@Url.Action("Index", "AttendanceCardReport")';
+                      return false;
+            });
+
+            $('#linkAttendanceCardSummaryReport').on('click', function () {
+                      window.location.href = '@Url.Action("Index", "AttendanceCardSummaryReport")';
                       return false;
             });
 

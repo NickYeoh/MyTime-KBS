@@ -1101,4 +1101,43 @@
   <data name="TotalAttendanceIssue" xml:space="preserve">
     <value>Jumlah</value>
   </data>
+  <data name="AttendanceCardSummaryReport" xml:space="preserve">
+    <value>Rumusan Laporan Kad Kedatangan</value>
+  </data>
+  <data name="Month01" xml:space="preserve">
+    <value>Jan</value>
+  </data>
+  <data name="Month02" xml:space="preserve">
+    <value>Feb</value>
+  </data>
+  <data name="Month03" xml:space="preserve">
+    <value>Mar</value>
+  </data>
+  <data name="Month04" xml:space="preserve">
+    <value>Apr</value>
+  </data>
+  <data name="Month05" xml:space="preserve">
+    <value>Mei</value>
+  </data>
+  <data name="Month06" xml:space="preserve">
+    <value>Jun</value>
+  </data>
+  <data name="Month07" xml:space="preserve">
+    <value>Jul</value>
+  </data>
+  <data name="Month08" xml:space="preserve">
+    <value>Ogo</value>
+  </data>
+  <data name="Month09" xml:space="preserve">
+    <value>Sep</value>
+  </data>
+  <data name="Month10" xml:space="preserve">
+    <value>Okt</value>
+  </data>
+  <data name="Month11" xml:space="preserve">
+    <value>Nov</value>
+  </data>
+  <data name="Month12" xml:space="preserve">
+    <value>Dis</value>
+  </data>
 </root>

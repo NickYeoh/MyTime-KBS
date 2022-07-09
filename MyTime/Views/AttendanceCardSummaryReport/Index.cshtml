@@ -1,7 +1,487 @@
-﻿
+﻿@model MyTime.ViewModels.AttendanceCardSummaryReportViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = MyTime.Resource.AttendanceCardReport;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
-<h2>Index</h2>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div id="divList" class="col-md-12">
+
+            <div class="card shadow">
+                <div class="card-header bg-transparent text-center">
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group row text-center">
+                            <div class="col-md-12">
+                                <h6>@MyTime.Resource.AttendanceCardSummaryReport</h6>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group row text-left">
+                            <div class="col-md-auto">
+                                <div>
+                                    @Html.Label(MyTime.Resource.Year, htmlAttributes: new { @class = "control-label required" })
+                                </div>
+
+                                <div>
+                                    @Html.DropDownList("Year", Model.SelectListYear as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @style = "width:100px;", @class = "form-control", @id = "ddlYear" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-auto">
+                                <div>
+                                    @Html.Label(MyTime.Resource.DepartmentName, htmlAttributes: new { @class = "control-label required" })
+                                </div>
+                                <div class="row D-flex align-items-start pl-3">
+                                    <div class="pb-2">
+                                        @Html.DropDownList("Department", Model.SelectListDepartment as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { @style = "width:300px;", @class = "form-control", @id = "ddlDepartment" })
+                                    </div>
+                                    <div>
+                                        <span class="pl-2"></span>
+                                        <input id="btnGenerate" type="button" value="@MyTime.Resource.Generate" class="btn btn-primary text-center" style="min-width:80px;" />
+                                        <span class="pl-1"></span>
+                                        <input id="btnReset" type="button" value="@MyTime.Resource.Reset" class="btn btn-warning text-center" style="min-width: 80px;" />
+                                        <span class="pl-1"></span>
+                                        <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="min-width: 80px;" onclick="location.href='@Url.Action("PrintAttendanceCardReport", "AttendanceCardReport" )'" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <hr />
+
+                    <div class="card-body pt-0">
+
+                        <table id="listDatatable" class="table table-striped hover" style="table-layout: fixed;">
+                            <thead>
+
+                                <tr class="text-white header-bg-color">
+                                    <th>@MyTime.Resource.Year</th>
+                                    <th>@MyTime.Resource.DepartmentName</th>
+                                    <th>@MyTime.Resource.UserName</th>
+                                    <th>@MyTime.Resource.NRIC</th>
+
+                                    <th>@MyTime.Resource.Month01</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month02</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month03</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month04</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month05</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month06</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month07</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month08</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month09</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month10</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month11</th>
+                                    <th></th>
+
+                                    <th>@MyTime.Resource.Month12</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modalCRUD" role="dialog" data-backdrop="static" keyboard="false">
+            <div class="modal-dialog">
+                <div id="divCRUD">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <input type=hidden id="pid" value="" />
+</div>
+
+@section styles
+                                    {
+    @Styles.Render("~/Content/dataTables")
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @Scripts.Render("~/bundles/dataTables")
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@Scripts.Render("~/bundles/custom-js")*@
+
+    <script type="text/javascript">
+
+
+        <!--var customDatatable;
+        var dataList;
+
+        function convertToDate(data) {
+
+                var dte = new Date(parseInt(data.substr(6)));
+                var dteWrapper = moment(dte);
+                return dteWrapper.format("DD/MM/YYYY");
+        };
+
+    $(document).ready(function () {
+
+            setInactivityTime();
+
+            //toggleSidebar();
+            unloadSpinner();
+            showDivBody();
+
+            $('#btnGenerate').prop('disabled', true);
+            $('#btnReset').prop('disabled', true);
+            $('#btnPrint').prop('disabled', true);
+
+            $('#ddlYear').change(function () {
+                ValidateCriterion();
+            });
+
+            $('#ddlDepartment').change(function () {
+                ValidateCriterion();
+            });
+
+
+            var culture = '@System.Globalization.CultureInfo.CurrentCulture.Name';
+
+            var locale_norecord = '';
+            var locale_lengthmenu = '';
+            var locale_info = '';
+            var locale_search = '';
+            var locale_first = '';
+            var locale_previous = '';
+            var locale_next = '';
+            var locale_last = '';
+            var locale_infofiltered = '';
+
+            if (culture != 'ms-MY') {
+                //locale_norecord = '- No record -';
+                locale_norecord = '-';
+                locale_lengthmenu = 'Display _MENU_';
+                //locale_info = 'Showing page _PAGE_ of _PAGES_';
+                locale_info = 'Record# _START_~_END_  of _TOTAL_';
+                locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'First';
+                locale_previous = 'Previous';
+                locale_next = 'Next';
+                locale_last = 'Last';
+            }
+            else {
+                //locale_norecord = '- Tidak ada rekod -';
+                locale_norecord = '-';
+                locale_lengthmenu = 'Paparan _MENU_ ';
+                //locale_info = 'Menunjukkan halaman _PAGE_ dari _PAGES_';
+                locale_info = 'Rekod# _START_~_END_ daripada _TOTAL_';
+                //locale_search = '';
+
+                locale_infofiltered = '';
+
+                locale_first = 'Pertama';
+                locale_previous = 'Sebelumnya';
+                locale_next = 'Seterusnya';
+                locale_last = 'Terakhir';
+
+            };
+
+            //var dataList;
+
+            //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
+
+            customDatatable = $('#listDatatable').DataTable(
+                {
+                    dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
+                    buttons:
+                        [
+                        ],
+                    autoWidth: false,
+                    scrollX: true,
+                    scrollY: true,
+                    pageLength: 31,
+                    //responsive: true,
+                    language: {
+                        "lengthMenu": locale_lengthmenu,
+                        "zeroRecords": locale_norecord,
+                        "info": locale_info,
+                        "infoEmpty": locale_norecord,
+                        "infoFiltered": locale_infofiltered,
+                        "search": locale_search,
+                        "paginate": {
+                            "first": locale_first,
+                            "previous": locale_previous,
+                            "next": locale_next,
+                            "last": locale_last
+                        }
+                    },
+                    data: '',
+                    rowId: 'AttendanceYear',
+                    columns: [
+                        { "data": "AttendanceYear" },
+                        { "data": "DepartmentName" },
+                        { "data": "UserName" },
+                        { "data": "NRIC" },
+                        { "data": "AttendanceCardStatus01" },
+                        { "data": "TotalAttendanceIssue01" },
+                        { "data": "AttendanceCardStatus02" },
+                        { "data": "TotalAttendanceIssue02" },
+                        { "data": "AttendanceCardStatus03" },
+                        { "data": "TotalAttendanceIssue03" },
+                        { "data": "AttendanceCardStatus04" },
+                        { "data": "TotalAttendanceIssue04" },
+                        { "data": "AttendanceCardStatus05" },
+                        { "data": "TotalAttendanceIssue05" },
+                        { "data": "AttendanceCardStatus06" },
+                        { "data": "TotalAttendanceIssue06" },
+                        { "data": "AttendanceCardStatus07" },
+                        { "data": "TotalAttendanceIssue07" },
+                        { "data": "AttendanceCardStatus08" },
+                        { "data": "TotalAttendanceIssue08" },
+                        { "data": "AttendanceCardStatus09" },
+                        { "data": "TotalAttendanceIssue09" },
+                        { "data": "AttendanceCardStatus10" },
+                        { "data": "TotalAttendanceIssue10" },
+                        { "data": "AttendanceCardStatus11" },
+                        { "data": "TotalAttendanceIssue11" },
+                        { "data": "AttendanceCardStatus12" },
+                        { "data": "TotalAttendanceIssue12" }                     
+
+                ],
+                    columnDefs: [
+                        { targets: 0, className: 'text-center', width: '40px', orderable: true, visible: false },
+                        { targets: 1, className: 'text-left', width: '350px', orderable: true, visible: false },
+                        { targets: 2, className: 'text-left', width: '250px', orderable: true },
+                        { targets: 3, className: 'text-center', width: '150px', orderable: true },                        
+                        { targets: 4, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 5, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 6, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 7, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 8, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 9, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 10, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 11, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 12, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 13, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 14, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 15, className: 'text-center', width: '60px', orderable: true, visible: false},
+                        { targets: 16, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 17, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 18, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 19, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 20, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 21, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 22, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 23, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 24, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 25, className: 'text-center', width: '60px', orderable: true, visible: false },
+                        { targets: 26, className: 'text-center', width: '60px', orderable: true },
+                        { targets: 27, className: 'text-center', width: '60px', orderable: true, visible: false }
+
+                ],
+                order: [[1, 'asc'], [2, 'asc']]
+            });
+
+            $('#btnGenerate').click(function () {
+
+                GenerateAttendanceCardList();
+
+            });
+
+        $('#btnReset').click(function () {
+
+                customDatatable.clear().draw();
+
+                $('#ddlYear').prop('disabled', false);
+                $('#ddlDepartment').prop('disabled', false);
+
+                $('#btnGenerate').prop('disabled', false);
+                $('#btnReset').prop('disabled', true);
+                $('#btnPrint').prop('disabled', true);
+            });
+
+    });
+
+    function GenerateAttendanceCardList() {
+
+
+        var ddlYear;
+        var selectedYear;
+
+        var ddlDepartment;
+        var selectedDepartmentID;
+
+        var selectedAttendanceCardStatus;
+
+        loadSpinner();
+
+        ddlYear = document.getElementById('ddlYear');
+        selectedYear = ddlYear.value;
+
+        ddlDepartment = document.getElementById('ddlDepartment');
+        selectedDepartmentID = ddlDepartment.value;
+
+        selectedAttendanceCardStatus = $("input[type='radio'][name='optAttendanceCardStatus']:checked").val();
+
+        $.ajax({
+            datatype: 'text/plain',
+            type: 'POST',
+            url: 'AttendanceCardSummaryReport/GenerateAttendanceCardList',
+            data: { selectedYear: selectedYear, selectedDepartmentID: selectedDepartmentID, selectedAttendanceCardStatus: selectedAttendanceCardStatus },
+            cache: false,
+            success: function (data) {
+
+                if (data != '') {
+
+                    customDatatable.clear().rows.add(data).draw(false);
+
+                }
+                else {
+                    customDatatable.clear().draw(false);
+                }
+
+                $('#ddlYear').prop('disabled', true);
+                $('#ddlDepartment').prop('disabled', true);
+
+                $('#btnGenerate').prop('disabled', true);
+                $('#btnReset').prop('disabled', false);
+                $('#btnPrint').prop('disabled', false);
+
+            }
+        });
+
+        unloadSpinner();
+
+
+    };
+
+    function ValidateCriterion() {
+
+         var ddlYear;
+         var selectedMonthYear;
+
+         var ddlDepartment;
+         var selectedDepartment;
+
+         ddlYear = document.getElementById('ddlYear');
+         selectedMonthYear = ddlYear.value;
+
+         ddlDepartment = document.getElementById('ddlDepartment');
+         selectedDepartment = ddlDepartment.value
+
+         if (selectedMonthYear != '' && selectedDepartment != '') {
+
+             $('#btnGenerate').prop('disabled', false);
+             $('#btnReset').prop('disabled', true);
+             $('#btnPrint').prop('disabled', true);
+
+         }
+         else {
+
+             $('#btnGenerate').prop('disabled', true);
+             $('#btnReset').prop('disabled', true);
+             $('#btnPrint').prop('disabled', true);
+         }
+
+    };
+
+
+
+       let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
+
+    </script>
+}
+
+
+
+
 

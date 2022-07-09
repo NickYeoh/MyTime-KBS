@@ -260,6 +260,7 @@
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\AttendanceAnalysisViewModel.cs" />
     <Compile Include="ViewModels\AttendanceCardReportViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceCardSummaryReportViewModel.cs" />
     <Compile Include="ViewModels\AttendanceReportViewModel.cs" />
     <Compile Include="ViewModels\AttendanceStatisticsViewModel.cs" />
     <Compile Include="ViewModels\AttendanceSummaryReportViewModel.cs" />
