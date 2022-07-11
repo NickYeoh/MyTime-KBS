@@ -61,7 +61,7 @@
                                         <span class="pl-1"></span>
                                         <input id="btnReset" type="button" value="@MyTime.Resource.Reset" class="btn btn-warning text-center" style="min-width: 80px;" />
                                         <span class="pl-1"></span>
-                                        <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="min-width: 80px;" onclick="location.href='@Url.Action("PrintAttendanceCardReport", "AttendanceCardReport" )'" />
+                                        <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="min-width: 80px;" onclick="location.href='@Url.Action("PrintAttendanceCardSummaryReport", "AttendanceCardSummaryReport" )'" />
                                     </div>
                                 </div>
 
@@ -276,11 +276,11 @@
 
                                 switch (row.AttendanceCardStatus01) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue01 ;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu :" + row.TotalAttendanceIssue01 ;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu :" + row.TotalAttendanceIssue01;
                                     default:
                                         return "";
                                 }
@@ -292,11 +292,11 @@
 
                                 switch (row.AttendanceCardStatus02) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue02;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue02;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue02;
                                     default:
                                         return "";
                                 }
@@ -308,11 +308,11 @@
 
                                 switch (row.AttendanceCardStatus03) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue03;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue03;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue03;
                                     default:
                                         return "";
                                 }
@@ -324,11 +324,11 @@
 
                                 switch (row.AttendanceCardStatus04) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue04;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue04;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue04;
                                     default:
                                         return "";
                                 }
@@ -340,11 +340,11 @@
 
                                 switch (row.AttendanceCardStatus05) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue05;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue05;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue05;
                                     default:
                                         return "";
                                 }
@@ -356,11 +356,11 @@
 
                                 switch (row.AttendanceCardStatus06) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue06;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue06;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue06;
                                     default:
                                         return "";
                                 }
@@ -372,11 +372,11 @@
 
                                 switch (row.AttendanceCardStatus07) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue07;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue07;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue07;
                                     default:
                                         return "";
                                 }
@@ -388,11 +388,11 @@
 
                                 switch (row.AttendanceCardStatus08) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue08;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue08;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue08;
                                     default:
                                         return "";
                                 }
@@ -404,11 +404,11 @@
 
                                 switch (row.AttendanceCardStatus09) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue09;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue09;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue09;
                                     default:
                                         return "";
                                 }
@@ -420,11 +420,11 @@
 
                                 switch (row.AttendanceCardStatus10) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue10;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue10;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue10;
                                     default:
                                         return "";
                                 }
@@ -436,11 +436,11 @@
 
                                 switch (row.AttendanceCardStatus11) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue11;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue11;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue11;
                                     default:
                                         return "";
                                 }
@@ -452,11 +452,11 @@
 
                                 switch (row.AttendanceCardStatus12) {
                                     case 'YL':
-                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
+                                        return "<i class='fa fa-square pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow<br/> Isu : " + row.TotalAttendanceIssue12;
                                     case 'GN':
-                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green";
+                                        return "<i class='fa fa-square pr-1' style='color: green ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Green<br/> Isu : " + row.TotalAttendanceIssue12;
                                     case 'RD':
-                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red";
+                                        return "<i class='fa fa-square pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red<br/> Isu : " + row.TotalAttendanceIssue12;
                                     default:
                                         return "";
                                 }
@@ -471,29 +471,29 @@
                         { targets: 2, className: 'text-left', width: '250px', orderable: true },
                         { targets: 3, className: 'text-center', width: '150px', orderable: true },
                         { targets: 4, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 5, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 5, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 6, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 7, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 7, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 8, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 9, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 9, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 10, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 11, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 11, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 12, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 13, className: 'text-center', width: '20px', orderable: true },
+                        { targets: 13, className: 'text-center', width: '20px', orderable: true, visible: false },
                         { targets: 14, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 15, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 15, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 16, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 17, className: 'text-center', width: '20px', orderable: true },
+                        { targets: 17, className: 'text-center', width: '20px', orderable: true, visible: false },
                         { targets: 18, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 19, className: 'text-center', width: '20px', orderable: true },
+                        { targets: 19, className: 'text-center', width: '20px', orderable: true, visible: false },
                         { targets: 20, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 21, className: 'text-center', width: '20px', orderable: true },
+                        { targets: 21, className: 'text-center', width: '20px', orderable: true, visible: false },
                         { targets: 22, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 23, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 23, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 24, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 25, className: 'text-center', width: '20px', orderable: true},
+                        { targets: 25, className: 'text-center', width: '20px', orderable: true, visible: false},
                         { targets: 26, className: 'text-center', width: '60px', orderable: true },
-                        { targets: 27, className: 'text-center', width: '20px', orderable: true}
+                        { targets: 27, className: 'text-center', width: '20px', orderable: true, visible: false}
 
                 ],
                 order: [[1, 'asc'], [2, 'asc']]

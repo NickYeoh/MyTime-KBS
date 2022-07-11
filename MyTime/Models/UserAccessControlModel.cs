@@ -49,7 +49,8 @@ namespace MyTime.Models
         [Display(Name = "ContactUs", ResourceType = typeof(Resource))]
         public bool IsAllowedContactUs { get; set; }
 
-
+        //2022-07-11
+        public bool IsAllowedChangePassword { get; set; }
     }
 
 }

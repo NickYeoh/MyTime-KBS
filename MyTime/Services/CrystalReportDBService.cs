@@ -465,7 +465,6 @@ namespace MyTime.Services
         }
 
         // 2022-07-05 : For Attendance Card Report (Monthly)
-
         public List<CRAttendanceCardReportModel> PrepareAttendanceCardReport(List<AttendanceCardReportModel> attendanceCardReportList)
         {
             List<CRAttendanceCardReportModel> crAttendanceCardReportList = new List<CRAttendanceCardReportModel>();
@@ -517,5 +516,96 @@ namespace MyTime.Services
             return crAttendanceCardReportList;
 
         }
+
+        // 2022-07-05 : For Attendance Card Report (Monthly)
+        public List<CRAttendanceCardSummaryReportModel> PrepareAttendanceCardSummaryReport(List<AttendanceCardSummaryReportModel> attendanceCardSummaryReportList)
+        {
+            List<CRAttendanceCardSummaryReportModel> crAttendanceCardSummaryReportList = new List<CRAttendanceCardSummaryReportModel>();
+            CRAttendanceCardSummaryReportModel crAttendanceCardSummaryReportModel;
+
+            int rowCount = attendanceCardSummaryReportList.Count;
+            int rowNo = 0;
+
+            foreach (var row in attendanceCardSummaryReportList)
+            {
+                rowNo += 1;
+
+                crAttendanceCardSummaryReportModel = new CRAttendanceCardSummaryReportModel();
+
+                crAttendanceCardSummaryReportModel.AttendanceYear = row.AttendanceYear;
+                crAttendanceCardSummaryReportModel.NRIC = row.NRIC;
+                crAttendanceCardSummaryReportModel.UserName = row.UserName;
+                crAttendanceCardSummaryReportModel.DepartmentName = row.DepartmentName;
+
+                // Jan
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus01 = row.AttendanceCardStatus01;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue01= row.TotalAttendanceIssue01;
+
+                // Feb
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus02 = row.AttendanceCardStatus02;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue02 = row.TotalAttendanceIssue02;
+
+                // Mar
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus03 = row.AttendanceCardStatus03;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue03 = row.TotalAttendanceIssue03;
+
+                // Apr
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus04 = row.AttendanceCardStatus04;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue04 = row.TotalAttendanceIssue04;
+
+                // May
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus05 = row.AttendanceCardStatus05;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue05 = row.TotalAttendanceIssue05;
+
+                // Jun
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus06 = row.AttendanceCardStatus06;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue06 = row.TotalAttendanceIssue06;
+
+                // Jul
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus07 = row.AttendanceCardStatus07;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue07 = row.TotalAttendanceIssue07;
+
+                // Aug
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus08 = row.AttendanceCardStatus08;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue08 = row.TotalAttendanceIssue08;
+
+                // Sep
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus09 = row.AttendanceCardStatus09;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue09 = row.TotalAttendanceIssue09;
+
+                // Oct
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus10 = row.AttendanceCardStatus10;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue10 = row.TotalAttendanceIssue10;
+
+                // Nov
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus11 = row.AttendanceCardStatus11;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue11 = row.TotalAttendanceIssue11;
+
+                // Dec
+                crAttendanceCardSummaryReportModel.AttendanceCardStatus12 = row.AttendanceCardStatus12;
+                crAttendanceCardSummaryReportModel.TotalAttendanceIssue12 = row.TotalAttendanceIssue12;
+
+                crAttendanceCardSummaryReportModel.ReportType = "Yearly";
+                //crAttendanceMonthlyModel.ReportDate = row.AttendanceDate.ToString("MMM, yyyy");
+
+                if (rowNo < rowCount)
+                {
+                    crAttendanceCardSummaryReportModel.SetPageBreak = false;
+                }
+                else
+                {
+                    crAttendanceCardSummaryReportModel.SetPageBreak = true;
+                }
+
+                crAttendanceCardSummaryReportList.Add(crAttendanceCardSummaryReportModel);
+
+
+
+            }
+
+            return crAttendanceCardSummaryReportList;
+
+        }
+
     }
 }

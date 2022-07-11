@@ -105,15 +105,70 @@ namespace MyTime.Controllers
         public ActionResult GenerateAttendanceCardList(string selectedYear, string selectedDepartmentID, string selectedAttendanceCardStatus)
         {
 
-            List<AttendanceCardSummaryReportModel> attendanceCardReportList = new List<AttendanceCardSummaryReportModel>();
+            List<AttendanceCardSummaryReportModel> attendanceCardSummaryReportList = new List<AttendanceCardSummaryReportModel>();
 
             DateTime attendanceYear = Convert.ToDateTime(selectedYear);
 
-            attendanceCardReportList = attendanceCardDBService.GetYearlyAttendanceCardByDepartment(attendanceYear, selectedDepartmentID);
+            attendanceCardSummaryReportList = attendanceCardDBService.GetYearlyAttendanceCardByDepartment(attendanceYear, selectedDepartmentID);
 
-            TempData["AttendanceCardReportList"] = attendanceCardReportList;
+            TempData["AttendanceCardSummaryReportList"] = attendanceCardSummaryReportList;
 
-            return Json(attendanceCardReportList, JsonRequestBehavior.AllowGet);
+            return Json(attendanceCardSummaryReportList, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult PrintAttendanceCardSummaryReport()
+        {
+            if (Session["OrganisationName"] != null)
+            {
+
+
+                List<AttendanceCardSummaryReportModel> AttendanceCardSummaryReportList = new List<AttendanceCardSummaryReportModel>();
+                List<CRAttendanceCardSummaryReportModel> crAttendanceCardSummaryReportList = new List<CRAttendanceCardSummaryReportModel>();
+
+                //string reportType;
+
+                //reportType = "Monthly";
+                AttendanceCardSummaryReportList = TempData["AttendanceCardSummaryReportList"] as List<AttendanceCardSummaryReportModel>;
+
+                //reportType = TempData["ReportType"] as string;
+
+                TempData.Keep("AttendanceCardSummaryReportList");
+                //TempData.Keep("ReportType");
+
+                crAttendanceCardSummaryReportList = crystalReportDBService.PrepareAttendanceCardSummaryReport(AttendanceCardSummaryReportList.OrderBy(a => a.UserName).ToList());
+
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceCardSummaryCR.rpt"));
+                report.SetDataSource(crAttendanceCardSummaryReportList);
+
+                string organisationName = Session["OrganisationName"].ToString();
+                string organisationLogo = Session["OrganisationLogo"].ToString();
+                string organisationLogoPath = Path.Combine(Server.MapPath("~/Images"), organisationLogo);
+
+                report.SetParameterValue("Language", System.Globalization.CultureInfo.CurrentCulture.Name.ToString());
+                report.SetParameterValue("OrganisationName", organisationName);
+                report.SetParameterValue("OrganisationLogo", organisationLogoPath);
+
+                Response.Buffer = false;
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+                Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                report.Close();
+                report.Dispose();
+
+                return File(stream, "application/pdf", "Rumusan Laporan Kad Kedatangan.pdf");
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
+
         }
 
     }

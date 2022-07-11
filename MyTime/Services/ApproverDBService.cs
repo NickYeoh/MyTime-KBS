@@ -25,7 +25,7 @@ namespace MyTime.Services
                 // Get User with role can approve reason - AR 
                 string sql = $@"SELECT U.NRIC, U.UserName, U.DepartmentID, D.DepartmentName,";
                 sql += " " + $@"U.UnitID, UT.UnitName, U.RoleID, R.RoleName";
-                sql += " " + $@"FROM [User] U LEFT JOIN Access A ON A.RoleID = U.RoleID";
+                sql += " " + $@"FROM [vwUser] U LEFT JOIN Access A ON A.RoleID = U.RoleID";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON UT.UnitID = U.UnitID";
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
@@ -92,7 +92,7 @@ namespace MyTime.Services
             sql += " " + $@"U.DepartmentID, D.DepartmentName,";
             sql += " " + $@"U.UnitID, UT.UnitName,";
             sql += " " + $@"U.RoleID, R.RoleName";
-            sql += " " + $@"FROM [User] U";
+            sql += " " + $@"FROM [vwUser] U";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
             sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
             sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
@@ -180,7 +180,7 @@ namespace MyTime.Services
             sql += " " + $@"U.UnitID, UT.UnitName,";
             sql += " " + $@"U.RoleID, R.RoleName";
             sql += " " + $@"FROM ApproverUser A";
-            sql += " " + $@"INNER JOIN [User] U ON U.NRIC = A.UserNRIC";
+            sql += " " + $@"INNER JOIN [vwUser] U ON U.NRIC = A.UserNRIC";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
             sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
             sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
@@ -254,7 +254,7 @@ namespace MyTime.Services
             sql += " " + $@"U.UnitID, UT.UnitName,";
             sql += " " + $@"U.RoleID, R.RoleName";
             sql += " " + $@"FROM ApproverUser A";
-            sql += " " + $@"INNER JOIN [User] U ON U.NRIC = A.ApproverNRIC";
+            sql += " " + $@"INNER JOIN [vwUser] U ON U.NRIC = A.ApproverNRIC";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
             sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
             sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
@@ -327,7 +327,7 @@ namespace MyTime.Services
             sql += " " + $@"U.DepartmentID, D.DepartmentName,";
             sql += " " + $@"U.UnitID, UT.UnitName,";
             sql += " " + $@"U.RoleID, R.RoleName";
-            sql += " " + $@"FROM [User] U";            
+            sql += " " + $@"FROM [vwUser] U";            
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
             sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
             sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";

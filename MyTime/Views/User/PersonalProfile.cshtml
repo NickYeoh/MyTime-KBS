@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = MyTime.Resource.PersonalProfile;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
 }
 
 <div id="divForm" class="d-flex justify-content-center">
@@ -28,8 +29,8 @@
             {
                 @Html.AntiForgeryToken()
 
-                @Html.HiddenFor(model => model.UserModel.DepartmentID)
-                @Html.HiddenFor(model => model.UserModel.UnitID)
+                @*@Html.HiddenFor(model => model.UserModel.DepartmentID)
+                @Html.HiddenFor(model => model.UserModel.UnitID)*@
                 @Html.HiddenFor(model => model.UserModel.AccessRoleID)
 
                 @Html.HiddenFor(model => model.UserModel.IsResigned)
@@ -45,7 +46,7 @@
 
 
                     <div class="form-group row">
-                        @Html.LabelFor(model => model.UserModel.UserName, htmlAttributes: new { @class = "control-label col-md-12" })
+                        @Html.LabelFor(model => model.UserModel.UserName, htmlAttributes: new { @class = "control-label col-md-12 required" })
 
                         <div class="col-md-12">
                             @Html.EditorFor(model => model.UserModel.UserName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
@@ -92,20 +93,44 @@
                     </div>
 
 
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.UserModel.DepartmentName, htmlAttributes: new { @class = "control-label col-md-12" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.UserModel.DepartmentName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.UserModel.DepartmentName, "", new { @class = "text-danger" })
+                    @*<div class="form-group row">
+                            @Html.LabelFor(model => model.UserModel.DepartmentName, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.UserModel.DepartmentName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.UserModel.DepartmentName, "", new { @class = "text-danger" })
+                            </div>
                         </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.UserModel.UnitName, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.UserModel.UnitName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.UserModel.UnitName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                    <div class="form-group row">
+
+                        @Html.LabelFor(model => model.UserModel.DepartmentName, htmlAttributes: new { @class = "control-label col-md-12 required" })
+
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.UserModel.DepartmentID, Model.SelectListDepartment as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlDepartment", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserModel.DepartmentID, "", new { @class = "text-danger" })
+                        </div>
+
                     </div>
 
                     <div class="form-group row">
+
                         @Html.LabelFor(model => model.UserModel.UnitName, htmlAttributes: new { @class = "control-label col-md-12" })
+
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.UserModel.UnitName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.UserModel.UnitName, "", new { @class = "text-danger" })
+
+                            @Html.DropDownListFor(model => model.UserModel.UnitID, Model.SelectListUnit as List<SelectListItem>, MyTime.Resource.PleaseSelect, htmlAttributes: new { id = "ddlUnit", @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.UserModel.UnitID, "", new { @class = "text-danger" })
                         </div>
+
                     </div>
 
                     <div class="form-group row">
@@ -160,7 +185,10 @@
                     <div class="form-group row">
                         <div class="col-md-12 text-right">
                             <input type="submit" value="@MyTime.Resource.Save" class="btn btn-primary" />
+
                             <input id="btnCancel" type="button" value="@MyTime.Resource.Cancel" class="btn btn-warning" />
+
+                   
                         </div>
                     </div>
 
@@ -174,10 +202,20 @@
 
 </div>
 
+@if (Model.UserAccessControlModel.IsAllowedChangePassword.Equals(true))
+{
+    <input type=hidden id="pid" value="update" />
+}
+else
+{
+    <input type=hidden id="pid" value="create" />
+}
+
+
 <button type="button" id="btnToggleMessageModal" class="btn btn-primary" style="visibility:hidden;" data-toggle="modal" data-target="#messageModal">
 </button>
 
-<div class="modal fade" id="messageModal" tabindex="-1" role="Dialog">
+<div class="modal fade" id="messageModal" role="dialog">
 
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -199,6 +237,8 @@
 </div>
 
 
+
+
 @section styles {
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
 }
@@ -211,7 +251,7 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*@Scripts.Render("~/bundles/custom-js")*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(document).ready(function () {
 
@@ -221,14 +261,27 @@
             var btn = document.getElementById('btnToggleMessageModal');
             btn.innerText = '2';
 
+          
                 $('#btnCancel').on('click', function () {
-                     history.go(-1);
-                });
 
-              $('#btnCloseMessageModal').on('click', function () {
-                    var url = '@Url.Action("Index","home")';
-                    window.location.href = url;
-              });
+                    if (document.getElementById('pid').value == 'update') {
+                        history.go(-1);
+                    }
+                    else {
+                           window.location.href = '@Url.Action("Index","Auth")';
+                    }
+
+                     return false;
+                 });
+
+              
+
+
+                  $('#btnCloseMessageModal').on('click', function () {
+                        var url = '@Url.Action("Index","home")';
+                      window.location.href = url;
+                      return false;
+                  });
 
 
                   $("#ddlDepartment").change(function () {
@@ -293,7 +346,7 @@
 
         };
 
-    </script>
+</script>
 }
 
 

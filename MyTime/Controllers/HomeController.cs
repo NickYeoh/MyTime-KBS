@@ -70,6 +70,12 @@ namespace MyTime.Controllers
             else
             {
                 userModel = userDBService.GetDataByID(User.Identity.Name);
+
+                if (userModel.DepartmentID == null || userModel.DepartmentID == "")
+                {
+                    return RedirectToAction("PersonalProfile", "User");
+                }
+
                 ViewBag.UserDetail = string.Format("{0} ( {1} )", userModel.UserName, userModel.RoleName);
 
                 homeViewModel.User = userModel;

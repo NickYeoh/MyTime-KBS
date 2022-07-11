@@ -25,7 +25,7 @@ namespace MyTime.Services
 
                 string sql = $@"SELECT U.NRIC, U.UserName, D.DepartmentID, D.DepartmentName,";
                 sql += " " + $@"U.UnitID, UT.UnitName, SS.ShiftID, S.ShiftName, SS.EffectiveOn FROM ShiftSchedule SS";
-                sql += " " + $@"LEFT JOIN [User] U ON U.NRIC = SS.NRIC";
+                sql += " " + $@"LEFT JOIN [vwUser] U ON U.NRIC = SS.NRIC";
                 sql += " " + $@"LEFT JOIN Shift S ON S.ShiftID = SS.ShiftID";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON UT.UnitID = U.UnitID";

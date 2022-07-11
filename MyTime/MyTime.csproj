@@ -225,6 +225,12 @@
     <Compile Include="Models\AuthModel.cs" />
     <Compile Include="Models\UserShiftModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\AttendanceCardSummaryCR.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AttendanceCardSummaryCR.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Resource.ms-MY.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -856,6 +862,10 @@
       <LastGenOutput>Function.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="Reports\AttendanceCardCR.rpt" />
+    <EmbeddedResource Include="Reports\AttendanceCardSummaryCR.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AttendanceCardSummaryCR.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resource.ms-MY.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.ms-MY.Designer.cs</LastGenOutput>

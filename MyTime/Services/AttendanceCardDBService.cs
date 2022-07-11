@@ -29,7 +29,7 @@ namespace MyTime.Services
             sql += " " + $@"AbsentCount, AttendCount,";
             sql += " " + $@"OnLeaveCount, TotalAttendanceIssue,";
             sql += " " + $@"AttendanceCardStatus AC";
-            sql += " " + $@"LEFT JOIN [User] U ON U.NRIC=AC.NRIC";
+            sql += " " + $@"LEFT JOIN [vwUser] U ON U.NRIC=AC.NRIC";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID=U.DepartmentID";
             sql += " " + $@"FROM AttendanceCard";
             sql += " " + $@"WHERE NRIC='{ID}'";
@@ -216,7 +216,7 @@ namespace MyTime.Services
             sql += " " + $@"OnLeaveCount, TotalAttendanceIssue,";
             sql += " " + $@"AttendanceCardStatus";
             sql += " " + $@"FROM AttendanceCard AC";
-            sql += " " + $@"LEFT JOIN [User] U ON U.NRIC=AC.NRIC";
+            sql += " " + $@"LEFT JOIN [vwUser] U ON U.NRIC=AC.NRIC";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID=U.DepartmentID";           
             sql += " " + $@"WHERE AttendanceMonth='{attendanceMonth.ToString("yyyyMM")}'";
             sql += " " + $@"AND AttendanceCardStatus='{attendanceCardStatus}'";
@@ -345,7 +345,7 @@ namespace MyTime.Services
             sql += " " + $@"OnLeaveCount, TotalAttendanceIssue,";
             sql += " " + $@"AttendanceCardStatus";
             sql += " " + $@"FROM AttendanceCard AC";
-            sql += " " + $@"LEFT JOIN [User] U ON U.NRIC=AC.NRIC";
+            sql += " " + $@"LEFT JOIN [vwUser] U ON U.NRIC=AC.NRIC";
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID=U.DepartmentID";
             sql += " " + $@"WHERE SUBSTRING(AttendanceMonth, 1,4) ='{attendanceYear.ToString("yyyy")}'";        
             sql += " " + $@"AND U.DepartmentID='{departmentID}'";
@@ -536,8 +536,8 @@ namespace MyTime.Services
                                     }
                                     else
                                     {
-                                        attendanceCardSummaryReportModel.AttendanceCardStatus06 = "";
-                                        attendanceCardSummaryReportModel.TotalAttendanceIssue06 = 0;
+                                        attendanceCardSummaryReportModel.AttendanceCardStatus05= "";
+                                        attendanceCardSummaryReportModel.TotalAttendanceIssue05 = 0;
                                     }
                                     break;
                                 case 6:

@@ -347,16 +347,27 @@
                                 <a class="nav-link text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background:unset;">
                                     <i class="fa fa-user-circle-o" style="font-size:20px; width:25px;"></i>
                                     @ViewBag.UserDetail
-                                    <i class="fa fa-caret-down"></i>
+
+                                    @if (Model.UserAccessControlModel.IsAllowedChangePassword.Equals(true))
+                                    {
+                                        <i class="fa fa-caret-down"></i>
+                                    }
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" id="divChangePassword" href="#">@MyTime.Resource.ChangePassword</a>
-                                    <a class="dropdown-item" id="divPersonalProfile" href="#">@MyTime.Resource.PersonalProfile</a>
-                                    <a class="dropdown-item" id="divLogout" href="#">@MyTime.Resource.Logout</a>
-                                </div>
+                                @if (Model.UserAccessControlModel.IsAllowedChangePassword.Equals(true))
+                                {
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                            </div>
+
+                                        <a class="dropdown-item" id="divChangePassword" href="#">@MyTime.Resource.ChangePassword</a>
+
+                                       
+                                        <a class="dropdown-item" id="divPersonalProfile" href="#">@MyTime.Resource.PersonalProfile</a>
+                                        <a class="dropdown-item" id="divLogout" href="#">@MyTime.Resource.Logout</a>
+                                    </div>
+                                }
+
+                                </div>
 
                         </div>
                     </nav>

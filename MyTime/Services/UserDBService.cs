@@ -48,7 +48,7 @@ namespace MyTime.Services
 
             try
             {
-                //string sql = $@"SELECT * FROM [User] U LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID LEFT JOIN Unit UT ON U.UnitID = UT.UnitID LEFT JOIN Role R ON R.RoleID= U.RoleID ORDER BY NRIC ASC";
+                //string sql = $@"SELECT * FROM [vwUser] U LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID LEFT JOIN Unit UT ON U.UnitID = UT.UnitID LEFT JOIN Role R ON R.RoleID= U.RoleID ORDER BY NRIC ASC";
 
                 string sql = $@"SELECT U.NRIC, U.USRID, U.UserName, U.Gender,";
                 sql += " " + $@"U.RoleID, R.RoleName,";
@@ -74,7 +74,7 @@ namespace MyTime.Services
                 // 2022-06-25 : Attendance Card Status
                 sql += " " + $@"IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
 
-                sql += " " + $@"FROM [User] U";
+                sql += " " + $@"FROM [vwUser] U";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";
                 sql += " " + $@"LEFT JOIN Role R ON R.RoleID = U.RoleID";
@@ -356,20 +356,33 @@ namespace MyTime.Services
 
                     logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "User", $@"Create; {logData}", DateTime.Now);
 
-                    sql = $@"INSERT INTO ShiftSchedule";
-                    sql += " " + " (NRIC, ShiftID, EffectiveOn)";
-                    sql += " " + "VALUES";
-                    sql += " " + $@"('{userModel.NRIC}', '{userModel.ShiftID}', '{effectiveOn}' )";
+                    //sql = $@"INSERT INTO ShiftSchedule";
+                    //sql += " " + " (NRIC, ShiftID, EffectiveOn)";
+                    //sql += " " + "VALUES";
+                    //sql += " " + $@"('{userModel.NRIC}', '{userModel.ShiftID}', '{effectiveOn}' )";
 
-                    cmd = new SqlCommand(sql, conn);
+                    //cmd = new SqlCommand(sql, conn);
+
+                    //if (!cmd.ExecuteNonQuery().Equals(0))
+                    //{
+                    //    status = true;
+
+                    //    logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "Shift Schedule", $@"Create; {userModel.NRIC}, {userModel.ShiftID}, {effectiveOn}", DateTime.Now);
+
+                    //}
+
+                    cmd = new SqlCommand("spBEP3m", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@NRIC", SqlDbType.NVarChar).Value = userModel.NRIC;
 
                     if (!cmd.ExecuteNonQuery().Equals(0))
                     {
                         status = true;
 
-                        logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "Shift Schedule", $@"Create; {userModel.NRIC}, {userModel.ShiftID}, {effectiveOn}", DateTime.Now);
+                        logActivityDBService.LogActivity(HttpContext.Current.User.Identity.Name, "Shift Schedule", $@"Create; {userModel.NRIC}, Exec spBEP3m ", DateTime.Now);
 
                     }
+
                 }
 
             }
@@ -587,7 +600,7 @@ namespace MyTime.Services
                     if (reportAdminList.Where(ra => ra.ReportAdminNRIC == NRIC).ToList().Count.Equals(0))
                     {
 
-                        string sql = $@"DELETE [User] WHERE NRIC='{userModel.NRIC}'";
+                        string sql = $@"DELETE [vwUser] WHERE NRIC='{userModel.NRIC}'";
 
                         conn.Open();
 
@@ -735,7 +748,7 @@ namespace MyTime.Services
         {
             Boolean isValid = false;
 
-            string sql = $@"SELECT NRIC, Password FROM [User] WHERE NRIC='{authModel.NRIC.Trim()}'";
+            string sql = $@"SELECT NRIC, Password FROM [vwUser] WHERE NRIC='{authModel.NRIC.Trim()}'";
             string password = "";
             string nric = "";
 
@@ -796,6 +809,45 @@ namespace MyTime.Services
 
         public Boolean CheckIsUserExist(string ID)
         {
+            Boolean isExisted = false;
+
+            string sql = $@"SELECT * FROM [vwUser] WHERE NRIC='{ID}'";
+
+            try
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    isExisted = true;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return isExisted;
+
+        }
+
+
+        public Boolean CheckIsUserExistLocal(string ID)
+        {
+            //2022-07-11
             Boolean isExisted = false;
 
             string sql = $@"SELECT * FROM [User] WHERE NRIC='{ID}'";
@@ -1217,7 +1269,7 @@ namespace MyTime.Services
             //sql += " " + $@"ACT.EffectiveOn, IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
             sql += " " + $@"IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
 
-            sql += " " + $@"FROM [User] U";
+            sql += " " + $@"FROM [vwUser] U";
 
             sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
             sql += " " + $@"LEFT JOIN Unit UT ON U.UnitID = UT.UnitID";

@@ -37,7 +37,6 @@ namespace MyTime.Models
         public string AttendanceCardStatus12 { get; set; }
         public int TotalAttendanceIssue12 { get; set; }
 
-
         public string ReportDate { get; set; }
         public string ReportType { get; set; }
         public string ReportDateExtra { get; set; }

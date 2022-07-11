@@ -151,15 +151,32 @@ namespace MyTime.Controllers
 
             if (ModelState.IsValid.Equals(true))
             {
-                if (userDBService.Update(userModel).Equals(false))
+                if (userDBService.CheckIsUserExistLocal(userViewModel.UserModel.NRIC).Equals(false))
                 {
+                    if (userDBService.Create(userModel).Equals(false))
+                    {
 
-                    return PartialView(userViewModel);
+                        return PartialView(userViewModel);
+                    }
+                    else
+                    {
+                        return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
+                    if (userDBService.Update(userModel).Equals(false))
+                    {
+
+                        return PartialView(userViewModel);
+                    }
+                    else
+                    {
+                        return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
+                    }
+
                 }
+                    
             }
             else
             {
@@ -315,7 +332,9 @@ namespace MyTime.Controllers
             accessRoleList = accessRoleList.Where(r => r.IsActivated.Equals(true) || r.AccessRoleID.Equals(userModel.AccessRoleID)).OrderBy(r => r.AccessRoleName).Select(r => r).ToList();
 
             userViewModel.UserModel = userModel;
-            userViewModel.UserAccessControlModel = userAccessControlDBService.IsAccessAllowed(userModel.RoleID);
+
+            // Get from overload function
+            userViewModel.UserAccessControlModel = userAccessControlDBService.IsAccessAllowed(userModel);
 
             userViewModel.DepartmentList = departmentList;
             userViewModel.SelectListDepartment = PrepareSelectListDepartment(departmentList);
@@ -343,7 +362,7 @@ namespace MyTime.Controllers
 
             string NRIC = userViewModel.UserModel.NRIC;
 
-            if (userDBService.CheckIsUserExist(userViewModel.UserModel.NRIC).Equals(false))
+            if (userDBService.CheckIsUserExistLocal(userViewModel.UserModel.NRIC).Equals(false))
             {
                 if (userDBService.Create(userModel).Equals(false))
                 {

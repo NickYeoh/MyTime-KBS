@@ -24,7 +24,7 @@ namespace MyTime.Services
             try
             {
                 string sql = $@"SELECT DISTINCT D.DepartmentID, D.DepartmentName,D.IsActivated FROM ApproverUser AS ap";
-                sql += " " + $@"LEFT JOIN [User] U ON U.NRIC = ap.UserNRIC";
+                sql += " " + $@"LEFT JOIN [vwUser] U ON U.NRIC = ap.UserNRIC";
                 sql += " " + $@"LEFT JOIN Department D ON D.DepartmentID = U.DepartmentID";
                 sql += " " + $@"WHERE IsActivated='True'";
                 sql += " " + $@"GROUP BY D.DepartmentID, D.DepartmentName, D.IsActivated";
@@ -125,7 +125,7 @@ namespace MyTime.Services
                     sql += " " + $@"FROM ApproverUser ap";
                     sql += " " + $@"INNER JOIN {attendanceReasonTableName} ar";
                     sql += " " + $@"ON ar.NRIC = ap.UserNRIC";
-                    sql += " " + $@"LEFT JOIN [User] u on u.NRIC = ap.UserNRIC";
+                    sql += " " + $@"LEFT JOIN [vwUser] u on u.NRIC = ap.UserNRIC";
                     sql += " " + $@"LEFT JOIN Reason r on r.ReasonID = ar.ReasonID";
                     sql += " " + $@"WHERE ap.ApproverNRIC='{approverNRIC}'";
                     sql += " " + $@"AND u.DepartmentID ='{departmentID}'";
@@ -140,7 +140,7 @@ namespace MyTime.Services
                     //sql += " " + $@"FROM ApproverUser ap";
                     //sql += " " + $@"INNER JOIN {attendanceReasonTableName} ar";
                     //sql += " " + $@"ON ar.NRIC = ap.UserNRIC";
-                    //sql += " " + $@"LEFT JOIN [User] u on u.NRIC = ap.UserNRIC";
+                    //sql += " " + $@"LEFT JOIN [vwUser] u on u.NRIC = ap.UserNRIC";
                     //sql += " " + $@"LEFT JOIN Reason r on r.ReasonID = ar.ReasonID";
                     //sql += " " + $@"WHERE ap.ApproverNRIC='{approverNRIC}'";
                     //sql += " " + $@"AND u.DepartmentID ='{departmentID}'";

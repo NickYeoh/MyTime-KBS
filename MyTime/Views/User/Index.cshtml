@@ -183,8 +183,9 @@
 
             listDatatable = $('#listDatatable').DataTable({
                 //dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12"f>><"row"<"col-md-6"B><"col-md-6 text-right"i>>>t<"panel-footer"<"row pt-2"<"col-md-6"l><"col-md-6 text-right"p>>>>',
-                dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
-                buttons:
+                dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',
+                /*dom: '<"panel panel-default"<"panel-heading"<"row"<"col-md-12 d-flex justify-content-end text-left"f>><"row"<"col-md-2"B><"col-md-10 d-flex justify-content-end text-right"i>>>t<"panel-footer"<"row pt-1"<"col-md-4 d-flex justify-content-start text-left"l>"<"col-md-8 d-flex justify-content-end text-left"p>>>>',*/
+                @*buttons:
                     [
                         {
                             text: '@MyTime.Resource.ImportNewUser', className: 'myTableTextButton',
@@ -193,7 +194,7 @@
                                 ListDeviceUserProcess();
                             }
                         }
-                    ],
+                    ],*@
                 autoWidth: false,
                 scrollX: true,
                 scrollY: true,
@@ -249,6 +250,9 @@
                                     return "<a href='#'  onclick='ListAttendanceCardProcess(" + '"' + row.NRIC + '","' + row.UserName + '"' + ");'> <i class='icofont-address-book pr-1' style='color: red ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Red  </a>";
                             }*@
 
+
+                            //return '<span style="color:red">' + data + '</span>'
+
                             switch (row.AttendanceCardStatus) {
                                 case 'YL':
                                     return "<i class='icofont-address-book pr-1' style='color: gold ; font-size:18px;' data-toggle='tooltip' data-placement='top' title='@MyTime.Resource.AttendanceCard'></i>@MyTime.Resource.Colour_Yellow ";
@@ -259,8 +263,28 @@
                             }
                         }
                     },
-                    { "data": "UserName" },
-                    { "data": "NRIC" },
+                    {
+                        "render": function (data, type, row) {
+
+                            if (row.DepartmentID != null && row.DepartmentID != '') {
+                                return '<span style="color:black">' + row.UserName + '</span>'
+                            }
+                            else {
+                                return '<span style="color:red">' + row.UserName  + '</span>'
+                            }
+                        }
+                    },
+                    {
+                        "render": function (data, type, row) {
+
+                            if (row.DepartmentID != null && row.DepartmentID != '') {
+                                return '<span style="color:black">' + row.NRIC + '</span>'
+                            }
+                            else {
+                                return '<span style="color:red">' + row.NRIC+ '</span>'
+                            }
+                        }
+                    },
                     { "data": "Gender" },
                     { "data": "ContactNo" },
                     { "data": "Email" },
@@ -305,9 +329,9 @@
                 ],
                 columnDefs: [
                     { targets: 0, className: 'text-center', width: '12px', orderable: false  },
-                    { targets: 1, className: 'text-center', width: '15px', orderable: false },
+                    { targets: 1, className: 'text-center', width: '15px', orderable: false, visible: false },
                     { targets: 2, className: 'text-center', width: '15px', orderable: false },
-                    { targets: 3, className: 'text-center', width: '100px', orderable: false },
+                    { targets: 3, className: 'text-center', width: '100px', orderable: false, visible: false },
                     { targets: 4, className: 'text-left', width: '250px', orderable: true },
                     { targets: 5, className: 'text-left', width: '150px', orderable: true },
                     { targets: 6, className: 'text-left', width: '100px', orderable: true },
