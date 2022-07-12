@@ -374,6 +374,7 @@ namespace MyTime.Services
                     cmd = new SqlCommand("spBEP3m", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@NRIC", SqlDbType.NVarChar).Value = userModel.NRIC;
+                    cmd.Parameters.AddWithValue("@Passcode", SqlDbType.NVarChar).Value = "DEV118";
 
                     if (!cmd.ExecuteNonQuery().Equals(0))
                     {

@@ -145,29 +145,29 @@ namespace MyTime.Services
         public string GetMonthlyAttendanceCardStatusByID(string ID, DateTime startOn)
         {
             string attendanceCardStatus = "";
-
-            //string sql = " " + $@"SELECT TOP 1 IIF(AttendanceCardStatus IS NULL, 'YL', AttendanceCardStatus) AS AttendanceCardStatus FROM [AttendanceCard]";
-            //sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
-            //sql += " " + $@"AND FORMAT(EffectiveOn, 'yyyyMM') <= '{startOn.ToString("yyyyMM")}'";
-            //sql += " " + $@"ORDER BY EffectiveOn DESC";
-
-            string sql = $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
-            sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
-            sql += " " + $@"AND CONVERT(INT,AttendanceMonth) < CONVERT(INT, {startOn.ToString("yyyyMM")})";
-            sql += " " + $@"ORDER BY AttendanceMonth DESC";
+            int totalAttendanceIssue = 0;
+            string sql = "";
+            bool isAttendanceCardFound = false;
 
 
             try
             {
+                // Try 
+                sql = $@"SELECT TOP 1 AttendanceCardStatus, TotalAttendanceIssue FROM [AttendanceCard]";
+                sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
+                sql += " " + $@"AND CONVERT(INT,AttendanceMonth) = CONVERT(INT, {startOn.ToString("yyyyMM")})";
+                sql += " " + $@"ORDER BY AttendanceMonth DESC";
+
                 conn.Open();
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
-
 
                 SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr.HasRows)
                 {
+                    isAttendanceCardFound = true;
+
                     while (dr.Read())
                     {
 
@@ -176,12 +176,122 @@ namespace MyTime.Services
                             attendanceCardStatus = dr["AttendanceCardStatus"].ToString();
                         }
 
+                        if (!dr["TotalAttendanceIssue"].Equals(DBNull.Value))
+                        {
+                            totalAttendanceIssue = Convert.ToInt32( dr["TotalAttendanceIssue"]);
+                        }
+
                     }
                 }
-                else
+
+                dr.Close();
+               
+                if (isAttendanceCardFound != true)
                 {
-                    // Default to Yellow
-                    attendanceCardStatus = "YL";
+                    sql = $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
+                    sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
+                    sql += " " + $@"AND CONVERT(INT,AttendanceMonth) > CONVERT(INT, {startOn.ToString("yyyyMM")})";
+                    sql += " " + $@"ORDER BY AttendanceMonth DESC";
+
+                 
+
+                    cmd = new SqlCommand(sql, conn);                   
+                    dr = cmd.ExecuteReader();
+
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+
+                            if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                            {
+                                attendanceCardStatus = dr["AttendanceCardStatus"].ToString();
+                            }
+
+                            if (!dr["TotalAttendanceIssue"].Equals(DBNull.Value))
+                            {
+                                totalAttendanceIssue = Convert.ToInt32(dr["TotalAttendanceIssue"]);
+                            }
+
+
+
+                        }
+
+
+                        if (totalAttendanceIssue <= 2) {
+
+                            switch (attendanceCardStatus)
+                            {
+                                case "YL":
+                                    attendanceCardStatus = "YL";
+                                    break;
+
+                                case "GN":
+                                    attendanceCardStatus = "YL";
+                                    break;
+
+                                case "RD":
+                                    attendanceCardStatus = "GN";
+                                    break;
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            if (totalAttendanceIssue == 2)
+                            {
+
+                                switch (attendanceCardStatus)
+                                {
+                                    case "YL":
+                                        attendanceCardStatus = "YL";
+                                        break;
+
+                                    case "GN":
+                                        attendanceCardStatus = "YL";
+                                        break;
+
+                                    case "RD":
+                                        attendanceCardStatus = "GN";
+                                        break;
+
+                                }
+
+                            }
+                            else
+                            {
+
+                                switch (attendanceCardStatus)
+                                {
+                                    case "YL":
+                                        attendanceCardStatus = "GN";
+                                        break;
+
+                                    case "GN":
+                                        attendanceCardStatus = "RD";
+                                        break;
+
+                                    case "RD":
+                                        attendanceCardStatus = "RD";
+                                        break;
+
+                                }
+
+                            }
+                        }
+
+                      
+
+
+                    }
+                    else
+                    {
+                        attendanceCardStatus = "YL";
+                    }
+
+                    dr.Close();
                 }
 
             }
