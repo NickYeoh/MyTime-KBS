@@ -188,18 +188,19 @@ namespace MyTime.Services
                
                 if (isAttendanceCardFound != true)
                 {
-                    sql = $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
+                    sql = $@"SELECT TOP 1 AttendanceCardStatus, TotalAttendanceIssue FROM [AttendanceCard]";
                     sql += " " + $@"WHERE [AttendanceCard].NRIC = {ID}";
-                    sql += " " + $@"AND CONVERT(INT,AttendanceMonth) > CONVERT(INT, {startOn.ToString("yyyyMM")})";
-                    sql += " " + $@"ORDER BY AttendanceMonth DESC";
-
-                 
+                    sql += " " + $@"AND CONVERT(INT,AttendanceMonth) < CONVERT(INT, {startOn.ToString("yyyyMM")})";
+                    sql += " " + $@"ORDER BY AttendanceMonth DESC";                 
 
                     cmd = new SqlCommand(sql, conn);                   
                     dr = cmd.ExecuteReader();
 
                     if (dr.HasRows)
                     {
+
+                        isAttendanceCardFound = true;
+
                         while (dr.Read())
                         {
 
@@ -213,83 +214,47 @@ namespace MyTime.Services
                                 totalAttendanceIssue = Convert.ToInt32(dr["TotalAttendanceIssue"]);
                             }
 
-
-
                         }
 
-
-                        if (totalAttendanceIssue <= 2) {
-
-                            switch (attendanceCardStatus)
-                            {
-                                case "YL":
-                                    attendanceCardStatus = "YL";
-                                    break;
-
-                                case "GN":
-                                    attendanceCardStatus = "YL";
-                                    break;
-
-                                case "RD":
-                                    attendanceCardStatus = "GN";
-                                    break;
-
-                            }
-
-                        }
-                        else
+                        switch (attendanceCardStatus)
                         {
-
-                            if (totalAttendanceIssue == 2)
-                            {
-
-                                switch (attendanceCardStatus)
+                            case "YL":
+                                if (totalAttendanceIssue < 3)
                                 {
-                                    case "YL":
-                                        attendanceCardStatus = "YL";
-                                        break;
-
-                                    case "GN":
-                                        attendanceCardStatus = "YL";
-                                        break;
-
-                                    case "RD":
-                                        attendanceCardStatus = "GN";
-                                        break;
-
+                                    attendanceCardStatus = "YL";
                                 }
-
-                            }
-                            else
-                            {
-
-                                switch (attendanceCardStatus)
+                                else
                                 {
-                                    case "YL":
-                                        attendanceCardStatus = "GN";
-                                        break;
-
-                                    case "GN":
-                                        attendanceCardStatus = "RD";
-                                        break;
-
-                                    case "RD":
-                                        attendanceCardStatus = "RD";
-                                        break;
-
+                                    attendanceCardStatus = "GN";
                                 }
+                                break;
 
-                            }
-                        }
+                            case "GN":
+                                if (totalAttendanceIssue < 2)
+                                {
+                                    attendanceCardStatus = "YL";
+                                }
+                                else
+                                {
+                                    attendanceCardStatus = "RD";
+                                }
+                                break;
 
-                      
+                            case "RD":
+                                if (totalAttendanceIssue < 2)
+                                {
+                                    attendanceCardStatus = "GN";
+                                }
+                                else
+                                {
+                                    attendanceCardStatus = "RD";
+                                }
+                                break;
+
+                        }                     
 
 
-                    }
-                    else
-                    {
-                        attendanceCardStatus = "YL";
-                    }
+                    }                  
 
                     dr.Close();
                 }

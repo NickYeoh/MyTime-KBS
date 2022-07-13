@@ -385,7 +385,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Report.
+        ///   Looks up a localized string similar to Attendance Card Colour Monthly Report.
         /// </summary>
         public static string AttendanceCardReport {
             get {
@@ -403,7 +403,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Summary Report.
+        ///   Looks up a localized string similar to Attendance Card Colour Yearly Report.
         /// </summary>
         public static string AttendanceCardSummaryReport {
             get {
@@ -682,6 +682,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cnt.
+        /// </summary>
+        public static string Count {
+            get {
+                return ResourceManager.GetString("Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string Create {
@@ -691,7 +700,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rekod Kedatangan Harian.
+        ///   Looks up a localized string similar to Daily Attendance Record.
         /// </summary>
         public static string DailyAttendanceRecord {
             get {
@@ -1492,7 +1501,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesej Pengesahan.
+        ///   Looks up a localized string similar to Confirmation Message.
         /// </summary>
         public static string MessageConfirmation {
             get {
@@ -1501,7 +1510,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data dirujuk oleh rekod lain, tidak dapat dihapus.
+        ///   Looks up a localized string similar to Data is referred by others records, delete denied.
         /// </summary>
         public static string MessageDeleteDenied {
             get {

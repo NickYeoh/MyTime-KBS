@@ -1075,7 +1075,7 @@
     <value>Sesi anda telah tamat (tanpa aktiviti dalam {0} minit). Sila log masuk semula</value>
   </data>
   <data name="AttendanceCardReport" xml:space="preserve">
-    <value>Laporan Kad Kedatangan</value>
+    <value>Laporan Kad Kedatangan Bulanan</value>
   </data>
   <data name="AbsentCount" xml:space="preserve">
     <value>Tidak Hadir</value>
@@ -1102,7 +1102,7 @@
     <value>Jumlah</value>
   </data>
   <data name="AttendanceCardSummaryReport" xml:space="preserve">
-    <value>Rumusan Laporan Kad Kedatangan</value>
+    <value>Laporan Kad Kedatangan Tahunan</value>
   </data>
   <data name="Month01" xml:space="preserve">
     <value>Jan</value>
@@ -1142,5 +1142,8 @@
   </data>
   <data name="AttendanceIssue" xml:space="preserve">
     <value>Issue</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Bil</value>
   </data>
 </root>

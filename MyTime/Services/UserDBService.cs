@@ -39,6 +39,7 @@ namespace MyTime.Services
         ShiftScheduleDBService shiftScheduleDBService = new ShiftScheduleDBService();
         ApproverDBService approverDBService = new ApproverDBService();
         ReportAdminDBService reportAdminDBService = new ReportAdminDBService();
+        AttendanceCardDBService attendanceCardDBService = new AttendanceCardDBService();
 
 
         public List<UserModel> ListUser()
@@ -1264,11 +1265,11 @@ namespace MyTime.Services
             sql += " " + $@"U.ContactNo, U.Email, U.DepartmentID, D.DepartmentName,";
             sql += " " + $@"U.UnitID, UT.UnitName, U.Designation,";
             sql += " " + $@"U.Grade, U.IsResigned, U.ResignedOn,";
-            sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded,";
+            sql += " " + $@"U.AccessRoleID, A.AccessRoleName, U.IsAttendanceExcluded";
 
             // 2022-06-23 : Attendance Card Status
             //sql += " " + $@"ACT.EffectiveOn, IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
-            sql += " " + $@"IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
+            //sql += " " + $@"IIF(ACT.AttendanceCardStatus IS NULL, 'YL',ACT.AttendanceCardStatus) AS AttendanceCardStatus";
 
             sql += " " + $@"FROM [vwUser] U";
 
@@ -1283,11 +1284,11 @@ namespace MyTime.Services
             //sql += " " + $@"ORDER BY EffectiveOn DESC";
             //sql += " " + $@") AS AC";
 
-            sql += " " + $@"OUTER APPLY (";
-            sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
-            sql += " " + $@"WHERE [AttendanceCard].NRIC = U.NRIC";
-            sql += " " + $@"AND CONVERT(INT,  [AttendanceCard].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
-            sql += " " + $@"ORDER BY AttendanceMonth DESC) AS ACT";
+            //sql += " " + $@"OUTER APPLY (";
+            //sql += " " + $@"SELECT TOP 1 AttendanceCardStatus FROM [AttendanceCard]";
+            //sql += " " + $@"WHERE [AttendanceCard].NRIC = U.NRIC";
+            //sql += " " + $@"AND CONVERT(INT,  [AttendanceCard].AttendanceMonth) < CONVERT(INT, FORMAT(GETDATE(), 'yyyyMM'))";
+            //sql += " " + $@"ORDER BY AttendanceMonth DESC) AS ACT";
 
             sql += " " + $@"WHERE U.NRIC = '{ID}'";
 
@@ -1419,10 +1420,14 @@ namespace MyTime.Services
                             userModel.IsAttendanceExcluded = Convert.ToBoolean(dr["IsAttendanceExcluded"]);
                         }
 
-                        if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
-                        {
-                            userModel.AttendanceCardStatus = dr["AttendanceCardStatus"].ToString();
-                        }
+                        //if (!dr["AttendanceCardStatus"].Equals(DBNull.Value))
+                        //{
+                           
+                        //    //userModel.AttendanceCardStatus = dr["AttendanceCardStatus"].ToString();
+                        //}
+
+                        userModel.AttendanceCardStatus = attendanceCardDBService.GetMonthlyAttendanceCardStatusByID(ID, DateTime.Today);
+
 
                     }
                 }

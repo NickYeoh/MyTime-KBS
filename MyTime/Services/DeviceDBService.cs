@@ -225,7 +225,7 @@ namespace MyTime.Services
         }
 
     
-        public List<DeviceTransactionModel> GetSupremaDeviceTrans(string usrID, DateTime startOn, DateTime endOn, int accessRoleID, bool isFromOvertimeDevice)
+        public List<DeviceTransactionModel> GetSupremaDeviceTrans(string NRIC, DateTime startOn, DateTime endOn, int accessRoleID, bool isFromOvertimeDevice)
         {
             List<DeviceTransactionModel> deviceTrans = new List<DeviceTransactionModel>();
             DeviceTransactionModel deviceTransactionModel;
@@ -338,9 +338,10 @@ namespace MyTime.Services
                                        
 
                     sql = "(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
-                    sql += " " + $@",[USRID], EVTLGUID";
-                    sql += " " + $@"FROM {previousMonthTableName}";
-                    sql += " " + $@"WHERE USRID='{usrID}'";
+                    sql += " " + $@", PH, T.[USRID], EVTLGUID";
+                    sql += " " + $@"FROM {previousMonthTableName} T";
+                    sql += " " + $@"LEFT JOIN T_USR U ON U.[USRID] = T.[USRID]";
+                    sql += " " + $@"WHERE PH='{NRIC}'";
 
                     if (startOn.Date.Equals(endOn.Date))
                     {
@@ -375,9 +376,10 @@ namespace MyTime.Services
                     //sql += " " + $@"WHERE USRID='{usrID}'";
 
                     sql += " " + $@"(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
-                    sql += " " + $@",[USRID], EVTLGUID";
-                    sql += " " + $@"FROM {currentMonthTableName}";
-                    sql += " " + $@"WHERE USRID='{usrID}'";
+                    sql += " " + $@", PH, T.[USRID], EVTLGUID";
+                    sql += " " + $@"FROM {currentMonthTableName} T";
+                    sql += " " + $@"LEFT JOIN T_USR U ON U.[USRID] = T.[USRID]";
+                    sql += " " + $@"WHERE PH='{NRIC}'";
 
                     if (startOn.Date.Equals(endOn.Date))
                     {
@@ -420,9 +422,10 @@ namespace MyTime.Services
                     //sql += " " + $@"ORDER BY TRDateTime";
 
                     sql = "(SELECT CAST(CONVERT(CHAR(16),[SRVDT],20) AS datetime) AS TRDateTime";
-                    sql += " " + $@",[USRID], EVTLGUID";
-                    sql += " " + $@"FROM {currentMonthTableName}";
-                    sql += " " + $@"WHERE USRID='{usrID}'";
+                    sql += " " + $@", PH, T.[USRID], EVTLGUID";
+                    sql += " " + $@"FROM {currentMonthTableName} T";
+                    sql += " " + $@"LEFT JOIN T_USR U ON U.[USRID] = T.[USRID]";
+                    sql += " " + $@"WHERE PH='{NRIC}'";
                     sql += " " + $@"AND (CONVERT(DATE, [SRVDT]) BETWEEN '{startOn.ToString("yyyyMMdd")}'";
                     sql += " " + $@"AND '{endOn.ToString("yyyyMMdd")}')";
                     sql += " " + $@"AND (EVT='4865' OR EVT='4102' OR EVT='4097')";
@@ -454,6 +457,7 @@ namespace MyTime.Services
                         deviceTransactionModel = new DeviceTransactionModel();
 
                         deviceTransactionModel.TRDateTime = Convert.ToDateTime(dr["TRDateTime"]);
+                        deviceTransactionModel.PH = dr["PH"].ToString();
                         deviceTransactionModel.USRID = dr["USRID"].ToString();
 
                         deviceTrans.Add(deviceTransactionModel);

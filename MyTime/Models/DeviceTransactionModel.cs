@@ -8,6 +8,10 @@ namespace MyTime.Models
     public class DeviceTransactionModel
     {
         public DateTime TRDateTime { get; set; }
+
+        public string PH { get; set; }
         public string USRID { get; set; }
+
+     
     }
 }

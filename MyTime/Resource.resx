@@ -256,7 +256,7 @@
     <value>{0} has excceded {1} characters limit</value>
   </data>
   <data name="MessageConfirmation" xml:space="preserve">
-    <value>Mesej Pengesahan</value>
+    <value>Confirmation Message</value>
   </data>
   <data name="MessageError" xml:space="preserve">
     <value>Error Message</value>
@@ -871,10 +871,10 @@
     <value>Please input Month</value>
   </data>
   <data name="MessageDeleteDenied" xml:space="preserve">
-    <value>Data dirujuk oleh rekod lain, tidak dapat dihapus</value>
+    <value>Data is referred by others records, delete denied</value>
   </data>
   <data name="DailyAttendanceRecord" xml:space="preserve">
-    <value>Rekod Kedatangan Harian</value>
+    <value>Daily Attendance Record</value>
   </data>
   <data name="Report" xml:space="preserve">
     <value>Report</value>
@@ -1075,7 +1075,7 @@
     <value>Your session has expired (no activity in {0} minutes). Please login again</value>
   </data>
   <data name="AttendanceCardReport" xml:space="preserve">
-    <value>Attendance Card Report</value>
+    <value>Attendance Card Colour Monthly Report</value>
   </data>
   <data name="AbsentCount" xml:space="preserve">
     <value>Absent</value>
@@ -1102,7 +1102,7 @@
     <value>Total</value>
   </data>
   <data name="AttendanceCardSummaryReport" xml:space="preserve">
-    <value>Attendance Card Summary Report</value>
+    <value>Attendance Card Colour Yearly Report</value>
   </data>
   <data name="Month01" xml:space="preserve">
     <value>Jan</value>
@@ -1142,5 +1142,8 @@
   </data>
   <data name="AttendanceIssue" xml:space="preserve">
     <value>Isu</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Cnt</value>
   </data>
 </root>

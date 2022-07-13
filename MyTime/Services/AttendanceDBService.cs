@@ -489,11 +489,18 @@ namespace MyTime.Services
 
                         case "Suprema":
 
+
                             // Normal Transaction
-                            deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID, false);
+                            deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(NRIC, startOn, endOn, accessRoleID, false);
 
                             // Overtime Extra Transaction
-                            deviceOvertimeExtraTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID, true);
+                            deviceOvertimeExtraTransactionList = deviceDBService.GetSupremaDeviceTrans(NRIC, startOn, endOn, accessRoleID, true);
+
+                            //// Normal Transaction
+                            //deviceTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID, false);
+
+                            //// Overtime Extra Transaction
+                            //deviceOvertimeExtraTransactionList = deviceDBService.GetSupremaDeviceTrans(usrID, startOn, endOn, accessRoleID, true);
                             break;
                     }
 
