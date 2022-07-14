@@ -12,7 +12,7 @@ using CrystalDecisions.CrystalReports.Engine;
 
 namespace MyTime.Controllers
 {
-    public class AttendanceCardReportController : EnvironmentController
+    public class AttendanceCardStatusMonthlyReportController : EnvironmentController
     {
         SystemDBService systemDBService = new SystemDBService();
         UserDBService userDBService = new UserDBService();
@@ -33,7 +33,7 @@ namespace MyTime.Controllers
             attendanceCardStartDate = systemModel.AttendanceCardStartDate;
 
 
-            AttendanceCardReportViewModel attendanceCardReportViewModel = new AttendanceCardReportViewModel();
+            AttendanceCardStatusMonthlyReportViewModel attendanceCardStatusMonthlyReportViewModel = new AttendanceCardStatusMonthlyReportViewModel();
             List<ReportAdminDepartmentModel> reportAdminDepartmentList = new List<ReportAdminDepartmentModel>();
 
             if (!User.Identity.IsAuthenticated)
@@ -45,16 +45,16 @@ namespace MyTime.Controllers
                 userModel = userDBService.GetDataByID(User.Identity.Name);
                 ViewBag.UserDetail = string.Format("{0} ( {1} )", userModel.UserName, userModel.RoleName);
 
-                attendanceCardReportViewModel.UserAccessControlModel = userAccessControlDBService.IsAccessAllowed(userModel.RoleID);
+                attendanceCardStatusMonthlyReportViewModel.UserAccessControlModel = userAccessControlDBService.IsAccessAllowed(userModel.RoleID);
 
                 reportAdminDepartmentList = reportAdminDBService.ListReportAdminDepartment(userModel.NRIC).OrderBy(rad => rad.DepartmentName).ToList();
 
-                attendanceCardReportViewModel.SelectListMonthYear = PrepareSelectMonthYearList(attendanceCardStartDate);
-                attendanceCardReportViewModel.SelectListDepartment = PrepareSelectDepartmentList(reportAdminDepartmentList);
+                attendanceCardStatusMonthlyReportViewModel.SelectListMonthYear = PrepareSelectMonthYearList(attendanceCardStartDate);
+                attendanceCardStatusMonthlyReportViewModel.SelectListDepartment = PrepareSelectDepartmentList(reportAdminDepartmentList);
 
             }
 
-            return View(attendanceCardReportViewModel);
+            return View(attendanceCardStatusMonthlyReportViewModel);
         }
 
         [HttpPost]
@@ -118,7 +118,7 @@ namespace MyTime.Controllers
         }
 
 
-        public ActionResult PrintAttendanceCardReport()
+        public ActionResult PrintAttendanceCardStatusMonthlyReport()
         {
             if (Session["OrganisationName"] != null)
             {
@@ -140,7 +140,7 @@ namespace MyTime.Controllers
                 crAttendanceCardReportList = crystalReportDBService.PrepareAttendanceCardReport(AttendanceCardReportList.OrderBy(a => a.UserName).ToList());
 
                 ReportDocument report = new ReportDocument();
-                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceCardCR.rpt"));
+                report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceCardStatusMonthlyCR.rpt"));
                 report.SetDataSource(crAttendanceCardReportList);
 
                 string organisationName = Session["OrganisationName"].ToString();
@@ -162,7 +162,7 @@ namespace MyTime.Controllers
                 report.Close();
                 report.Dispose();
 
-                return File(stream, "application/pdf", "Laporan Kad Kedatangan.pdf");             
+                return File(stream, "application/pdf", "Laporan Status Kad Kedatangan Bulanan.pdf");             
 
             }
             else

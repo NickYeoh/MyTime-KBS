@@ -385,16 +385,7 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Colour Monthly Report.
-        /// </summary>
-        public static string AttendanceCardReport {
-            get {
-                return ResourceManager.GetString("AttendanceCardReport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Colour.
+        ///   Looks up a localized string similar to Attendance Card Status.
         /// </summary>
         public static string AttendanceCardStatus {
             get {
@@ -403,11 +394,20 @@ namespace MyTime {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Card Colour Yearly Report.
+        ///   Looks up a localized string similar to Attendance Card Status Monthly Report.
         /// </summary>
-        public static string AttendanceCardSummaryReport {
+        public static string AttendanceCardStatusMonthlyReport {
             get {
-                return ResourceManager.GetString("AttendanceCardSummaryReport", resourceCulture);
+                return ResourceManager.GetString("AttendanceCardStatusMonthlyReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance Card Status Yearly Report.
+        /// </summary>
+        public static string AttendanceCardStatusYearlyReport {
+            get {
+                return ResourceManager.GetString("AttendanceCardStatusYearlyReport", resourceCulture);
             }
         }
         

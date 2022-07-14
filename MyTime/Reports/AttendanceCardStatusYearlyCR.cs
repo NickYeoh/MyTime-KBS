@@ -16,14 +16,14 @@ namespace MyTime.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class AttendanceCardSummaryCR : ReportClass {
+    public class AttendanceCardStatusYearlyCR : ReportClass {
         
-        public AttendanceCardSummaryCR() {
+        public AttendanceCardStatusYearlyCR() {
         }
         
         public override string ResourceName {
             get {
-                return "AttendanceCardSummaryCR.rpt";
+                return "AttendanceCardStatusYearlyCR.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace MyTime.Reports {
         
         public override string FullResourceName {
             get {
-                return "MyTime.Reports.AttendanceCardSummaryCR.rpt";
+                return "MyTime.Reports.AttendanceCardStatusYearlyCR.rpt";
             }
             set {
                 // Do nothing
@@ -114,9 +114,9 @@ namespace MyTime.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedAttendanceCardSummaryCR : Component, ICachedReport {
+    public class CachedAttendanceCardStatusYearlyCR : Component, ICachedReport {
         
-        public CachedAttendanceCardSummaryCR() {
+        public CachedAttendanceCardStatusYearlyCR() {
         }
         
         [Browsable(false)]
@@ -153,7 +153,7 @@ namespace MyTime.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            AttendanceCardSummaryCR rpt = new AttendanceCardSummaryCR();
+            AttendanceCardStatusYearlyCR rpt = new AttendanceCardStatusYearlyCR();
             rpt.Site = this.Site;
             return rpt;
         }

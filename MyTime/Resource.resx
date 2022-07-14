@@ -1033,7 +1033,7 @@
     <value>Attendance Card</value>
   </data>
   <data name="AttendanceCardStatus" xml:space="preserve">
-    <value>Attendance Card Colour</value>
+    <value>Attendance Card Status</value>
   </data>
   <data name="Month.Apr" xml:space="preserve">
     <value>Apr</value>
@@ -1074,8 +1074,8 @@
   <data name="MessageSessionExpired" xml:space="preserve">
     <value>Your session has expired (no activity in {0} minutes). Please login again</value>
   </data>
-  <data name="AttendanceCardReport" xml:space="preserve">
-    <value>Attendance Card Colour Monthly Report</value>
+  <data name="AttendanceCardStatusMonthlyReport" xml:space="preserve">
+    <value>Attendance Card Status Monthly Report</value>
   </data>
   <data name="AbsentCount" xml:space="preserve">
     <value>Absent</value>
@@ -1101,8 +1101,8 @@
   <data name="TotalAttendanceIssue" xml:space="preserve">
     <value>Total</value>
   </data>
-  <data name="AttendanceCardSummaryReport" xml:space="preserve">
-    <value>Attendance Card Colour Yearly Report</value>
+  <data name="AttendanceCardStatusYearlyReport" xml:space="preserve">
+    <value>Attendance Card Status Yearly Report</value>
   </data>
   <data name="Month01" xml:space="preserve">
     <value>Jan</value>

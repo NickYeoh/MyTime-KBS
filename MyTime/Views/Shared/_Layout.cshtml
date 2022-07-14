@@ -257,14 +257,14 @@
                                 </li>
 
                                 <li>
-                                    <a href="#" id="linkAttendanceCardReport">
-                                        @MyTime.Resource.AttendanceCardReport
+                                    <a href="#" id="linkAttendanceCardStatusMonthlyReport">
+                                        @MyTime.Resource.AttendanceCardStatusMonthlyReport
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="#" id="linkAttendanceCardSummaryReport">
-                                        @MyTime.Resource.AttendanceCardSummaryReport
+                                    <a href="#" id="linkAttendanceCardStatusYearlyReport">
+                                        @MyTime.Resource.AttendanceCardStatusYearlyReport
                                     </a>
                                 </li>
 
@@ -528,13 +528,13 @@
             });
 
 
-            $('#linkAttendanceCardReport').on('click', function () {
-                      window.location.href = '@Url.Action("Index", "AttendanceCardReport")';
+            $('#linkAttendanceCardStatusMonthlyReport').on('click', function () {
+                      window.location.href = '@Url.Action("Index", "AttendanceCardStatusMonthlyReport")';
                       return false;
             });
 
-            $('#linkAttendanceCardSummaryReport').on('click', function () {
-                      window.location.href = '@Url.Action("Index", "AttendanceCardSummaryReport")';
+            $('#linkAttendanceCardStatusYearlyReport').on('click', function () {
+                      window.location.href = '@Url.Action("Index", "AttendanceCardStatusYearlyReport")';
                       return false;
             });
 

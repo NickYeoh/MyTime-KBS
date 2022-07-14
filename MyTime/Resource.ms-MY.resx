@@ -1033,7 +1033,7 @@
     <value>Kad Kedatangan</value>
   </data>
   <data name="AttendanceCardStatus" xml:space="preserve">
-    <value>Warna Kad Kedatangan</value>
+    <value>Status Kad Kedatangan</value>
   </data>
   <data name="Month.Apr" xml:space="preserve">
     <value>Apr</value>
@@ -1074,8 +1074,8 @@
   <data name="MessageSessionExpired" xml:space="preserve">
     <value>Sesi anda telah tamat (tanpa aktiviti dalam {0} minit). Sila log masuk semula</value>
   </data>
-  <data name="AttendanceCardReport" xml:space="preserve">
-    <value>Laporan Kad Kedatangan Bulanan</value>
+  <data name="AttendanceCardStatusMonthlyReport" xml:space="preserve">
+    <value>Laporan Status Kad Kedatangan Bulanan</value>
   </data>
   <data name="AbsentCount" xml:space="preserve">
     <value>Tidak Hadir</value>
@@ -1101,8 +1101,8 @@
   <data name="TotalAttendanceIssue" xml:space="preserve">
     <value>Jumlah</value>
   </data>
-  <data name="AttendanceCardSummaryReport" xml:space="preserve">
-    <value>Laporan Kad Kedatangan Tahunan</value>
+  <data name="AttendanceCardStatusYearlyReport" xml:space="preserve">
+    <value>Laporan Status Kad Kedatangan Tahunan</value>
   </data>
   <data name="Month01" xml:space="preserve">
     <value>Jan</value>

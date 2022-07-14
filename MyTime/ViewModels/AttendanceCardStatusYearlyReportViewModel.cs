@@ -7,14 +7,12 @@ using System.Web.Mvc;
 
 namespace MyTime.ViewModels
 {
-    public class AttendanceCardReportViewModel
-    {
+    public class AttendanceCardStatusYearlyReportViewModel
+    {    
         public UserAccessControlModel UserAccessControlModel { get; set; }
 
-        public IEnumerable<SelectListItem> SelectListMonthYear { get; set; }
+        public IEnumerable<SelectListItem> SelectListYear { get; set; }
 
         public IEnumerable<SelectListItem> SelectListDepartment { get; set; }
-
-
     }
 }

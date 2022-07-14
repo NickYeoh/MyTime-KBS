@@ -1,7 +1,7 @@
-﻿@model MyTime.ViewModels.AttendanceCardReportViewModel
+﻿@model MyTime.ViewModels.AttendanceCardStatusMonthlyReportViewModel
 
 @{
-    ViewBag.Title = MyTime.Resource.AttendanceCardReport;
+    ViewBag.Title = MyTime.Resource.AttendanceCardStatusMonthlyReport;
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -30,7 +30,7 @@
 
                         <div class="form-group row text-center">
                             <div class="col-md-12">
-                                <h6>@MyTime.Resource.AttendanceCardReport</h6>
+                                <h6>@MyTime.Resource.AttendanceCardStatusMonthlyReport</h6>
 
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                         <span class="pl-1"></span>
                                         <input id="btnReset" type="button" value="@MyTime.Resource.Reset" class="btn btn-warning text-center" style="min-width: 80px;" />
                                         <span class="pl-1"></span>
-                                        <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="min-width: 80px;" onclick="location.href='@Url.Action("PrintAttendanceCardReport", "AttendanceCardReport" )'" />
+                                        <input id="btnPrint" type="button" value="@MyTime.Resource.Print" class="btn btn-info text-black text-center" style="min-width: 80px;" onclick="location.href='@Url.Action("PrintAttendanceCardStatusMonthlyReport", "AttendanceCardStatusMonthlyReport" )'" />
                                     </div>
                                 </div>
 
@@ -344,7 +344,7 @@
         $.ajax({
             datatype: 'text/plain',
             type: 'POST',
-            url: 'AttendanceCardReport/GenerateAttendanceCardList',
+            url: 'AttendanceCardStatusMonthlyReport/GenerateAttendanceCardList',
             data: { selectedMonthYear: selectedMonthYear, selectedDepartmentID: selectedDepartmentID, selectedAttendanceCardStatus: selectedAttendanceCardStatus },
             cache: false,
             success: function (data) {

@@ -145,8 +145,8 @@
     <Compile Include="Controllers\AnnouncementController.cs" />
     <Compile Include="Controllers\ApproverController.cs" />
     <Compile Include="Controllers\AttendanceAnalysisController.cs" />
-    <Compile Include="Controllers\AttendanceCardReportController.cs" />
-    <Compile Include="Controllers\AttendanceCardSummaryReportController.cs" />
+    <Compile Include="Controllers\AttendanceCardStatusMonthlyReportController.cs" />
+    <Compile Include="Controllers\AttendanceCardStatusYearlyReportController.cs" />
     <Compile Include="Controllers\AttendanceReportController.cs" />
     <Compile Include="Controllers\AttendanceStatisticsController.cs" />
     <Compile Include="Controllers\AttendanceSummaryReportController.cs" />
@@ -225,10 +225,10 @@
     <Compile Include="Models\AuthModel.cs" />
     <Compile Include="Models\UserShiftModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reports\AttendanceCardSummaryCR.cs">
+    <Compile Include="Reports\AttendanceCardStatusYearlyCR.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AttendanceCardSummaryCR.rpt</DependentUpon>
+      <DependentUpon>AttendanceCardStatusYearlyCR.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Resource.ms-MY.Designer.cs">
@@ -266,8 +266,8 @@
     <Compile Include="ViewModels\AccessRoleViewModel.cs" />
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\AttendanceAnalysisViewModel.cs" />
-    <Compile Include="ViewModels\AttendanceCardReportViewModel.cs" />
-    <Compile Include="ViewModels\AttendanceCardSummaryReportViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceCardStatusMonthlyReportViewModel.cs" />
+    <Compile Include="ViewModels\AttendanceCardStatusYearlyReportViewModel.cs" />
     <Compile Include="ViewModels\AttendanceReportViewModel.cs" />
     <Compile Include="ViewModels\AttendanceStatisticsViewModel.cs" />
     <Compile Include="ViewModels\AttendanceSummaryReportViewModel.cs" />
@@ -843,8 +843,8 @@
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\User\_ListDeviceUser.cshtml" />
     <Content Include="Views\User\_ListAttendanceCard.cshtml" />
-    <Content Include="Views\AttendanceCardReport\Index.cshtml" />
-    <Content Include="Views\AttendanceCardSummaryReport\Index.cshtml" />
+    <Content Include="Views\AttendanceCardStatusMonthlyReport\Index.cshtml" />
+    <Content Include="Views\AttendanceCardStatusYearlyReport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -861,10 +861,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Function.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="Reports\AttendanceCardCR.rpt" />
-    <EmbeddedResource Include="Reports\AttendanceCardSummaryCR.rpt">
+    <Content Include="Reports\AttendanceCardStatusMonthlyCR.rpt" />
+    <EmbeddedResource Include="Reports\AttendanceCardStatusYearlyCR.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>AttendanceCardSummaryCR.cs</LastGenOutput>
+      <LastGenOutput>AttendanceCardStatusYearlyCR.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource.ms-MY.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
