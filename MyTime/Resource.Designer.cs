@@ -718,6 +718,15 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Maintenance.
+        /// </summary>
+        public static string DataMaintenance {
+            get {
+                return ResourceManager.GetString("DataMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Date {
@@ -1483,6 +1492,24 @@ namespace MyTime {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manual Close Last Month Attendance Data.
+        /// </summary>
+        public static string ManualCloseLastMonthAttendanceData {
+            get {
+                return ResourceManager.GetString("ManualCloseLastMonthAttendanceData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Generate Last Month Attendance.
+        /// </summary>
+        public static string ManualGenerateLastMonthAttendance {
+            get {
+                return ResourceManager.GetString("ManualGenerateLastMonthAttendance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum File Size has exceeded .
         /// </summary>
         public static string MaxFileSizeExceeded {
@@ -1587,6 +1614,24 @@ namespace MyTime {
         public static string MessageSuccessImportNewUser {
             get {
                 return ResourceManager.GetString("MessageSuccessImportNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Month Attendance Data is successfully closed.
+        /// </summary>
+        public static string MessageSuccessManualCloseLastMonthAttendanceData {
+            get {
+                return ResourceManager.GetString("MessageSuccessManualCloseLastMonthAttendanceData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Month Attendance Card Status is successfully generated.
+        /// </summary>
+        public static string MessageSuccessManualGenerateLastMonthAttendanceCardStatus {
+            get {
+                return ResourceManager.GetString("MessageSuccessManualGenerateLastMonthAttendanceCardStatus", resourceCulture);
             }
         }
         
@@ -2136,6 +2181,15 @@ namespace MyTime {
         public static string PrintReport {
             get {
                 return ResourceManager.GetString("PrintReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proceed.
+        /// </summary>
+        public static string Proceed {
+            get {
+                return ResourceManager.GetString("Proceed", resourceCulture);
             }
         }
         

@@ -1146,4 +1146,22 @@
   <data name="Count" xml:space="preserve">
     <value>Bil</value>
   </data>
+  <data name="DataMaintenance" xml:space="preserve">
+    <value>Penyelenggaraan Data</value>
+  </data>
+  <data name="ManualCloseLastMonthAttendanceData" xml:space="preserve">
+    <value>Manual Tutup Data Kedatangan Bulan Lepas</value>
+  </data>
+  <data name="ManualGenerateLastMonthAttendance" xml:space="preserve">
+    <value>Manual Menjana Status Kad Kedatangan Bulan Lepas</value>
+  </data>
+  <data name="Proceed" xml:space="preserve">
+    <value>Teruskan</value>
+  </data>
+  <data name="MessageSuccessManualCloseLastMonthAttendanceData" xml:space="preserve">
+    <value>Data Kedatangan Bulan Lepas telah berjaya ditutup</value>
+  </data>
+  <data name="MessageSuccessManualGenerateLastMonthAttendanceCardStatus" xml:space="preserve">
+    <value>Status Kad Kedatangan Bulan Lepas telah berjaya dijana</value>
+  </data>
 </root>

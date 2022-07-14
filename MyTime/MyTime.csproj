@@ -150,6 +150,7 @@
     <Compile Include="Controllers\AttendanceReportController.cs" />
     <Compile Include="Controllers\AttendanceStatisticsController.cs" />
     <Compile Include="Controllers\AttendanceSummaryReportController.cs" />
+    <Compile Include="Controllers\DataMaintenanceController.cs" />
     <Compile Include="Controllers\DepartmentAttendanceDailySummaryController.cs" />
     <Compile Include="Controllers\DepartmentAttendanceHistoryReportController.cs" />
     <Compile Include="Controllers\DepartmentUserCountReportController.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Models\CRAttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRDepartmentAttendanceDailyModel.cs" />
     <Compile Include="Models\CRDepartmentUserCountModel.cs" />
+    <Compile Include="Models\DataMaintenanceModel.cs" />
     <Compile Include="Models\DepartmentAttendanceDailyModel.cs" />
     <Compile Include="Models\DepartmentAttendanceDailySummaryModel.cs" />
     <Compile Include="Models\DepartmentUserCountModel.cs" />
@@ -272,6 +274,7 @@
     <Compile Include="ViewModels\AttendanceStatisticsViewModel.cs" />
     <Compile Include="ViewModels\AttendanceSummaryReportViewModel.cs" />
     <Compile Include="ViewModels\DailyAttendanceRecordViewModel.cs" />
+    <Compile Include="ViewModels\DataMaintenanceViewModel.cs" />
     <Compile Include="ViewModels\DepartmentAttendanceDailySummaryViewModel.cs" />
     <Compile Include="ViewModels\DepartmentAttendanceHistoryReportViewModel.cs" />
     <Compile Include="ViewModels\DepartmentUserCountReportViewModel.cs" />
@@ -845,6 +848,7 @@
     <Content Include="Views\User\_ListAttendanceCard.cshtml" />
     <Content Include="Views\AttendanceCardStatusMonthlyReport\Index.cshtml" />
     <Content Include="Views\AttendanceCardStatusYearlyReport\Index.cshtml" />
+    <Content Include="Views\DataMaintenance\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

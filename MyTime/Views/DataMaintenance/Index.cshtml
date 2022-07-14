@@ -1,0 +1,269 @@
+﻿@model MyTime.ViewModels.DataMaintenanceViewModel
+@{
+    ViewBag.Title = MyTime.Resource.DataMaintenance;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="divForm" class="d-flex justify-content-center">
+
+    <div class="card shadow" style="width:496px;">
+        <div class="card-header bg-transparent">
+            <h6> @ViewBag.Title </h6>
+        </div>
+        <div class="card-body">
+
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <div class="form-group row">
+                    <div class="col-md-9 text-left">
+                        @MyTime.Resource.ManualCloseLastMonthAttendanceData
+                     </div>
+                    <div class="col-md-3 text-left">
+                         <input id="btnManualClose" type="button" value="@MyTime.Resource.Proceed" class="btn btn-primary" />
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-9 text-left">
+                        @MyTime.Resource.ManualGenerateLastMonthAttendance
+                     </div>
+                    <div class="col-md-3 text-left">
+                        <input id="btnManualGenerate" type="button" value="@MyTime.Resource.Proceed" class="btn btn-primary" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-md-12 text-center">
+                        <input id="btnClose" type="button" value="@MyTime.Resource.Close" class="btn btn-primary" />
+                    </div>
+                </div>
+
+
+            </div>
+
+           
+
+        </div>
+
+    </div>
+
+</div>
+
+<button type="button" id="btnToggleMessageModal" class="btn btn-primary" style="visibility:hidden;" data-toggle="modal" data-target="#messageModal">
+</button>
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="Dialog">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@MyTime.Resource.MessageInfo</h5>
+            </div>
+            <div class="modal-body">
+                <p><label id="lblMessage"></label></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseMessageModal" class="btn btn-primary" data-dismiss="modal">@MyTime.Resource.Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+}
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@Scripts.Render("~/bundles/custom-js")*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        setInactivityTime();
+
+            //toggleSidebar();
+            unloadSpinner();
+            showDivBody();
+
+            $('#btnManualClose').on('click', function () {
+
+                loadSpinner
+
+                var btn = document.getElementById('btnToggleMessageModal');
+                btn.innerText = '1';
+
+                $.ajax({
+                    datatype: 'text/plain',
+                    type: 'POST',
+                    url: 'DataMaintenance/ManualCloseLastMonthAttendanceData/',
+                    cache: false,
+                    success: function (result) {
+
+                        if (result.status == 1) {
+
+                            unloadSpinner();
+
+                            var btn = document.getElementById('btnToggleMessageModal');
+                            var lbl = document.getElementById('lblMessage');
+
+                            switch (btn.textContent.trim()) {
+                                case '1':
+                                    lbl.innerText = '@MyTime.Resource.MessageSuccessManualCloseLastMonthAttendanceData';
+                                    break;
+                                case '2':
+                                    lbl.innerText = '@MyTime.Resource.MessageSuccessManualGenerateLastMonthAttendanceCardStatus';
+                                    break;
+                                default:
+                                    lbl.innerText = '@MyTime.Resource.MessageSuccessManualCloseLastMonthAttendanceData';
+                                    break;
+                            };
+
+                            $('#btnToggleMessageModal').click();
+
+                        }
+
+                    }
+                });
+
+            });
+
+            $('#btnManualGenerate').on('click', function () {
+
+                loadSpinner
+
+                var btn = document.getElementById('btnToggleMessageModal');
+                btn.innerText = '2';
+
+                $.ajax({
+                    datatype: 'text/plain',
+                    type: 'POST',
+                    url: 'DataMaintenance/ManualGenerateLastMonthAttendanceCardStatus/',
+                    cache: false,
+                    success: function (result) {
+
+                            if (result.status == 1) {
+
+                                unloadSpinner();
+
+                                var btn = document.getElementById('btnToggleMessageModal');
+                                var lbl = document.getElementById('lblMessage');
+
+                                switch (btn.textContent.trim()) {
+                                    case '1':
+                                        lbl.innerText = '@MyTime.Resource.MessageSuccessManualCloseLastMonthAttendanceData';
+                                        break;
+                                    case '2':
+                                        lbl.innerText = '@MyTime.Resource.MessageSuccessManualGenerateLastMonthAttendanceCardStatus';
+                                        break;
+                                    default:
+                                        lbl.innerText = '@MyTime.Resource.MessageSuccessManualCloseLastMonthAttendanceData';
+                                        break;
+                                };
+
+                                $('#btnToggleMessageModal').click();
+
+                            }
+
+                    }
+                });
+
+            });
+
+            $('#btnClose').on('click', function () {
+                 history.go(-1);
+            });
+
+            $('#btnCloseMessageModal').on('click', function () {
+                @*var url = '@Url.Action("Index","home")';
+                window.location.href = url;*@
+            });
+
+        });
+
+
+        function onSuccessProcess(result, status, xhr) {
+
+            if (result.status == 1) {
+
+                unloadSpinner();
+
+                var btn = document.getElementById('btnToggleMessageModal');
+                var lbl = document.getElementById('lblMessage');
+
+                switch (btn.textContent.trim()) {
+                    case '1':
+                        lbl.innerText = '@MyTime.Resource.MessageSuccessCreate';
+                        break;
+                    case '2':
+                        lbl.innerText = '@MyTime.Resource.MessageSuccessUpdate';
+                        break;
+                    default:
+                        lbl.innerText = '@MyTime.Resource.MessageSuccessCreate';
+                        break;
+                };
+
+                $('#btnToggleMessageModal').click();
+
+            }
+
+        };
+
+           let setInactivityTime = function () {
+
+                let time;
+                window.onload = resetTimer;
+
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+
+                        var messageString = '@String.Format(MyTime.Resource.MessageSessionExpired, Session.Timeout)'
+
+                      bootbox.alert({
+                            title: '@MyTime.Resource.MessageInfo',
+                            message: messageString,
+
+                            backdrop: true,
+                            buttons: {
+                                        ok: {
+                                          className:'btn-primary',
+                                          label: ' @MyTime.Resource.Close'
+                                }
+                            },
+                          callback: function () {
+                            var url = '@Url.Action("Index","Auth")';
+                            window.location.href = url;
+                            }
+                        });
+
+
+                }
+                function resetTimer() {
+
+                    let timeOut = parseInt('@Session.Timeout');
+
+                    clearTimeout(time);
+                    time = setTimeout(logout, timeOut * 60 * 1000)
+                }
+            };
+
+
+</script>
+}
+
+
+

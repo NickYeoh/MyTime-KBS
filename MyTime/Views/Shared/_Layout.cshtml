@@ -125,6 +125,12 @@
                                     </a>
                                 </li>
 
+                                <li>
+                                    <a href="#" id="linkDataMaintenance">
+                                        @MyTime.Resource.DataMaintenance
+                                    </a>
+                                </li>
+
                             </ul>
                         }
 
@@ -496,6 +502,13 @@
                       window.location.href = '@Url.Action("Index","System")';
                       return false;
              });
+
+
+             $('#linkDataMaintenance').on('click', function () {
+                      window.location.href = '@Url.Action("Index","DataMaintenance")';
+                      return false;
+             });
+
 
                $('#linkAccessRole').on('click', function () {
                       window.location.href = '@Url.Action("Index","AccessRole")';

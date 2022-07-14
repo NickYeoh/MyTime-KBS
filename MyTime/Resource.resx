@@ -1146,4 +1146,22 @@
   <data name="Count" xml:space="preserve">
     <value>Cnt</value>
   </data>
+  <data name="DataMaintenance" xml:space="preserve">
+    <value>Data Maintenance</value>
+  </data>
+  <data name="ManualCloseLastMonthAttendanceData" xml:space="preserve">
+    <value>Manual Close Last Month Attendance Data</value>
+  </data>
+  <data name="ManualGenerateLastMonthAttendance" xml:space="preserve">
+    <value>Manual Generate Last Month Attendance</value>
+  </data>
+  <data name="Proceed" xml:space="preserve">
+    <value>Proceed</value>
+  </data>
+  <data name="MessageSuccessManualCloseLastMonthAttendanceData" xml:space="preserve">
+    <value>Last Month Attendance Data is successfully closed</value>
+  </data>
+  <data name="MessageSuccessManualGenerateLastMonthAttendanceCardStatus" xml:space="preserve">
+    <value>Last Month Attendance Card Status is successfully generated</value>
+  </data>
 </root>
