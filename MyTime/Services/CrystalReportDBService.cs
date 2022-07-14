@@ -465,10 +465,10 @@ namespace MyTime.Services
         }
 
         // 2022-07-05 : For Attendance Card Report (Monthly)
-        public List<CRAttendanceCardReportModel> PrepareAttendanceCardReport(List<AttendanceCardReportModel> attendanceCardReportList)
+        public List<CRAttendanceCardStatusMonthlyReportModel> PrepareAttendanceCardReport(List<AttendanceCardStatusMontlyReportModel> attendanceCardReportList)
         {
-            List<CRAttendanceCardReportModel> crAttendanceCardReportList = new List<CRAttendanceCardReportModel>();
-            CRAttendanceCardReportModel crAttendanceCardReportModel;
+            List<CRAttendanceCardStatusMonthlyReportModel> crAttendanceCardReportList = new List<CRAttendanceCardStatusMonthlyReportModel>();
+            CRAttendanceCardStatusMonthlyReportModel crAttendanceCardReportModel;
 
             int rowCount = attendanceCardReportList.Count;
             int rowNo = 0;
@@ -477,7 +477,7 @@ namespace MyTime.Services
             {
                 rowNo += 1;
 
-                crAttendanceCardReportModel = new CRAttendanceCardReportModel();
+                crAttendanceCardReportModel = new CRAttendanceCardStatusMonthlyReportModel();
 
                 crAttendanceCardReportModel.AttendanceMonth = row.AttendanceMonth;
                 crAttendanceCardReportModel.NRIC = row.NRIC;
@@ -518,10 +518,10 @@ namespace MyTime.Services
         }
 
         // 2022-07-05 : For Attendance Card Report (Monthly)
-        public List<CRAttendanceCardSummaryReportModel> PrepareAttendanceCardSummaryReport(List<AttendanceCardSummaryReportModel> attendanceCardSummaryReportList)
+        public List<CRAttendanceCardStatusYearlyReportModel> PrepareAttendanceCardSummaryReport(List<AttendanceCardStatusYearlyReportModel> attendanceCardSummaryReportList)
         {
-            List<CRAttendanceCardSummaryReportModel> crAttendanceCardSummaryReportList = new List<CRAttendanceCardSummaryReportModel>();
-            CRAttendanceCardSummaryReportModel crAttendanceCardSummaryReportModel;
+            List<CRAttendanceCardStatusYearlyReportModel> crAttendanceCardSummaryReportList = new List<CRAttendanceCardStatusYearlyReportModel>();
+            CRAttendanceCardStatusYearlyReportModel crAttendanceCardSummaryReportModel;
 
             int rowCount = attendanceCardSummaryReportList.Count;
             int rowNo = 0;
@@ -530,7 +530,7 @@ namespace MyTime.Services
             {
                 rowNo += 1;
 
-                crAttendanceCardSummaryReportModel = new CRAttendanceCardSummaryReportModel();
+                crAttendanceCardSummaryReportModel = new CRAttendanceCardStatusYearlyReportModel();
 
                 crAttendanceCardSummaryReportModel.AttendanceYear = row.AttendanceYear;
                 crAttendanceCardSummaryReportModel.NRIC = row.NRIC;

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyTime.Models
 {
-    public class AttendanceCardReportModel
+    public class AttendanceCardStatusMontlyReportModel
     {
         [Display(Name = "AttendanceMonth", ResourceType = typeof(Resource))]
         public string AttendanceMonth { get; set; }

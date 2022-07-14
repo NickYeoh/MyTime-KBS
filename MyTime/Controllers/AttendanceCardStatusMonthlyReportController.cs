@@ -61,13 +61,13 @@ namespace MyTime.Controllers
         public ActionResult GenerateAttendanceCardList(string selectedMonthYear, string selectedDepartmentID, string selectedAttendanceCardStatus)
         {
 
-            List<AttendanceCardReportModel> attendanceCardReportList = new List<AttendanceCardReportModel>();
+            List<AttendanceCardStatusMontlyReportModel> attendanceCardReportList = new List<AttendanceCardStatusMontlyReportModel>();
 
             DateTime attendanceMonth = Convert.ToDateTime(selectedMonthYear);
 
             attendanceCardReportList = attendanceCardDBService.GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(attendanceMonth, selectedDepartmentID, selectedAttendanceCardStatus);
             
-            TempData["AttendanceCardReportList"] = attendanceCardReportList;
+            TempData["AttendanceCardStatusMonthlyReportList"] = attendanceCardReportList;
 
             return Json(attendanceCardReportList, JsonRequestBehavior.AllowGet);
         }
@@ -124,24 +124,24 @@ namespace MyTime.Controllers
             {
 
 
-                List<AttendanceCardReportModel> AttendanceCardReportList = new List<AttendanceCardReportModel>();
-                List<CRAttendanceCardReportModel> crAttendanceCardReportList = new List<CRAttendanceCardReportModel>();
+                List<AttendanceCardStatusMontlyReportModel> AttendanceCardStatusMonthlyReportList = new List<AttendanceCardStatusMontlyReportModel>();
+                List<CRAttendanceCardStatusMonthlyReportModel> crAttendanceCardStatusMonthlyReportList = new List<CRAttendanceCardStatusMonthlyReportModel>();
 
                 //string reportType;
 
                 //reportType = "Monthly";
-                AttendanceCardReportList = TempData["AttendanceCardReportList"] as List<AttendanceCardReportModel>;
+                AttendanceCardStatusMonthlyReportList = TempData["AttendanceCardStatusMonthlyReportList"] as List<AttendanceCardStatusMontlyReportModel>;
                
                 //reportType = TempData["ReportType"] as string;
 
-                TempData.Keep("AttendanceCardReportList");               
+                TempData.Keep("AttendanceCardStatusMonthlyReportList");               
                 //TempData.Keep("ReportType");
 
-                crAttendanceCardReportList = crystalReportDBService.PrepareAttendanceCardReport(AttendanceCardReportList.OrderBy(a => a.UserName).ToList());
+                crAttendanceCardStatusMonthlyReportList = crystalReportDBService.PrepareAttendanceCardReport(AttendanceCardStatusMonthlyReportList.OrderBy(a => a.UserName).ToList());
 
                 ReportDocument report = new ReportDocument();
                 report.Load(Path.Combine(Server.MapPath("~/Reports"), "AttendanceCardStatusMonthlyCR.rpt"));
-                report.SetDataSource(crAttendanceCardReportList);
+                report.SetDataSource(crAttendanceCardStatusMonthlyReportList);
 
                 string organisationName = Session["OrganisationName"].ToString();
                 string organisationLogo = Session["OrganisationLogo"].ToString();

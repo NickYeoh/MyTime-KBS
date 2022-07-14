@@ -17,10 +17,10 @@ namespace MyTime.Services
         private readonly SqlConnection conn = new SqlConnection(connStr);
 
 
-        public List<AttendanceCardReportModel> GetAttendanceCardByID(string ID)
+        public List<AttendanceCardStatusMontlyReportModel> GetAttendanceCardByID(string ID)
         {
-            List<AttendanceCardReportModel> attendanceCardList = new List<AttendanceCardReportModel>();
-            AttendanceCardReportModel attendanceCardModel = new AttendanceCardReportModel();
+            List<AttendanceCardStatusMontlyReportModel> attendanceCardList = new List<AttendanceCardStatusMontlyReportModel>();
+            AttendanceCardStatusMontlyReportModel attendanceCardModel = new AttendanceCardStatusMontlyReportModel();
 
             string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
             sql += " " + $@"AC.NRIC, U.UserName,";
@@ -49,7 +49,7 @@ namespace MyTime.Services
 
                     while (dr.Read())
                     {
-                        attendanceCardModel = new AttendanceCardReportModel();
+                        attendanceCardModel = new AttendanceCardStatusMontlyReportModel();
 
                         if (!dr["AttendanceMonth"].Equals(DBNull.Value))
                         {
@@ -277,10 +277,10 @@ namespace MyTime.Services
         }
 
 
-        public List<AttendanceCardReportModel> GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(DateTime attendanceMonth, string departmentID, string attendanceCardStatus)
+        public List<AttendanceCardStatusMontlyReportModel> GetMonthlyAttendanceCardByAttendanceCardStatusAndDepartment(DateTime attendanceMonth, string departmentID, string attendanceCardStatus)
         {
-            List<AttendanceCardReportModel> attendanceCardList = new List<AttendanceCardReportModel>();
-            AttendanceCardReportModel attendanceCardModel = new AttendanceCardReportModel();
+            List<AttendanceCardStatusMontlyReportModel> attendanceCardList = new List<AttendanceCardStatusMontlyReportModel>();
+            AttendanceCardStatusMontlyReportModel attendanceCardModel = new AttendanceCardStatusMontlyReportModel();
 
 
             string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
@@ -312,7 +312,7 @@ namespace MyTime.Services
 
                     while (dr.Read())
                     {
-                        attendanceCardModel = new AttendanceCardReportModel();
+                        attendanceCardModel = new AttendanceCardStatusMontlyReportModel();
 
 
                         if (!dr["AttendanceMonth"].Equals(DBNull.Value))
@@ -403,14 +403,14 @@ namespace MyTime.Services
             return attendanceCardList;
         }
 
-        public List<AttendanceCardSummaryReportModel> GetYearlyAttendanceCardByDepartment(DateTime attendanceYear, string departmentID)
+        public List<AttendanceCardStatusYearlyReportModel> GetYearlyAttendanceCardByDepartment(DateTime attendanceYear, string departmentID)
         {
             
-            List<AttendanceCardReportModel> tempList = new List<AttendanceCardReportModel>();
-            AttendanceCardReportModel attendanceCardModel = new AttendanceCardReportModel();
+            List<AttendanceCardStatusMontlyReportModel> tempList = new List<AttendanceCardStatusMontlyReportModel>();
+            AttendanceCardStatusMontlyReportModel attendanceCardModel = new AttendanceCardStatusMontlyReportModel();
 
-            List<AttendanceCardSummaryReportModel> attendanceCardList = new List<AttendanceCardSummaryReportModel>();
-            AttendanceCardSummaryReportModel attendanceCardSummaryReportModel = new AttendanceCardSummaryReportModel();
+            List<AttendanceCardStatusYearlyReportModel> attendanceCardList = new List<AttendanceCardStatusYearlyReportModel>();
+            AttendanceCardStatusYearlyReportModel attendanceCardSummaryReportModel = new AttendanceCardStatusYearlyReportModel();
 
             string sql = $@"SELECT AttendanceMonth, DepartmentName, ";
             sql += " " + $@"AC.NRIC, U.UserName,";
@@ -440,7 +440,7 @@ namespace MyTime.Services
 
                     while (dr.Read())
                     {
-                        attendanceCardModel = new AttendanceCardReportModel();
+                        attendanceCardModel = new AttendanceCardStatusMontlyReportModel();
 
 
                         if (!dr["AttendanceMonth"].Equals(DBNull.Value))
@@ -529,7 +529,7 @@ namespace MyTime.Services
 
                         NRIC = row.Key;
                       
-                        attendanceCardSummaryReportModel = new AttendanceCardSummaryReportModel();
+                        attendanceCardSummaryReportModel = new AttendanceCardStatusYearlyReportModel();
                         attendanceCardSummaryReportModel.AttendanceYear = attendanceYear.ToString("yyyy");
                         attendanceCardSummaryReportModel.NRIC = NRIC;
 

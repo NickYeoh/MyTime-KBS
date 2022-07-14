@@ -183,13 +183,13 @@
     <Compile Include="Models\AccessRoleModel.cs" />
     <Compile Include="Models\AnnouncementModel.cs" />
     <Compile Include="Models\AttendanceAnalysisModel.cs" />
-    <Compile Include="Models\AttendanceCardReportModel.cs" />
-    <Compile Include="Models\AttendanceCardSummaryReportModel.cs" />
+    <Compile Include="Models\AttendanceCardStatusMontlyReportModel.cs" />
+    <Compile Include="Models\AttendanceCardStatusYearlyReportModel.cs" />
     <Compile Include="Models\AttendanceStatisticsModel.cs" />
     <Compile Include="Models\AttendanceSummaryReportModel.cs" />
     <Compile Include="Models\CRAttendanceAnalysisModel.cs" />
-    <Compile Include="Models\CRAttendanceCardReportModel.cs" />
-    <Compile Include="Models\CRAttendanceCardSummaryReportModel.cs" />
+    <Compile Include="Models\CRAttendanceCardStatusMonthlyReportModel.cs" />
+    <Compile Include="Models\CRAttendanceCardStatusYearlyReportModel.cs" />
     <Compile Include="Models\CRAttendanceDailyModel.cs" />
     <Compile Include="Models\CRAttendanceStatisticsModel.cs" />
     <Compile Include="Models\CRAttendanceSummaryReportModel.cs" />

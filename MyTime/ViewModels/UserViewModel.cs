@@ -39,6 +39,6 @@ namespace MyTime.ViewModels
         // For Attendance Card Status
         public IEnumerable<SelectListItem> SelectListMonthYear { get; set; }
       
-        public List<AttendanceCardReportModel> AttendanceCardList { get; set; }
+        public List<AttendanceCardStatusMontlyReportModel> AttendanceCardList { get; set; }
     }
 }

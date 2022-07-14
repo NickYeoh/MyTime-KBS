@@ -5,7 +5,7 @@ using System.Web;
 
 namespace MyTime.Models
 {
-    public class CRAttendanceCardReportModel
+    public class CRAttendanceCardStatusMonthlyReportModel
     {
         public string AttendanceMonth { get; set; }
         public string NRIC { get; set; }
