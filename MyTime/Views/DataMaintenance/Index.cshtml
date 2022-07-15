@@ -91,15 +91,22 @@
 
     $(document).ready(function () {
 
-        setInactivityTime();
+            setInactivityTime();
 
             //toggleSidebar();
             unloadSpinner();
             showDivBody();
 
+        $('#btnManualClose').prop('disabled', false);
+        $('#btnManualGenerate').prop('disabled', false);
+
             $('#btnManualClose').on('click', function () {
 
-                loadSpinner
+                loadSpinner();
+
+                $('#btnManualClose').prop('disabled', true);
+                $('#btnManualGenerate').prop('disabled', true);
+
 
                 var btn = document.getElementById('btnToggleMessageModal');
                 btn.innerText = '1';
@@ -110,6 +117,9 @@
                     url: 'DataMaintenance/ManualCloseLastMonthAttendanceData/',
                     cache: false,
                     success: function (result) {
+
+                        $('#btnManualClose').prop('disabled', false);
+                        $('#btnManualGenerate').prop('disabled', false);
 
                         if (result.status == 1) {
 
@@ -141,7 +151,11 @@
 
             $('#btnManualGenerate').on('click', function () {
 
-                loadSpinner
+                loadSpinner();
+
+                $('#btnManualClose').prop('disabled', true);
+                $('#btnManualGenerate').prop('disabled', true);
+
 
                 var btn = document.getElementById('btnToggleMessageModal');
                 btn.innerText = '2';
@@ -152,6 +166,10 @@
                     url: 'DataMaintenance/ManualGenerateLastMonthAttendanceCardStatus/',
                     cache: false,
                     success: function (result) {
+
+                            $('#btnManualClose').prop('disabled', false);
+                            $('#btnManualGenerate').prop('disabled', false);
+
 
                             if (result.status == 1) {
 

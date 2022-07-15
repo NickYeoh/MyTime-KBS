@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,16 +14,13 @@ namespace MyTime.Controllers
 {
     public class DataMaintenanceController : EnvironmentController
     {
-
+        private readonly static string connStr = ConfigurationManager.ConnectionStrings["MyTimeDB"].ConnectionString;
+        private readonly SqlConnection conn = new SqlConnection(connStr);
+           
         UserDBService userDBService = new UserDBService();
         UserAccessControlDBService userAccessControlDBService = new UserAccessControlDBService();
-
-        SystemDBService systemDBService = new SystemDBService();
-        RoleDBService roleDBService = new RoleDBService();
-        ShiftDBService shiftDBService = new ShiftDBService();
-        AccessRoleDBService accessRoleDBService = new AccessRoleDBService();
-
-
+        DataMaintenanceDBService dataMaintenanceDBService = new DataMaintenanceDBService();
+               
         // GET: DataMaintenance
         public ActionResult Index()
         {
@@ -47,7 +46,11 @@ namespace MyTime.Controllers
         [HttpPost]
         public ActionResult ManualCloseLastMonthAttendanceData()
         {
-          
+            UserModel userModel = new UserModel();
+            userModel = userDBService.GetDataByID(User.Identity.Name);
+
+            dataMaintenanceDBService.CloseLastMonthAttendanceData(userModel);
+
             return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
           
         }
@@ -55,7 +58,12 @@ namespace MyTime.Controllers
         [HttpPost]
         public ActionResult ManualGenerateLastMonthAttendanceCardStatus()
         {
-            
+
+            UserModel userModel = new UserModel();
+            userModel = userDBService.GetDataByID(User.Identity.Name);
+
+            dataMaintenanceDBService.GenerateLastMonthAttendanceCardStatus(userModel);
+
             return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
 
         }
